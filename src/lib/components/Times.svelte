@@ -33,7 +33,8 @@
                 <th>ID</th>
                 <th>Category</th>
                 <th>Time Spent</th>
-                <th>Timestamp</th>
+                <th>Start</th>
+                <th>End</th>
             </tr>
         </thead>
         <tbody>
@@ -42,7 +43,8 @@
                     <td>{task.id}</td>
                     <td>{task.category}</td>
                     <td>{formatTime(task.time_spent)}</td>
-                    <td>{task.timestamp}</td>
+                    <td>{task.start}</td>
+                    <td>{task.end}</td>
                 </tr>
             {/each}
         </tbody>

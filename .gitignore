@@ -144,3 +144,6 @@ vite.config.ts.timestamp-*
 
 # VSCode
 .vscode
+
+# App DB
+app.db
