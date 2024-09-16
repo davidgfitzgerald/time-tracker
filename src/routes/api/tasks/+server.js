@@ -1,0 +1,44 @@
+import { json } from '@sveltejs/kit';
+import { db } from '$lib/db/init';
+
+
+export async function POST({ request }) {
+    const { category, time_spent } = await request.json();
+
+    try {
+        // Insert the row into the database
+        const result = await db.run(
+            'INSERT INTO tasks (category, time_spent) VALUES (?, ?)',
+            [category, time_spent]
+        );
+
+        // Query the inserted row using the ID
+        const row = await db.get(
+            'SELECT * FROM tasks WHERE id = ?',
+            [result.lastID]
+        );
+        return json({ task: row });
+    } catch (error) {
+        return json({ error: 'Failed to add task' }, { status: 500 });
+    }
+}
+
+export async function GET() {
+    try {
+        const tasks = await db.all('SELECT * FROM tasks');
+        return json(tasks);
+    } catch (error) {
+        return json({ error: 'Failed to fetch tasks' }, { status: 500 });
+    }
+}
+
+export async function DELETE() {
+    try {
+        // Delete all tasks from the database
+        await db.run('DELETE FROM tasks');
+
+        return json({ message: 'All tasks deleted successfully' });
+    } catch (error) {
+        return json({ error: 'Failed to delete tasks' }, { status: 500 });
+    }
+}
