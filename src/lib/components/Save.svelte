@@ -1,67 +1,84 @@
 <script>
 	import { formatDuration } from '$lib/utils/time';
 	import { writable } from 'svelte/store';
-  import { times } from '$lib/stores';
+	import { times } from '$lib/stores';
 
 	export let isOpen = writable(false);
 
-  let timeSpent = 0
-  let startTime = ''  // Timestamp in 'YYYY-MM-DD HH:MM:SS' format.
+	let timeSpent = 0;
+	let endTime = ''; // Timestamp in 'YYYY-MM-DD HH:MM:SS' format.
 	let category = '';
+	/**
+	 * @type {number | undefined} taskId
+	 */
+	let taskId;
 
 	/**
+	 * @param {number} incomingTaskId
 	 * @param {number} duration
-	 * @param {string} start
+	 * @param {string} incomingEndTime
 	 */
-	export function openModal(duration, start) {
+	export function openModal(incomingTaskId, duration, incomingEndTime) {
 		isOpen.set(true);
-    timeSpent = duration
-    startTime = start
+		taskId = incomingTaskId;
+		timeSpent = duration;
+		endTime = incomingEndTime;
 	}
 
-	function close() {
+	function closeModal() {
 		isOpen.set(false);
-    timeSpent = 0;
-    startTime = '';
+		timeSpent = 0;
+		endTime = '';
 	}
 
-	async function addTask() {
+	async function updateTask() {
+		// console.log(`Frontend: Updating task with ID: ${taskId}`);
 		const res = await fetch('/api/tasks', {
-      method: 'POST',
+			method: 'PUT',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ category, timeSpent, startTime })
+			body: JSON.stringify({ taskId, category, timeSpent, endTime })
 		});
+    // console.log(`Frontend: res is ${JSON.stringify(res)}`)
 
 		if (res.ok) {
 			const result = await res.json();
-			const task = result.task;
-			console.log(`Task added with ID: ${task.id}`);
-      console.log(`Task added timeSpent: {${task.timeSpent}}`)
+      // console.log(`Frontend: result is ${JSON.stringify(result)}`)
+			const updatedTask = result.task;
+			// console.log(`Frontend: Task updated with ID: ${updatedTask.id}`);
 
-      times.update((currentTimes) => {
-        return {
-            tasks: [...currentTimes.tasks, task], // Append the new task to tasks array
-            error: currentTimes.error
-        };
-    });
-			close();
+			times.update((currentTimes) => {
+				return {
+					tasks: currentTimes.tasks.map((task) => {
+						if (task.id === taskId) {
+							// Return a new task object with updated properties
+							return {
+								...task,
+								...updatedTask // Assuming updatedTask contains the new properties
+							};
+						}
+						// Return the task unchanged if ID doesn't match
+						return task;
+					}),
+					error: currentTimes.error
+				};
+			});
+			closeModal();
 		} else {
-      console.log(res);
+			console.log(res);
 			alert('Failed to add task');
 		}
 	}
-
 </script>
 
 <!-- Modal HTML -->
 {#if $isOpen}
-	<div class="modal-background" on:click={close}>
+	<div class="modal-background" on:click={closeModal}>
 		<div class="modal-content" on:click|stopPropagation>
 			<h2>Track Time</h2>
 			<p>You are about to track {formatDuration(timeSpent)}.</p>
 			<!-- <button class="close-btn" on:click={closeModal}>Save</button> -->
 
-			<form on:submit|preventDefault={addTask}>
+			<form on:submit|preventDefault={updateTask}>
 				<label>
 					Task Category:
 					<input type="text" bind:value={category} required />

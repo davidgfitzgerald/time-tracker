@@ -8,6 +8,15 @@
         t.error = ''
         return t
     })
+
+    // Helper function to handle null or undefined values
+    /**
+	 * @param {string | number | null} value
+	 * @param {(arg0: any) => string} formatter
+	 */
+    function formatValue(value, formatter) {
+        return value != null ? formatter(value) : '';
+    }
 </script>
 
 <style>
@@ -42,16 +51,18 @@
                 <th>Time Spent</th>
                 <th>Start</th>
                 <th>End</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             {#each $times.tasks as task}
                 <tr>
                     <td>{task.id}</td>
-                    <td>{task.category}</td>
-                    <td>{formatDuration(task.timeSpent)}</td>
-                    <td>{convertUTCToLocal(task.start)}</td>
-                    <td>{convertUTCToLocal(task.endTime)}</td>
+                    <td>{task.category || null}</td>
+                    <td>{formatValue(task.timeSpent, formatDuration)}</td>
+                    <td>{formatValue(task.start, convertUTCToLocal)}</td>
+                    <td>{formatValue(task.endTime, convertUTCToLocal)}</td>
+                    <td>{task.status}</td>
                 </tr>
             {/each}
         </tbody>
