@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "npm run db-restart && caffeinate -i vite dev --host --open",
+		"dev": "npm run db-restart; sleep 1; caffeinate -i vite dev --host --open",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
@@ -11,7 +11,8 @@
 		"test": "vitest",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"db-restart": "docker compose down -v; docker compose build --no-cache; docker compose up -d"
+		"db-restart": "docker compose down -v; docker compose build --no-cache; docker compose up -d",
+		"db-exec": "pgcli --host localhost --user admin time_tracker"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -32,6 +33,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"dotenv": "^16.4.5",
+		"pg": "^8.12.0",
 		"sqlite": "^5.1.1",
 		"sqlite3": "^5.1.7"
 	}

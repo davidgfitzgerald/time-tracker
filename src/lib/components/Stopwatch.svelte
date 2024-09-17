@@ -64,7 +64,7 @@
 					error: ''
 				};
 			});
-			close();
+			// close();
 		} else {
 			console.log(res);
 			alert('Failed to delete tasks');

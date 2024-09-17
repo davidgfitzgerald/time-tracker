@@ -4,7 +4,10 @@
     export let data;
 
     import { times } from "$lib/stores.js";
+    // console.log("Storing times on front end")
+    // console.log(`Data to store: ${JSON.stringify(data)}`)
     times.set(data)
+    // console.log("Stored times on front end")
 </script>
 
 <style>

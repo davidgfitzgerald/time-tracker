@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     category TEXT NOT NULL,
     time_spent INTEGER NOT NULL,
     start TIMESTAMP,
-    "end" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Is end a keyword?
+    end_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status TEXT NOT NULL DEFAULT 'ACTIVE', -- Adding the status column with a default value
     CONSTRAINT status_check CHECK (status IN ('ACTIVE', 'COMPLETE')) -- Enforce only 'ACTIVE' or 'COMPLETE' values
 );

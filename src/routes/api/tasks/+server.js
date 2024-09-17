@@ -1,50 +1,59 @@
 import { json } from '@sveltejs/kit';
-import { db } from '../../../../db/init';  // TODO
+import pool from '$lib/db/pool';
 
 
 export async function POST({ request }) {
     const { category, timeSpent, startTime } = await request.json();
     try {
-        // Insert the row into the database
-        const result = await db.run(
-            'INSERT INTO tasks (category, time_spent, start) VALUES (?, ?, ?)',
-            [category, timeSpent, startTime]
-        );
-
-        const query = `
-            SELECT 
+        let query = `
+            INSERT INTO tasks(
+                category,
+                time_spent,
+                start
+            ) VALUES(
+                $1,
+                $2,
+                $3
+            ) RETURNING 
                 id,
                 category,
-                time_spent AS timeSpent,
+                time_spent AS "timeSpent",
                 start,
-                end
-            FROM tasks
-            WHERE id = ?;
-        `;
-
-        // Query the inserted row using the ID
-        const row = await db.get(query, [result.lastID]);  // TODO check
+                end_time as "endTime",
+                status;
+            `
+        const values = [category, timeSpent, startTime]
+        
+        // console.debug("Inserting row")
+        const res = await pool.query(query, values)
+        // console.debug("Inserted row")
+        const row = res.rows[0]
         return json({ task: row });
     } catch (error) {
+        console.error(error)
         return json({ error: 'Failed to add task' }, { status: 500 });
     }
 }
 
 export async function GET() {
-    // console.log("Getting all tasks")
+    // console.debug("Getting all tasks")
     const query = `
         SELECT 
             id,
             category,
-            time_spent AS timeSpent,
+            time_spent AS "timeSpent",
             start,
-            end
+            end_time as "endTime",
+            status
         FROM tasks;
     `;
     try {
-        const tasks = await db.all(query);  // TODO check
-        return json(tasks);
+        const tasks = await pool.query(query);
+        // console.debug("Got tasks")
+        // console.debug(tasks.rows)
+        return json(tasks.rows);
     } catch (error) {
+        console.error(error)
         return json({ error: 'Failed to fetch tasks' }, { status: 500 });
     }
 }
@@ -52,7 +61,9 @@ export async function GET() {
 export async function DELETE() {
     try {
         // Delete all tasks from the database
-        await db.run('DELETE FROM tasks');  // TODO check
+        // console.log("Clearing DB")
+        await pool.query('DELETE FROM tasks');
+        // console.log("Cleared DB")
 
         return json({ message: 'All tasks deleted successfully' });
     } catch (error) {

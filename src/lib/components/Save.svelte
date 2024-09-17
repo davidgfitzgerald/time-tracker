@@ -25,9 +25,9 @@
     startTime = '';
 	}
 
-	async function submitTask() {
+	async function addTask() {
 		const res = await fetch('/api/tasks', {
-			method: 'POST',
+      method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ category, timeSpent, startTime })
 		});
@@ -61,7 +61,7 @@
 			<p>You are about to track {formatDuration(timeSpent)}.</p>
 			<!-- <button class="close-btn" on:click={closeModal}>Save</button> -->
 
-			<form on:submit|preventDefault={submitTask}>
+			<form on:submit|preventDefault={addTask}>
 				<label>
 					Task Category:
 					<input type="text" bind:value={category} required />

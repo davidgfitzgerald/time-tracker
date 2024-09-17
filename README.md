@@ -1,5 +1,6 @@
-# time-tracker
-App to track time spent on tasks
+# Time Tracker
+
+App to track time spent on tasks.
 
 ## Requirements
 
@@ -8,10 +9,24 @@ App to track time spent on tasks
 
 ## Quick Start
 
-Once you've created a project and installed dependencies (e.g. `npm install`) start a development server:
+1. Set up DB credentials:
+
+```bash
+cp .env.example .env
+```
+
+Then alter env vars as you see fit.
+
+2. Install node dependencies:
+
+```bash
+npm install
+```
+
+3. Start a development server:
 
 ```bash
 npm run dev
 ```
 
-This requires port `5432` to be available to start a postgres DB docker container.
+**Note**: This requires port `5432` to be available to start a postgres DB docker container.

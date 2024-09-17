@@ -1,6 +1,13 @@
 <script>
 	import { convertUTCToLocal, formatDuration } from '$lib/utils/time';
     import { times } from '$lib/stores';
+
+    let error = $times.error
+
+    times.update(t => {
+        t.error = ''
+        return t
+    })
 </script>
 
 <style>
@@ -22,8 +29,8 @@
 
 <h1>Task List</h1>
 
-{#if $times.error}
-    <p>{$times.error}</p>
+{#if error}
+    <p>{error}</p>
 {:else if $times.tasks.length === 0}
     <p>No tasks found.</p>
 {:else}
@@ -44,7 +51,7 @@
                     <td>{task.category}</td>
                     <td>{formatDuration(task.timeSpent)}</td>
                     <td>{convertUTCToLocal(task.start)}</td>
-                    <td>{convertUTCToLocal(task.end)}</td>
+                    <td>{convertUTCToLocal(task.endTime)}</td>
                 </tr>
             {/each}
         </tbody>

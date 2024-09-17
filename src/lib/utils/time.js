@@ -35,8 +35,7 @@ export function getCurrentTimeUTC() {
  * @returns {string} - The local date/time string in 'YYYY-MM-DD HH:MM:SS' format.
  */
 export function convertUTCToLocal(utcDateStr) {
-    // console.debug(`Convering UTC to local: ${utcDateStr}`)
-    const date = new Date(Date.parse(utcDateStr + 'Z'));
+    const date = parseUTCDate(utcDateStr)
     
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
@@ -47,7 +46,16 @@ export function convertUTCToLocal(utcDateStr) {
 
     const local = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 
-    // console.debug(`Local: ${local}`)
-
     return local;
+}
+
+/**
+ * @param {string} utcDateStr - e.g 2024-09-17T18:00:00.000Z or 2024-09-17T18:00:00.000
+ * @returns {Date} - Date object
+ */
+export function parseUTCDate(utcDateStr) {
+    if (!utcDateStr.endsWith("Z")) {
+        utcDateStr += 'Z'
+    }
+    return new Date(Date.parse(utcDateStr));
 }
