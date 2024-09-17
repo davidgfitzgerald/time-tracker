@@ -3,20 +3,27 @@ import { db } from '$lib/db/init';
 
 
 export async function POST({ request }) {
-    const { category, time_spent } = await request.json();
-
+    const { category, timeSpent, startTime } = await request.json();
     try {
         // Insert the row into the database
         const result = await db.run(
-            'INSERT INTO tasks (category, time_spent) VALUES (?, ?)',
-            [category, time_spent]
+            'INSERT INTO tasks (category, time_spent, start) VALUES (?, ?, ?)',
+            [category, timeSpent, startTime]
         );
 
+        const query = `
+            SELECT 
+                id,
+                category,
+                time_spent AS timeSpent,
+                start,
+                end
+            FROM tasks
+            WHERE id = ?;
+        `;
+
         // Query the inserted row using the ID
-        const row = await db.get(
-            'SELECT * FROM tasks WHERE id = ?',
-            [result.lastID]
-        );
+        const row = await db.get(query, [result.lastID]);
         return json({ task: row });
     } catch (error) {
         return json({ error: 'Failed to add task' }, { status: 500 });
@@ -24,8 +31,18 @@ export async function POST({ request }) {
 }
 
 export async function GET() {
+    // console.log("Getting all tasks")
+    const query = `
+        SELECT 
+            id,
+            category,
+            time_spent AS timeSpent,
+            start,
+            end
+        FROM tasks;
+    `;
     try {
-        const tasks = await db.all('SELECT * FROM tasks');
+        const tasks = await db.all(query);
         return json(tasks);
     } catch (error) {
         return json({ error: 'Failed to fetch tasks' }, { status: 500 });

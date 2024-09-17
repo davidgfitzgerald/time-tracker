@@ -4,9 +4,9 @@ import { writable } from "svelte/store";
  * @typedef {Object} Task
  * @property {number} id - The ID of the task
  * @property {string} category - The category of the task
- * @property {number} time_spent - Time spent on the task in minutes
- * @property {number} start - The start timestamp of the task
- * @property {number} end - The end timestamp of the task
+ * @property {number} timeSpent - Time spent on the task in seconds
+ * @property {string} start - The start timestamp of the task
+ * @property {string} end - The end timestamp of the task
  */
 
 /**

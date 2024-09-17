@@ -1,23 +1,19 @@
-// src/lib/database.js
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { read } from '$lib/utils/file';
+
+const SQLITE_DB = 'src/lib/db/app.db'
 
 // Open and configure the SQLite database
 export const db = await open({
-    filename: 'src/lib/db/app.db', // Path to the SQLite database file
+    filename: SQLITE_DB, // Path to the SQLite database file
     driver: sqlite3.Database
 });
 
-// Load SQL schema from the file
-const schemaPath = resolve('src/lib/db/schema.sql');
-const schemaSQL = readFileSync(schemaPath, 'utf-8');
-
-// Initialize the tasks table if it doesn't exist
+// Initialize the DB tables if they don't exist
 export async function initializeDB() {
     try {
-        await db.exec(schemaSQL);
+        await db.exec(read('src/lib/db/schema.sql'));
     } catch (error) {
         console.error('Failed to initialize the database:', error);
     }

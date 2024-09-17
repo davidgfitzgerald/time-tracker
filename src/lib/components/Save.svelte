@@ -1,37 +1,42 @@
 <script>
-	import { formatTime } from '$lib/utils/time';
+	import { formatDuration } from '$lib/utils/time';
 	import { writable } from 'svelte/store';
   import { times } from '$lib/stores';
 
 	export let isOpen = writable(false);
 
-  let time = 0
+  let timeSpent = 0
+  let startTime = ''  // Timestamp in 'YYYY-MM-DD HH:MM:SS' format.
 	let category = '';
 
 	/**
-	 * @param {number} incomingTime
+	 * @param {number} duration
+	 * @param {string} start
 	 */
-	export function openModal(incomingTime) {
+	export function openModal(duration, start) {
 		isOpen.set(true);
-    time = incomingTime
+    timeSpent = duration
+    startTime = start
 	}
 
 	function close() {
 		isOpen.set(false);
-    time = 0
+    timeSpent = 0;
+    startTime = '';
 	}
 
 	async function submitTask() {
 		const res = await fetch('/api/tasks', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ category, time_spent: time })
+			body: JSON.stringify({ category, timeSpent, startTime })
 		});
 
 		if (res.ok) {
 			const result = await res.json();
 			const task = result.task;
 			console.log(`Task added with ID: ${task.id}`);
+      console.log(`Task added timeSpent: {${task.timeSpent}}`)
 
       times.update((currentTimes) => {
         return {
@@ -53,7 +58,7 @@
 	<div class="modal-background" on:click={close}>
 		<div class="modal-content" on:click|stopPropagation>
 			<h2>Track Time</h2>
-			<p>You are about to track {formatTime(time)}.</p>
+			<p>You are about to track {formatDuration(timeSpent)}.</p>
 			<!-- <button class="close-btn" on:click={closeModal}>Save</button> -->
 
 			<form on:submit|preventDefault={submitTask}>
@@ -63,7 +68,7 @@
 				</label>
 
 				<label>
-					<input type="number" bind:value={time} min="1" required hidden />
+					<input type="number" bind:value={timeSpent} min="1" required hidden />
 				</label>
 
 				<button class="add-task" type="submit">Add Task</button>

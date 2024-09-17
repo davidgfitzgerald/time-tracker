@@ -1,6 +1,6 @@
 <script>
 	import Save from './Save.svelte';
-	import { formatTime } from '$lib/utils/time';
+	import { formatDuration, getCurrentTimeUTC } from '$lib/utils/time';
     import { times } from '$lib/stores';
 
 	/**
@@ -13,15 +13,18 @@
 	 */
 	let interval;
 	let isRunning = false;
+    let start = '';
 
 	// Function to start or stop the stopwatch
 	function toggleStartStop() {
 		if (isRunning) {
 			clearInterval(interval);
+            start = ''
 		} else {
 			interval = setInterval(() => {
 				time += 1;
 			}, 1000);
+            start = getCurrentTimeUTC()
 		}
 		isRunning = !isRunning;
 	}
@@ -29,10 +32,11 @@
 	// Function to log the stopwatch
 	function log() {
 		if (time == 0) {
-			alert('Cannot log 0 time');
+			console.error('Cannot log 0 time');
 		} else {
-			Saver.openModal(time);
+			Saver.openModal(time, start);
 			time = 0;
+            start = getCurrentTimeUTC();
 		}
 	}
 
@@ -41,6 +45,7 @@
 		clearInterval(interval);
 		time = 0;
 		isRunning = false;
+        start = ''
 	}
 
 	// Function to deleteTasks
@@ -90,7 +95,7 @@
 </style>
 
 <div class="stopwatch">
-	<h1>{formatTime(time)}</h1>
+	<h1>{formatDuration(time)}</h1>
 	<button on:click={toggleStartStop}>
 		{isRunning ? 'Stop' : 'Start'}
 	</button>

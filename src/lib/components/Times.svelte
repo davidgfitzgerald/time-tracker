@@ -1,5 +1,5 @@
 <script>
-	import { formatTime } from '$lib/utils/time';
+	import { convertUTCToLocal, formatDuration } from '$lib/utils/time';
     import { times } from '$lib/stores';
 </script>
 
@@ -42,9 +42,9 @@
                 <tr>
                     <td>{task.id}</td>
                     <td>{task.category}</td>
-                    <td>{formatTime(task.time_spent)}</td>
-                    <td>{task.start}</td>
-                    <td>{task.end}</td>
+                    <td>{formatDuration(task.timeSpent)}</td>
+                    <td>{convertUTCToLocal(task.start)}</td>
+                    <td>{convertUTCToLocal(task.end)}</td>
                 </tr>
             {/each}
         </tbody>
