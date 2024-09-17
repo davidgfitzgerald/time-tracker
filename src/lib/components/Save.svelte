@@ -14,11 +14,15 @@
 	let taskId;
 
 	/**
-	 * @param {number} incomingTaskId
+	 * @param {number | undefined} incomingTaskId
 	 * @param {number} duration
 	 * @param {string} incomingEndTime
 	 */
 	export function openModal(incomingTaskId, duration, incomingEndTime) {
+    if (!incomingTaskId) {
+      console.error("Couldn't open modal because incomingTaskId is not defined.")
+      return
+    }
 		isOpen.set(true);
 		taskId = incomingTaskId;
 		timeSpent = duration;

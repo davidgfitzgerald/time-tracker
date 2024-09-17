@@ -1,7 +1,8 @@
 <script>
 	import Save from './Save.svelte';
-	import { formatDuration, getCurrentTimeUTC } from '$lib/utils/time';
+	import { formatDuration, getCurrentTime } from '$lib/utils/time';
 	import { times } from '$lib/stores';
+	import { onMount } from 'svelte';
 	/**
 	 * @typedef {import("$lib/stores").Task} Task
 	 */
@@ -15,13 +16,35 @@
 	 * @type {number | undefined}
 	 */
 	let interval;
-	let isRunning = false;
 	let start = '';
 	let endTime = '';
+
 	/**
 	 * @type {Task | undefined}
 	 */
-	let task;
+	let activeTask;
+
+	function calculateDuration() {
+		const now = new Date();
+		const startDate = new Date(start);
+		return Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
+	}
+
+	onMount(async () => {
+		activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
+
+		if (activeTask) {
+			start = activeTask.start;
+		} else {
+			start = getCurrentTime();
+			activeTask = await addTask();
+		}
+
+		duration = calculateDuration();
+		interval = setInterval(() => {
+			duration = calculateDuration();
+		}, 1000);
+	});
 
 	/**
 	 * @returns {Promise<Task | undefined>}
@@ -37,7 +60,7 @@
 		if (res.ok) {
 			const result = await res.json();
 			const task = result.task;
-			// console.log(`Frontend: Task added with ID: ${task.id}`);
+			console.log(`Frontend: Task added with ID: ${task.id}`);
 
 			times.update((currentTimes) => {
 				return {
@@ -46,26 +69,11 @@
 				};
 			});
 			// close();
-			return task
+			return task;
 		} else {
 			console.error(res);
 			alert('Failed to add task');
 		}
-	}
-
-	// Function to start or stop the stopwatch
-	async function toggleStartStop() {
-		if (isRunning) {
-			clearInterval(interval);
-			start = '';
-		} else {
-			interval = setInterval(() => {
-				duration += 1;
-			}, 1000);
-			start = getCurrentTimeUTC();
-			task = await addTask();
-		}
-		isRunning = !isRunning;
 	}
 
 	// Function to log the stopwatch
@@ -73,19 +81,11 @@
 		if (duration == 0) {
 			console.error('Frontend: Cannot log 0 time');
 		} else {
-			endTime = getCurrentTimeUTC();
-			Saver.openModal(task?.id, duration, endTime);
+			endTime = getCurrentTime();
+			Saver.openModal(activeTask?.id, duration, endTime);
 			duration = 0;
-			start = getCurrentTimeUTC();
+			start = getCurrentTime();
 		}
-	}
-
-	// Function to reset the stopwatch
-	function reset() {
-		clearInterval(interval);
-		duration = 0;
-		isRunning = false;
-		start = '';
 	}
 
 	// Function to deleteTasks
@@ -113,11 +113,7 @@
 
 <div class="stopwatch">
 	<h1>{formatDuration(duration)}</h1>
-	<button on:click={toggleStartStop}>
-		{isRunning ? 'Stop' : 'Start'}
-	</button>
 	<button on:click={log}>Log</button>
-	<button on:click={reset}>Reset</button>
 	<button on:click={clearDB} class="warn-button">Clear DB</button>
 </div>
 

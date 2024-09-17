@@ -41,7 +41,7 @@ export async function GET() {
  */
 export async function POST({ request }) {
     const { start } = await request.json();
-    // console.log(`start: ${start}`)
+    console.log(`start: ${start}`)
     try {
         const query = `
             INSERT INTO tasks (
