@@ -3,7 +3,7 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "caffeinate -i vite dev --host",
+		"dev": "npm run db-restart && caffeinate -i vite dev --host --open",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
@@ -11,8 +11,7 @@
 		"test": "vitest",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"clear-db": "rm -f src/lib/db/app.db"
-
+		"db-restart": "docker compose down -v; docker compose build --no-cache; docker compose up -d"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
