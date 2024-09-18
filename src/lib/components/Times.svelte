@@ -15,7 +15,7 @@
 	 * @param {(arg0: any) => string} formatter
 	 */
     function formatValue(value, formatter) {
-        return value != null ? formatter(value) : '';
+        return value != null ? formatter(value) : 'TBC';
     }
 </script>
 
@@ -58,7 +58,7 @@
             {#each $times.tasks as task}
                 <tr>
                     <td>{task.id}</td>
-                    <td>{task.category || null}</td>
+                    <td>{task.category || "TBC"}</td>
                     <td>{formatValue(task.timeSpent, formatDuration)}</td>
                     <td>{formatValue(task.start, convertUTCToLocal)}</td>
                     <td>{formatValue(task.endTime, convertUTCToLocal)}</td>

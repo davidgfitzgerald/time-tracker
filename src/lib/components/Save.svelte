@@ -1,5 +1,5 @@
 <script>
-	import { formatDuration } from '$lib/utils/time';
+	import { formatDuration, getCurrentTime } from '$lib/utils/time';
 	import { writable } from 'svelte/store';
 	import { times } from '$lib/stores';
 
@@ -12,6 +12,38 @@
 	 * @type {number | undefined} taskId
 	 */
 	let taskId;
+
+
+	/**
+	 * @returns {Promise<import("$lib/stores").Task | undefined>}
+	 * @param {string} startTime
+	 */
+	export async function addTask(startTime) {
+		// console.log("Frontend: Asking backend to create a task")
+		const res = await fetch('/api/tasks', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ start: startTime })
+		});
+
+		if (res.ok) {
+			const result = await res.json();
+			const task = result.task;
+			console.log(`Frontend: Task added with ID: ${task.id}`);
+
+			times.update((currentTimes) => {
+				return {
+					tasks: [...currentTimes.tasks, task], // Append the new task to tasks array
+					error: currentTimes.error
+				};
+			});
+			// close();
+			return task;
+		} else {
+			console.error(res);
+			alert('Failed to add task');
+		}
+	}
 
 	/**
 	 * @param {number | undefined} incomingTaskId
@@ -29,7 +61,11 @@
 		endTime = incomingEndTime;
 	}
 
-	function closeModal() {
+	/**
+	 * @param {string} newStartTime
+	 */
+	async function closeModal(newStartTime) {
+    await addTask(newStartTime)
 		isOpen.set(false);
 		timeSpent = 0;
 		endTime = '';
@@ -66,7 +102,7 @@
 					error: currentTimes.error
 				};
 			});
-			closeModal();
+			await closeModal(endTime);
 		} else {
 			console.log(res);
 			alert('Failed to add task');
@@ -76,11 +112,10 @@
 
 <!-- Modal HTML -->
 {#if $isOpen}
-	<div class="modal-background" on:click={closeModal}>
+	<div class="modal-background">
 		<div class="modal-content" on:click|stopPropagation>
 			<h2>Track Time</h2>
 			<p>You are about to track {formatDuration(timeSpent)}.</p>
-			<!-- <button class="close-btn" on:click={closeModal}>Save</button> -->
 
 			<form on:submit|preventDefault={updateTask}>
 				<label>

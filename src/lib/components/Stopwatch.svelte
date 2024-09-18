@@ -2,21 +2,22 @@
 	import Save from './Save.svelte';
 	import { formatDuration, getCurrentTime } from '$lib/utils/time';
 	import { times } from '$lib/stores';
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	/**
 	 * @typedef {import("$lib/stores").Task} Task
 	 */
+
 
 	/**
 	 * @type {Save}
 	 */
 	let Saver; // Reference to the modal component
+	let start = '';
 	let duration = 0;
 	/**
 	 * @type {number | undefined}
 	 */
-	let interval;
-	let start = '';
+	let intervalId;
 	let endTime = '';
 
 	/**
@@ -24,7 +25,10 @@
 	 */
 	let activeTask;
 
-	function calculateDuration() {
+	/**
+	 * @param {string} start
+	 */
+	function calculateDuration(start) {
 		const now = new Date();
 		const startDate = new Date(start);
 		return Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
@@ -37,44 +41,21 @@
 			start = activeTask.start;
 		} else {
 			start = getCurrentTime();
-			activeTask = await addTask();
+			activeTask = await Saver.addTask(start);
 		}
 
-		duration = calculateDuration();
-		interval = setInterval(() => {
-			duration = calculateDuration();
+		duration = calculateDuration(start);
+		intervalId = setInterval(() => {
+			duration = calculateDuration(start);
 		}, 1000);
 	});
 
-	/**
-	 * @returns {Promise<Task | undefined>}
-	 */
-	async function addTask() {
-		// console.log("Frontend: Asking backend to create a task")
-		const res = await fetch('/api/tasks', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ start })
-		});
-
-		if (res.ok) {
-			const result = await res.json();
-			const task = result.task;
-			console.log(`Frontend: Task added with ID: ${task.id}`);
-
-			times.update((currentTimes) => {
-				return {
-					tasks: [...currentTimes.tasks, task], // Append the new task to tasks array
-					error: currentTimes.error
-				};
-			});
-			// close();
-			return task;
-		} else {
-			console.error(res);
-			alert('Failed to add task');
+	onDestroy(() => {
+		if (intervalId) {
+			clearInterval(intervalId)
 		}
-	}
+	})
+
 
 	// Function to log the stopwatch
 	function log() {
@@ -82,9 +63,10 @@
 			console.error('Frontend: Cannot log 0 time');
 		} else {
 			endTime = getCurrentTime();
+			start = endTime;
+			activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
 			Saver.openModal(activeTask?.id, duration, endTime);
 			duration = 0;
-			start = getCurrentTime();
 		}
 	}
 
@@ -118,7 +100,8 @@
 </div>
 
 <div class="modal">
-	<Save bind:this={Saver} />
+	<Save bind:this={Saver} />  
+	<!-- TODO see if I can just pass props through the component rather than the method -->
 </div>
 
 <style>

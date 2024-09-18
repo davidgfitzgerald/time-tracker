@@ -36,12 +36,12 @@ export async function GET() {
 /**
  * Handle a POST request.
  * 
- * @param {RequestEvent} event - The request event object.
+ * @param {RequestEvent} request - The request event object.
  * @returns {Promise<Response>} The response object.
  */
 export async function POST({ request }) {
     const { start } = await request.json();
-    console.log(`start: ${start}`)
+    // console.log(`start: ${start}`)
     try {
         const query = `
             INSERT INTO tasks (
@@ -73,7 +73,7 @@ export async function POST({ request }) {
 /**
  * Handle a PUT request.
  * 
- * @param {RequestEvent} event - The request event object.
+ * @param {RequestEvent} request - The request event object.
  * @returns {Promise<Response>} The response object.
  */
 export async function PUT({ request }) {
