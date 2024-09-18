@@ -16,7 +16,7 @@ export async function GET() {
             id,
             category,
             time_spent AS "timeSpent",
-            start,
+            start_time AS "startTime",
             end_time as "endTime",
             status
         FROM tasks;
@@ -40,29 +40,29 @@ export async function GET() {
  * @returns {Promise<Response>} The response object.
  */
 export async function POST({ request }) {
-    const { start } = await request.json();
-    // console.log(`start: ${start}`)
+    const { startTime } = await request.json();
+    // console.log(`startTime: ${startTime}`)
     try {
         const query = `
             INSERT INTO tasks (
-                start
+                start_time
             ) VALUES (
                 $1
             ) RETURNING
                 id,
                 category,
                 time_spent AS "timeSpent",
-                start,
+                start_time AS "startTime",
                 end_time AS "endTime",
                 status;
             `
-        const values = [start]
+        const values = [startTime]
         
         // console.debug("Backend: Inserting row")
         const res = await pool.query(query, values)
         // console.debug("Backend: Inserted row")
         const row = res.rows[0]
-        // console.debug(`Backend: start: ${row.start}`)
+        // console.debug(`Backend: startTime: ${row.startTime}`)
         return json({ task: row });
     } catch (error) {
         console.error(error)
@@ -99,7 +99,7 @@ export async function PUT({ request }) {
                 id,
                 category,
                 time_spent AS "timeSpent",
-                start,
+                start_time AS "startTime",
                 end_time AS "endTime",
                 status;
         `

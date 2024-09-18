@@ -1,7 +1,7 @@
 -- INSERT INTO tasks (
 --     category,
 --     time_spent,
---     start,
+--     start_time,
 --     end_time,
 --     status
 -- ) VALUES (

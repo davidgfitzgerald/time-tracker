@@ -12,7 +12,7 @@
 	 * @type {Save}
 	 */
 	let Saver; // Reference to the modal component
-	let start = '';
+	let startTime = '';
 	let duration = 0;
 	/**
 	 * @type {number | undefined}
@@ -25,12 +25,9 @@
 	 */
 	let activeTask;
 
-	/**
-	 * @param {string} start
-	 */
-	function calculateDuration(start) {
+	function calculateDuration() {
 		const now = new Date();
-		const startDate = new Date(start);
+		const startDate = new Date(startTime);
 		return Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
 	}
 
@@ -38,15 +35,15 @@
 		activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
 
 		if (activeTask) {
-			start = activeTask.start;
+			startTime = activeTask.startTime;
 		} else {
-			start = getCurrentTime();
-			activeTask = await Saver.addTask(start);
+			startTime = getCurrentTime();
+			activeTask = await Saver.addTask(startTime);
 		}
 
-		duration = calculateDuration(start);
+		duration = calculateDuration();
 		intervalId = setInterval(() => {
-			duration = calculateDuration(start);
+			duration = calculateDuration();
 		}, 1000);
 	});
 
@@ -63,7 +60,7 @@
 			console.error('Frontend: Cannot log 0 time');
 		} else {
 			endTime = getCurrentTime();
-			start = endTime;
+			startTime = endTime;
 			activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
 			Saver.openModal(activeTask?.id, duration, endTime);
 			duration = 0;

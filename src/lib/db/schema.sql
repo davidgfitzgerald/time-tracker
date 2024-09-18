@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     id SERIAL PRIMARY KEY,
     category TEXT,
     time_spent INTEGER,
-    start TIMESTAMP,
+    start_time TIMESTAMP,
     end_time TIMESTAMP,
     status TEXT NOT NULL DEFAULT 'ACTIVE', -- Adding the status column with a default value
     CONSTRAINT status_check CHECK (status IN ('ACTIVE', 'COMPLETE')) -- Enforce only 'ACTIVE' or 'COMPLETE' values

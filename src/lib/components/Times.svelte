@@ -60,7 +60,7 @@
                     <td>{task.id}</td>
                     <td>{task.category || "TBC"}</td>
                     <td>{formatValue(task.timeSpent, formatDuration)}</td>
-                    <td>{formatValue(task.start, convertUTCToLocal)}</td>
+                    <td>{formatValue(task.startTime, convertUTCToLocal)}</td>
                     <td>{formatValue(task.endTime, convertUTCToLocal)}</td>
                     <td>{task.status}</td>
                 </tr>

@@ -23,7 +23,7 @@
 		const res = await fetch('/api/tasks', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ start: startTime })
+			body: JSON.stringify({ startTime })
 		});
 
 		if (res.ok) {
