@@ -7,7 +7,7 @@ App to track time spent on tasks.
 - `Node` (version TBD)
 - `Docker` (version TBD)
 
-## Quick Start
+## Quick Start (local)
 
 1. Set up DB credentials:
 
@@ -23,10 +23,24 @@ Then alter env vars as you see fit.
 npm install
 ```
 
-3. Start a development server:
+3. Start the DB:
+
+```bash
+npm run db-restart
+```
+
+4. Start a development server:
 
 ```bash
 npm run dev
 ```
 
 **Note**: This requires port `5432` to be available to start a postgres DB docker container.
+
+## Deploying
+
+Deploy using vercel.
+
+Pushing to `main` branch then updates prod.
+
+Prod is protected with the `VITE_APP_PASSWORD` env var defined in vercel.
