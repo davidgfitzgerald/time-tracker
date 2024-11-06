@@ -1,0 +1,28 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws" # registry.terraform.io/hashicorp/aws Terraform provider registry by default
+      version = "~> 5.74.0"  # latest version installed by default as of 06/11/24
+      # version = "~> 3.74.2"  # version suggested by GH issues
+      # version = "~> 4.16"  # version specified in tutorial
+    }
+  }
+
+  required_version = ">= 1.2.0"
+}
+
+provider "aws" {
+  # region = var.aws_region
+  # profile = "default"
+  # region = "eu-west-2"
+  region = "us-west-2"
+}
+
+resource "aws_instance" "app_server" {  # resource_type resource_name accessible via resource_type.resource_name i.e: aws_instance.app_server
+  ami           = "ami-830c94e3"
+  instance_type = "t2.micro"
+
+  tags = {
+    Name = "ExampleAppServerInstance"
+  }
+}
