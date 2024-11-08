@@ -57,6 +57,38 @@ db_instance_endpoint = "terraform-20241108191356213700000001.cpzvybhopwhq.us-wes
 db_instance_id = "db-ONSYUMTQRPMNGTLJGHQUA4DW7E"
 ```
 
+Now I need to make the RDS DB instance accessible from my laptop. I am trying to add a VPC security group with terraform.
+
+Trying to connect to the RDS instance like so:
+
+```bash
+pgcli -h terraform-20241108191356213700000001.cpzvybhopwhq.us-west-2.rds.amazonaws.com -p 5432 -U david -d time_tracker
+```
+
+But it is timing out:
+
+```log
+~/dev/personal/time-tracker/deployment main *4 !4 ❯ pgcli -h terraform-20241108191356213700000001.cpzvybhopwhq.us-west-2.rds.amazonaws.com -p 5432 -U david -d time_tracker
+
+connection failed: connection to server at "172.31.49.147", port 5432 failed: could not receive data from server: Operation timed out
+```
+
+**Note:** I don't care about exposing the host URL or IP because it will not be publically accessible.
+
+Installed `psql` with `brew install libpq`, so I can use that or `pgcli`.
+
+Following this tutorial https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToPostgreSQLInstance.psql.html
+
+Ok, so it worked when I set `publicly_accessible` to `true` but I don't want that. I want to only be privately accessible.
+
+From the answer on this SO thread https://stackoverflow.com/questions/26989887/access-aws-rds-from-private-subnet the user suggests connecting through a client VPN. After asking
+ChatGPT how I could leverage tailscale to connect to my RDS DB instance. Basically I would create
+an EC2 instance running tailscale, that allows SSH access from my private machine. That instance
+would be on the same VPC as the RDS instance. Then when I connect to the tailnet, I should
+automatically be able to connect to the RDS instance, in theory. Something to try next time. I would need
+to understand whether I could add the tailwind VPN to the VPC itself thus bypassing the need for the 
+EC2 instance or whether the EC2 instance would be necessary,
+
 ## Thu 7th Nov
 
 ### Terraform Setup
