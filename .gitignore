@@ -151,3 +151,4 @@ app.db
 # Terraform
 .terraform
 .terraform.lock.hcl
+*terraform.tfstate*

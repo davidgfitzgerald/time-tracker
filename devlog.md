@@ -61,6 +61,13 @@ Ah well. We can move on now.
 
 I'm going to watch some YT videos on connecting to RDS locally now.
 
+Now watching this youtube video https://www.youtube.com/watch?v=ypWzL3PdKx0 entitled:
+
+> How can I connect to a private Amazon RDS instance from local system through EC2 as a bastion host?
+
+Though I'm making progress with the bastion approach I am more interested now in this tailscale tutorial on connecting
+to an AWS VPC: https://tailscale.com/kb/1021/install-aws.
+
 
 ## Fri 8th Nov
 
