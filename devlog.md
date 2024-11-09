@@ -68,6 +68,25 @@ Now watching this youtube video https://www.youtube.com/watch?v=ypWzL3PdKx0 enti
 Though I'm making progress with the bastion approach I am more interested now in this tailscale tutorial on connecting
 to an AWS VPC: https://tailscale.com/kb/1021/install-aws.
 
+When running `terraform apply` with my `key.tf` I found it was repeatedly trying to recreate the key in AWS. Not sure why.
+
+```log
+╷
+│ Error: importing EC2 Key Pair (macbook-id-rsa): operation error EC2: ImportKeyPair, https response error StatusCode: 400, RequestID: 1790407a-9002-473d-95c5-508ccceda585, api error InvalidKeyPair.Duplicate: The keypair already exists
+│ 
+│   with aws_key_pair.macbook_id_rsa,
+│   on key.tf line 2, in resource "aws_key_pair" "macbook_id_rsa":
+│    2: resource "aws_key_pair" "macbook_id_rsa" {
+│ 
+╵
+```
+
+Ran this to solve it:
+
+```bash
+terraform import aws_key_pair.macbook_id_rsa macbook-id-rsa
+```
+
 
 ## Fri 8th Nov
 

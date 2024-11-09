@@ -14,12 +14,13 @@ resource "aws_db_instance" "postgres" {
   password                = var.db_password
   port                    = var.db_port
   multi_az                = false # Use Single-AZ for Free Tier
-  publicly_accessible     = false # Restrict access to the VPC only
   skip_final_snapshot     = true  # Skip final snapshot during deletion (can be changed)
   backup_retention_period = 0     # Free-tier setting
 
-  # vpc_security_group_ids = [aws_security_group.rds_security_group.id]
-  # parameter_group_name = "default.postgres13"  # Configuration to use
+  # Networking
+  publicly_accessible     = false # Restrict access to the VPC only
+  vpc_security_group_ids  = [aws_security_group.rds_security_group.id]  # Allow communication to/from VPC subnet
+  db_subnet_group_name    = aws_db_subnet_group.main.name
 }
 
 output "db_instance_endpoint" {

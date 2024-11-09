@@ -6,6 +6,11 @@ resource "aws_instance" "bastion" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.allow_ssh_only_me.id]
   key_name               = aws_key_pair.macbook_id_rsa.key_name
+  subnet_id              = aws_subnet.main_a.id
+
+  tags = {
+    Name = "BastionHost"
+  }
 }
 
 # Output the bastion instance's public IP
