@@ -18,9 +18,9 @@ resource "aws_db_instance" "postgres" {
   backup_retention_period = 0     # Free-tier setting
 
   # Networking
-  publicly_accessible     = false # Restrict access to the VPC only
-  vpc_security_group_ids  = [aws_security_group.rds_security_group.id]  # Allow communication to/from VPC subnet
-  db_subnet_group_name    = aws_db_subnet_group.main.name
+  publicly_accessible    = false                                       # Restrict access to the VPC only
+  vpc_security_group_ids = [aws_security_group.rds_security_group.id]  # Allow communication to/from VPC subnet
+  db_subnet_group_name    = aws_db_subnet_group.private.name
 }
 
 output "db_instance_endpoint" {
@@ -30,3 +30,37 @@ output "db_instance_endpoint" {
 output "db_instance_id" {
   value = aws_db_instance.postgres.id
 }
+
+# Security group to allow VPC access to RDS
+resource "aws_security_group" "rds_security_group" {
+  vpc_id = aws_default_vpc.default.id
+  name = "rds_access"
+
+  ingress {
+    from_port = var.db_port
+    to_port   = var.db_port
+    protocol  = "tcp"
+    cidr_blocks = ["172.31.0.0/16"]  # Allow access from all of VPC
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Define a subnet group containing all private VPC subnets
+resource "aws_db_subnet_group" "private" {
+  name = "private"
+  subnet_ids = [
+    # "subnet-0027a0fac49812365",  # us-west-2a
+    # "subnet-09eb800b80fff299a",  # us-west-2b
+    # "subnet-0dc3a9cf2103d7e9e",  # us-west-2c
+    # "subnet-0635eb7f48e67b971",  # us-west-2d
+    aws_subnet.private-subnet-2a.id,
+    aws_subnet.private-subnet-2b.id,
+  ]
+}
+

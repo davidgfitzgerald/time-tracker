@@ -61,9 +61,10 @@ Ah well. We can move on now.
 
 I'm going to watch some YT videos on connecting to RDS locally now.
 
-Now watching this youtube video https://www.youtube.com/watch?v=ypWzL3PdKx0 entitled:
+Now watching this youtube video:
 
 > How can I connect to a private Amazon RDS instance from local system through EC2 as a bastion host?
+https://www.youtube.com/watch?v=ypWzL3PdKx0
 
 Though I'm making progress with the bastion approach I am more interested now in this tailscale tutorial on connecting
 to an AWS VPC: https://tailscale.com/kb/1021/install-aws.
@@ -86,6 +87,23 @@ Ran this to solve it:
 ```bash
 terraform import aws_key_pair.macbook_id_rsa macbook-id-rsa
 ```
+
+### Continuing
+
+It is the evening now and I'm gonna give this another go. I can't manage to ssh into the bastion since adding the subnets so I think 
+the networking is misconfigured somehow.
+
+I'm going to follow this youtube tutorial architecturally and hope it works:
+
+> How to Access a Private RDS Database (Using a Jump Box) From Your Home Network
+https://www.youtube.com/watch?v=buqBSiEEdQc
+
+A jump box is another term for a bastion.
+
+I think a lot of this is clicking now. 
+
+Basically in AWS you have a default VPC which defines default public subnets, a main route table associated to each subnet and an intenet gateway.
+The RDS instance has to have at least two private subnets so those have to be created, along with a private routing table. 
 
 
 ## Fri 8th Nov
