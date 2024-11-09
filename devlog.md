@@ -8,6 +8,60 @@ Disclaimer: I'm happy to version control this as it's a personal project but in
 practice/production I would not publically publish this potentially sensitive 
 information.
 
+## Sat 9th Nov
+
+Reading into VPC's to understand more about them and see what the best approach of securely allowing connection
+from my local machine into the DB will be.
+
+Exploring option of having an EC2 act as a gateway running tailwind.
+
+I have successfully instantiated an EC2 instance that I can connect to via ssh. I am now trying to add an ssh key-pair to it
+such that I don't get the Permission denied (publickey) error.
+
+Been struggling for a while just to SSH into an EC2 instance with a key-pair. Will keep trying...
+
+Still trying and still failing. Tried loads of different usernames. Tried generating new keys, using old keys. Still struggling.
+
+Tried running these commands to manually created the key pair and upload it to AWS like so:
+
+```bash
+ssh-keygen -t rsa -b 2048 -f ~/.ssh/manual-key.pem -C "manual-key"
+```
+
+then
+
+```bash
+aws ec2 import-key-pair --key-name "manual-key" --public-key-material fileb://~/.ssh/manual-key.pem.pub
+```
+
+but still... I get a `Permission denied (publickey)` error every single time.
+
+```log
+~/dev/personal/time-tracker/deployment main *4 !5 ?1 ❯ ssh -i ~/.ssh/manual-key.pem 34.211.150.149                                                                                                  1m 7s
+The authenticity of host '34.211.150.149 (34.211.150.149)' can't be established.
+ECDSA key fingerprint is SHA256:Z+IHPHBqhd8/rVo6CseU0OXbvnx4zC+HG2XDWLPJA5A.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '34.211.150.149' (ECDSA) to the list of known hosts.
+david@34.211.150.149: Permission denied (publickey).
+~/dev/personal/time-tracker/deployment main *4 !5 ?1 ❯ ssh -i ~/.ssh/manual-key.pem ec2-user@34.211.150.149                                                                                      ✘ 255 4s
+ec2-user@34.211.150.149: Permission denied (publickey).
+```
+
+Going to try a new AMI image. Was previously using `ami-830c94e3` which I think ChatGPT or a terraform example gave me.
+I'm now attempting to use `ami-066a7fbea5161f451` which I found by searching in the Launch Instance screen of EC2
+when searching for an AMI. This image is free-tier supported.
+
+FINALLY!
+
+YES.
+
+It actually bloody worked. Ok, there was some issue with the previous image. I suspect that I never managed to get the username correct.
+Ah well. We can move on now.
+
+I'm going to watch some YT videos on connecting to RDS locally now.
+
+
 ## Fri 8th Nov
 
 ### Running Terraform
