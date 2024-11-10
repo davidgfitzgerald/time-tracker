@@ -12,7 +12,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"db-restart": "docker compose down -v; docker compose build --no-cache; docker compose up -d",
-		"db-exec": "pgcli --host localhost --user admin time_tracker"
+		"dbcli": "pgcli --host localhost time_tracker"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.0.0",
