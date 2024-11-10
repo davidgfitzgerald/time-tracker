@@ -18,9 +18,9 @@ resource "aws_db_instance" "postgres" {
   backup_retention_period = 0     # Free-tier setting
 
   # Networking
-  publicly_accessible    = false                                       # Restrict access to the VPC only
-  vpc_security_group_ids = [aws_security_group.rds_security_group.id]  # Allow communication to/from VPC subnet
-  db_subnet_group_name    = aws_db_subnet_group.private.name
+  publicly_accessible    = false                                      # Restrict access to the VPC only
+  vpc_security_group_ids = [aws_security_group.rds_security_group.id] # Allow communication to/from VPC subnet
+  db_subnet_group_name   = aws_db_subnet_group.private.name
 }
 
 output "db_instance_endpoint" {
@@ -34,13 +34,13 @@ output "db_instance_id" {
 # Security group to allow VPC access to RDS
 resource "aws_security_group" "rds_security_group" {
   vpc_id = aws_default_vpc.default.id
-  name = "rds_access"
+  name   = "rds_access"
 
   ingress {
-    from_port = var.db_port
-    to_port   = var.db_port
-    protocol  = "tcp"
-    cidr_blocks = ["172.31.0.0/16"]  # Allow access from all of VPC
+    from_port   = var.db_port
+    to_port     = var.db_port
+    protocol    = "tcp"
+    cidr_blocks = ["172.31.0.0/16"] # Allow access from all of VPC
   }
 
   egress {

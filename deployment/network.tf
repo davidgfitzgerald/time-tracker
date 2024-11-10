@@ -1,4 +1,4 @@
-# Define private subnets.
+# Define networking in the default VPC.
 
 resource "aws_default_vpc" "default" {
   tags = {
@@ -9,8 +9,8 @@ resource "aws_default_vpc" "default" {
 # Private VPC routing table
 resource "aws_route_table" "private" {
   vpc_id = aws_default_vpc.default.id
-  
-  # By default only routes privately to 172.31.0.0/16
+
+  # By default only routes privately to 172.31.0.0/16 (VPC-wide)
 
   tags = {
     Name = "Private Route Table"
@@ -33,7 +33,7 @@ resource "aws_subnet" "private-subnet-2a" {
 resource "aws_route_table_association" "main_a" {
   subnet_id      = aws_subnet.private-subnet-2a.id
   route_table_id = aws_route_table.private.id
-  
+
 }
 
 # Define second private subnet for the RDS
@@ -52,4 +52,25 @@ resource "aws_subnet" "private-subnet-2b" {
 resource "aws_route_table_association" "main_b" {
   subnet_id      = aws_subnet.private-subnet-2b.id
   route_table_id = aws_route_table.private.id
+}
+
+# Security group to allow SSH into default VPC
+resource "aws_security_group" "allow_ssh_only_me" {
+  name        = "allow_ssh_from_my_ip"
+  description = "Allow SSH from my IP only"
+  vpc_id      = aws_default_vpc.default.id
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["${var.my_ip}/32"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }

@@ -4,7 +4,7 @@ This is a place where I can write my thoughts during the app development.
 
 The log will go in reverse chronological order (latest first).
 
-Disclaimer: I'm happy to version control this as it's a personal project but in 
+**Disclaimer:** I'm happy to version control this as it's a personal project but in 
 practice/production I would not publically publish this potentially sensitive 
 information.
 
@@ -13,7 +13,7 @@ information.
 Reading into VPC's to understand more about them and see what the best approach of securely allowing connection
 from my local machine into the DB will be.
 
-Exploring option of having an EC2 act as a gateway running tailwind.
+Exploring option of having an EC2 act as a gateway running tailscale.
 
 I have successfully instantiated an EC2 instance that I can connect to via ssh. I am now trying to add an ssh key-pair to it
 such that I don't get the Permission denied (publickey) error.
@@ -105,6 +105,26 @@ I think a lot of this is clicking now.
 Basically in AWS you have a default VPC which defines default public subnets, a main route table associated to each subnet and an intenet gateway.
 The RDS instance has to have at least two private subnets so those have to be created, along with a private routing table. 
 
+Ok holy shit.
+
+I've done it.
+
+I've configured an RDS DB instance in the cloud that is accessible only by me locally. Fucking hell that was a nightmare. But we got there.
+
+To forward to port `5432` of the RDS instance locally do the following:
+
+```bash
+ssh -L 5432:terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com:5432 ec2-user@52.38.14.88 -N
+```
+
+then, in another shell:
+
+```bash
+pgcli -h localhost -U david -d time_tracker
+```
+
+Ok great. I'm definitely stopping there for the day. It's 12:30am now, but end on a high, thank god! What a Saturday night eh.
+
 
 ## Fri 8th Nov
 
@@ -184,7 +204,7 @@ ChatGPT how I could leverage tailscale to connect to my RDS DB instance. Basical
 an EC2 instance running tailscale, that allows SSH access from my private machine. That instance
 would be on the same VPC as the RDS instance. Then when I connect to the tailnet, I should
 automatically be able to connect to the RDS instance, in theory. Something to try next time. I would need
-to understand whether I could add the tailwind VPN to the VPC itself thus bypassing the need for the 
+to understand whether I could add the tailscale VPN to the VPC itself thus bypassing the need for the 
 EC2 instance or whether the EC2 instance would be necessary,
 
 ## Thu 7th Nov
