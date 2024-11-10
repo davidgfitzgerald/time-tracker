@@ -8,6 +8,42 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive 
 information.
 
+## Sun 10th Nov
+
+Morning.
+
+Now that we are port forwarding to the RDS instance I am going to attempt running the `schema.sql` and `seed.sql` scripts.
+
+The port forwarding is still running with:
+
+```bash
+ssh -L 5432:terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com:5432 ec2-user@52.38.14.88 -N
+```
+
+I am able to run `.sql` scripts with:
+
+```bash
+psql -h localhost -U david -d time_tracker -f src/lib/db/schema.sql
+psql -h localhost -U david -d time_tracker -f src/lib/db/seed.sql
+```
+
+I made `psql` become available on the CLI by running:
+
+```bash
+brew link --force libpq
+```
+
+I get prompted for the password each time. To get around this, I am going to try creating a `~/.pgpass` file.
+
+Database connection entries are added in the following format:
+
+```bash
+hostname:port:database:username:password
+```
+
+Brilliant. That actually works. Now, both `pgcli` and `psql` do not prompt for a password. Lovely.
+
+
 ## Sat 9th Nov
 
 Reading into VPC's to understand more about them and see what the best approach of securely allowing connection
