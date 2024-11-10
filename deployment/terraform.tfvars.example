@@ -1,0 +1,2 @@
+# Can be retrieved with curl -4 ifconfig.me
+my_ip = "xxx.xxx.xxx.xxx/32"

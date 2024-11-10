@@ -29,7 +29,7 @@ resource "aws_security_group" "allow_ssh_only_me" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [] # Add your actual public IP address
+    cidr_blocks = ["${var.my_ip}/32"]
   }
 
   egress {

@@ -22,3 +22,7 @@ variable "aws_region" {
   default = "us-west-2" # AWS region located in Oregon
   # default = "eu-west-2" # AWS region located in London
 }
+
+variable "my_ip" {
+  # Must be present in your terraform.tfvars file.
+}
