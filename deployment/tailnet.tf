@@ -4,11 +4,13 @@
 resource "aws_instance" "tailscale-subnet-router" {
   ami           = "ami-066a7fbea5161f451" # Amazon Linux 2023 AMI. Username is ec2-user
   instance_type = "t2.micro"
-  key_name  = aws_key_pair.macbook_id_rsa.key_name
-  subnet_id = var.public_subnet # One of the default VPC public subnets
+  key_name      = aws_key_pair.macbook_id_rsa.key_name
+  subnet_id     = var.public_subnet # One of the default VPC public subnets
 
   vpc_security_group_ids = [
     aws_security_group.tailscale.id,
+    
+    # Useful when needing to SSH into the subnet router to re-setup tailscale
     # aws_security_group.allow_ssh_only_me.id,
   ]
 
@@ -17,9 +19,10 @@ resource "aws_instance" "tailscale-subnet-router" {
   }
 }
 
-output "tailscale_subnet_router_ip" {
-    value = aws_instance.tailscale-subnet-router.public_ip
-}
+# Useful when needing to SSH into the subnet router to re-setup tailscale
+# output "tailscale_subnet_router_ip" {
+#   value = aws_instance.tailscale-subnet-router.public_ip
+# }
 
 resource "aws_security_group" "tailscale" {
   name        = "tailscale-enable-direct-connections"

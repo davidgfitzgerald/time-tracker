@@ -1,32 +1,10 @@
-variable "db_name" {
-  default = "time_tracker"
-}
-
-variable "db_user" {
-  default = "david"
-}
-
-variable "db_password" {
-  default = "password" # Update with a strong password
-}
-
-variable "db_instance_class" {
-  default = "db.t4g.micro" # Free-tier instance type for RDS PostgreSQL
-}
-
-variable "db_port" {
-  default = 5432
-}
-
-variable "aws_region" {
-  default = "us-west-2" # AWS region located in Oregon
-  # default = "eu-west-2" # AWS region located in London
-}
-
-variable "my_ip" {
-  # Must be present in your terraform.tfvars file.
-}
-
-variable "public_subnet" {
-  # Must be present in your terraform.tfvars file.
-}
+# Vars must all be defined within terraform.tfvars
+variable "db_name" {}
+variable "db_user" {}
+variable "db_password" {}
+variable "db_instance_class" {}
+variable "db_port" {}
+variable "aws_region" {}
+variable "my_ip" {}
+variable "public_subnet" {}
+variable "vpc_cidr" {}
