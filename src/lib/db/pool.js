@@ -1,3 +1,4 @@
+import fs from 'fs';
 import pkg from 'pg'; // Import the default export from the pg package
 import 'dotenv/config';
 
@@ -16,7 +17,10 @@ const creds = {
     database,
     password,
     port,
-    ssl: { rejectUnauthorized: false }  // Add this line to enable SSL and ignore certificate validation
+    ssl: { 
+        rejectUnauthorized: true,
+        ca: fs.readFileSync('deployment/us-west-2-bundle.pem').toString(),
+    }
 }
 
 // Create a pool instance with your PostgreSQL connection details
