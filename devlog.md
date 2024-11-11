@@ -47,7 +47,8 @@ Brilliant. That actually works. Now, both `pgcli` and `psql` do not prompt for a
 
 Ok, just going to do a little bit more tonight.
 
-Gonna look into implementing tailscale. At least I know the bastion approach now works, but it would be even nicer if I could just join my tailnet and then I don't need to worry about anything. I can simply access my app server and DB.
+Gonna look into implementing tailscale. At least I know the bastion approach now works, but it would be even nicer
+if I could just join my tailnet and then I don't need to worry about anything. I can simply access my app server and DB.
 
 Reading this:
 
@@ -67,8 +68,8 @@ I'm now going to `ssh` into the bastion and install tailscale and then configure
 
 https://tailscale.com/kb/1052/install-amazon-linux-2
 
-I am manually installing and running tailscale but it might be nice to have this automatable. Perhaps could integrate ansible down the line to install and run tailscale? 
-It feels like it would be out of scope for terraform?
+I am manually installing and running tailscale but it might be nice to have this automatable. Perhaps could integrate
+ansible down the line to install and run tailscale? It feels like it would be out of scope for terraform?
 
 Ok great. That was not actually too painful.
 
@@ -78,11 +79,14 @@ I followed the tutorials and they worked. So the steps were as follows:
 2. `ssh` into EC2 instance
 3. Run these commands to install and run tailscale
 ```bash
-sudo yum install yum-utils
+sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo
-sudo yum install tailscale
+sudo yum install -y tailscale
 sudo systemctl enable --now tailscaled
-tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
+echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
 ```
 4. Log into tailscale locally on the GUI to authorise the EC2 instance
 5. Login to https://login.tailscale.com/admin locally
@@ -92,6 +96,13 @@ tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
     pgcli -h terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com -U david -d time_tracker
     ```
 8. Remove SSH access to EC2 instance
+
+So, I may need to address this at some point but if terraform ever decides to destroy and re-create the subnet router
+then the steps detailed above have to be repeated manually.
+
+For the infrequency that this should occur during my development, let's move on and live with it.
+
+We have everything we need now to actually get on with some development next session. Great!
 
 ## Sat 9th Nov
 

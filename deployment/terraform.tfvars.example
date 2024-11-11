@@ -1,2 +1,5 @@
 # Can be retrieved with curl -4 ifconfig.me
 my_ip = "xxx.xxx.xxx.xxx/32"
+
+# Find on AWS VPC
+public_subnet = "subnet-0123456789abcdef0"

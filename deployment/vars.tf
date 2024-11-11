@@ -26,3 +26,7 @@ variable "aws_region" {
 variable "my_ip" {
   # Must be present in your terraform.tfvars file.
 }
+
+variable "public_subnet" {
+  # Must be present in your terraform.tfvars file.
+}
