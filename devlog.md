@@ -8,6 +8,27 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive 
 information.
 
+## Mon 11th Nov
+
+Have now made exec'ing into the RDS DB even simpler.
+
+I created a `~/.pg_service.conf` file and added the following:
+
+```ini
+[rds]
+host=terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com
+user=david
+dbname=time_tracker
+```
+
+such that I can now connect simply with:
+
+```bash
+psql service=rds
+```
+
+Using `pgcli` also works.
+
 ## Sun 10th Nov
 
 ### Morning
@@ -103,6 +124,9 @@ then the steps detailed above have to be repeated manually.
 For the infrequency that this should occur during my development, let's move on and live with it.
 
 We have everything we need now to actually get on with some development next session. Great!
+
+I also started reading this article which was really interesting
+https://tailscale.com/blog/how-tailscale-works
 
 ## Sat 9th Nov
 
