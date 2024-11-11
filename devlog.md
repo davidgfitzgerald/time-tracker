@@ -10,7 +10,7 @@ information.
 
 ## Sun 10th Nov
 
-Morning.
+### Morning
 
 Now that we are port forwarding to the RDS instance I am going to attempt running the `schema.sql` and `seed.sql` scripts.
 
@@ -43,6 +43,55 @@ hostname:port:database:username:password
 
 Brilliant. That actually works. Now, both `pgcli` and `psql` do not prompt for a password. Lovely.
 
+### Evening
+
+Ok, just going to do a little bit more tonight.
+
+Gonna look into implementing tailscale. At least I know the bastion approach now works, but it would be even nicer if I could just join my tailnet and then I don't need to worry about anything. I can simply access my app server and DB.
+
+Reading this:
+
+https://tailscale.com/kb/1021/install-aws
+> Connect to an AWS VPC using subnet routes
+
+There is also this article
+
+https://tailscale.com/kb/1141/aws-rds
+> Access AWS RDS privately using Tailscale
+
+I'm going to go with the latter. I think they are both similar though.
+
+I've created a security group to allow tailscale direct connections through the bastion.
+
+I'm now going to `ssh` into the bastion and install tailscale and then configure subnet routing.
+
+https://tailscale.com/kb/1052/install-amazon-linux-2
+
+I am manually installing and running tailscale but it might be nice to have this automatable. Perhaps could integrate ansible down the line to install and run tailscale? 
+It feels like it would be out of scope for terraform?
+
+Ok great. That was not actually too painful.
+
+I followed the tutorials and they worked. So the steps were as follows:
+
+1. Add tailscale security group
+2. `ssh` into EC2 instance
+3. Run these commands to install and run tailscale
+```bash
+sudo yum install yum-utils
+sudo yum-config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo
+sudo yum install tailscale
+sudo systemctl enable --now tailscaled
+tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
+```
+4. Log into tailscale locally on the GUI to authorise the EC2 instance
+5. Login to https://login.tailscale.com/admin locally
+6. Follow all the steps in https://tailscale.com/kb/1019/subnets to configure the subnet router
+7. Add the AWS DNS to the tailnet to allow this:
+    ```bash
+    pgcli -h terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com -U david -d time_tracker
+    ```
+8. Remove SSH access to EC2 instance
 
 ## Sat 9th Nov
 
