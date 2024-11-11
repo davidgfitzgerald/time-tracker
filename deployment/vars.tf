@@ -6,5 +6,4 @@ variable "db_instance_class" {}
 variable "db_port" {}
 variable "aws_region" {}
 variable "my_ip" {}
-variable "public_subnet" {}
 variable "vpc_cidr" {}

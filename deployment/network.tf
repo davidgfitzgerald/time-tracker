@@ -1,9 +1,20 @@
 # Define networking in the default VPC.
-
 resource "aws_default_vpc" "default" {
   tags = {
     Name = "Default VPC"
   }
+}
+
+# Get all subnets in the default VPC
+data "aws_subnets" "default_vpc" {
+  filter {
+    name   = "vpc-id"
+    values = [aws_default_vpc.default.id]
+  }
+}
+
+output "default_vpc_subnet_ids" {
+  value = [for s in data.aws_subnets.default_vpc.ids : s]
 }
 
 # Private VPC routing table

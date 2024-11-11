@@ -32,6 +32,8 @@ Using `pgcli` also works.
 My app now connects to the live RDS instance. I enabled SSL by downloading the `us-west-2-bundle.pem` from here:
 https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html#UsingWithRDS.SSL.CertificatesAllRegions
 
+Tidied up the `.tf` files.
+
 ## Sun 10th Nov
 
 ### Morning
