@@ -10,6 +10,8 @@ information.
 
 ## Mon 11th Nov
 
+### Infra
+
 Have now made exec'ing into the RDS DB even simpler.
 
 I created a `~/.pg_service.conf` file and added the following:
@@ -33,6 +35,20 @@ My app now connects to the live RDS instance. I enabled SSL by downloading the `
 https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.SSL.html#UsingWithRDS.SSL.CertificatesAllRegions
 
 Tidied up the `.tf` files.
+
+Here's a little one-liner to unset `POSTGRES_` vars:
+
+```bash
+while IFS='=' read -r var _; do unset "$var"; done < <(env | grep -i postgres)
+```
+
+For some reason, after restarting my mac, the env vars were re-set. I'm not sure how that happened. One to look out for again.
+
+### Development
+
+Ok, now I'm going to actually get on with some development.
+
+I'm going to reacquaint myself with how my project is structured.
 
 ## Sun 10th Nov
 
