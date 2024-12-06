@@ -12,11 +12,11 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
     container_name: time-tracker-app
     depends_on:
-      - postgres
+      - db
     ports:
     - "5173:5173"
 
-  postgres:
+  db:
     build:
       context: .
       target: db
@@ -28,8 +28,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data  # Persist data
+      # - pgdata:/var/lib/postgresql/data  # Persist data
+      - /var/lib/postgresql/data  # Persist data
 
-volumes:
-  pgdata:
+# volumes:
+#   pgdata:
 
