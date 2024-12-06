@@ -8,6 +8,20 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive 
 information.
 
+## Fri 6th Dec
+
+Back to it after a little while off.
+
+I ran `terraform plan` and was happy to see that the infrastructure had not changed.
+
+I was less happy to receive a bill of `$22.98` despite having not utilised the AWS infrastructure at all
+in the last month.
+
+I have reconfigured my `~/.pg_service.conf` and `~/.pgpass` to point to the correct AWS RDS host.
+
+Although I can run the app locally and it will communicate with RDS, once I run the app from a docker 
+container, I encounter an error. I'm not going to worry about fixing this right now.
+
 ## Wed 13th Nov
 
 ## Mon 11th Nov
