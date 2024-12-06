@@ -32,7 +32,7 @@ resource "aws_route_table" "private" {
 resource "aws_subnet" "private-subnet-2a" {
   vpc_id                  = aws_default_vpc.default.id
   cidr_block              = "172.31.64.0/20"
-  availability_zone       = "us-west-2a"
+  availability_zone       = "${var.aws_region}a"
   map_public_ip_on_launch = false
 
   tags = {
@@ -51,7 +51,7 @@ resource "aws_route_table_association" "main_a" {
 resource "aws_subnet" "private-subnet-2b" {
   vpc_id                  = aws_default_vpc.default.id
   cidr_block              = "172.31.80.0/20"
-  availability_zone       = "us-west-2b"
+  availability_zone       = "${var.aws_region}b"
   map_public_ip_on_launch = false
 
   tags = {

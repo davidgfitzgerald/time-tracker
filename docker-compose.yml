@@ -3,7 +3,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: app.Dockerfile
+      target: app
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -19,7 +19,7 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: db.Dockerfile
+      target: db
     container_name: time-tracker-db
     environment:
       POSTGRES_USER: ${POSTGRES_USER} 

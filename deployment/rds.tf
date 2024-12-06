@@ -31,6 +31,10 @@ output "db_instance_id" {
   value = aws_db_instance.postgres.id
 }
 
+# output "db_instance_ip" {
+#     value = aws_db_instance.postgres.ip
+# }
+
 # Security group to allow VPC access to RDS
 resource "aws_security_group" "rds_security_group" {
   vpc_id = aws_default_vpc.default.id

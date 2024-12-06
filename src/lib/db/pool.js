@@ -23,6 +23,8 @@ const creds = {
     }
 }
 
+console.log(`Attempting to access ${host}`)
+
 // Create a pool instance with your PostgreSQL connection details
 const pool = new Pool(creds);
 

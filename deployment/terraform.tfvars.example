@@ -2,10 +2,10 @@
 db_name = "time_tracker"
 
 # Name of PostgreSQL RDS DB user to provision
-db_user = "david"
+db_user = ""
 
 # Name of PostgreSQL RDS DB user password to provision
-db_password = "password"
+db_password = ""
 
 # Name of PostgreSQL RDS DB port to provision
 db_port = 5432
@@ -21,3 +21,9 @@ my_ip = "xxx.xxx.xxx.xxx/32"
 
 # CIDR of the AWS VPC
 vpc_cidr = "172.31.0.0/16"
+
+# Path to local SSH key to access AWS infra
+public_key_path = "~/.ssh/id_rsa.pub"
+
+# Name to save key-pair in AWS
+aws_key_pair_name = "local-id-rsa"
