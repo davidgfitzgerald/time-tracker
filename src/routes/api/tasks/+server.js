@@ -10,7 +10,6 @@ import pool from '$lib/db/pool';
  * @returns {Promise<Response>} The response object.
  */
 export async function GET() {
-    // console.debug("Getting all tasks")
     const query = `
         SELECT 
             id,
@@ -24,8 +23,6 @@ export async function GET() {
     try {
         console.log("Retrieving tasks...")
         const tasks = await pool.query(query);
-        // console.debug("Got tasks")
-        // console.debug(tasks.rows)
         return json(tasks.rows);
     } catch (error) {
         console.error(error)

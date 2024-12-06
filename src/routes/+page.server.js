@@ -11,6 +11,7 @@ export async function load({ fetch }) {
             tasks = await res.json();
         } else {
             error = 'Failed to fetch tasks';
+            console.error(error)
         }
     } catch (err) {
         console.error(err)
