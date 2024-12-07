@@ -94,9 +94,7 @@
 		});
 
 		if (res.ok) {
-			const result = await res.json();
-			const updatedTask = result.tasks.updated;
-			const newTask = result.tasks.new;
+			const { tasks: { updated: updatedTask, new: newTask } } = await res.json();
 
 			times.update((current) => {
 				let newTasks = current.tasks.map((task) => {
