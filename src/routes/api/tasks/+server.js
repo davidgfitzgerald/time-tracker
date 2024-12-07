@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import pool from '$lib/db/pool';
+import pool from '../../../db/pool';
 /**
  * @typedef {import('@sveltejs/kit').RequestEvent} RequestEvent
  */

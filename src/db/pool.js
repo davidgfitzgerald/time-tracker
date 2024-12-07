@@ -19,7 +19,10 @@ console.log("    user", user)
 console.log("    host", host)
 console.log("    database", database, "\n")
 
-const creds = {
+/**
+ * @type {pkg.PoolConfig}
+ */
+let creds = {
     user,
     host,
     database,
@@ -29,6 +32,10 @@ const creds = {
         rejectUnauthorized: true,
         ca: fs.readFileSync('deployment/us-west-2-bundle.pem').toString(),
     }
+}
+
+if (host == "localhost") {
+    delete creds.ssl
 }
 
 // Create a pool instance with your PostgreSQL connection details
