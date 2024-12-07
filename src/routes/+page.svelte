@@ -1,6 +1,7 @@
 <script>
     import Times from "$lib/components/Times.svelte";
     import Controls from "$lib/components/Controls.svelte";
+    import Clock from "$lib/components/Clock.svelte";
     
     import { times } from "$lib/stores.js";
 
@@ -22,5 +23,6 @@
     <h1>Time Tracker</h1>
 </div>
 
+<Clock/>
 <Controls/>
 <Times/>
