@@ -1,66 +1,26 @@
 <script>
-	import NavBar from "$lib/components/NavBar.svelte";
+    import NavBar from "$lib/components/NavBar.svelte";
     import { onMount, onDestroy } from "svelte";
-    import { times, duration } from "$lib/stores";
+    import { times } from "$lib/stores";
+    import { setupClock, updateDuration } from "$lib/utils/clock.js"
 
     /**
-     * @type {import("$lib/stores").Task | undefined}
+     * @type {() => void}
      */
-    let activeTask;
-    
-    /**
-     * @type {number | NodeJS.Timeout | undefined}
-     */
-	 let intervalId;
+    let teardownClock;
 
-	/** 
-	 * @type {import('svelte/store').Unsubscriber | undefined} 
-	 * */
-	let unsubscribe;
+    // During the lifecycle of the application, update the clock
+    onMount(() => {
+        teardownClock = setupClock(times, () => {
+            updateDuration($times.tasks);
+        });
+    });
 
-	onMount(async () => {
-		/**
-		 * Start two approaches of repeatedly updating 
-		 * the clock display.
-		 * 
-		 * Firstly, the interval updates the clock
-		 * every second.
-		 * 
-		 * Secondly, observed changes in the times store
-		 * immediately update the clock.
-		*/
-		intervalId = setInterval(() => {
-			updateDuration()
-		}, 1000)
-
-		unsubscribe = times.subscribe(()=> {
-			updateDuration()
-		})
-	});
-
-	onDestroy(() => {
-		/**
-		 * Teardown both the interval and times
-		 * store subscriber initialised in onMount.
-		*/
-		if (intervalId) {
-			clearInterval(intervalId)
-		}
-		if (unsubscribe) {
-			unsubscribe();
-		}
-	})
-
-	function updateDuration() {
-		activeTask = $times.tasks.find((t) => t.status == 'ACTIVE');
-		if (activeTask) {
-			const now = new Date();
-			const startDate = new Date(activeTask.startTime);
-            duration.set(
-                Math.floor((now.valueOf() - startDate.valueOf()) / 1000)
-            )
-		}
-	}
+    onDestroy(() => {
+        if (teardownClock) {
+            teardownClock();
+        };
+    });
 </script>
 
 <style>
