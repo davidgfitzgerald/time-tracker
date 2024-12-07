@@ -4,15 +4,6 @@
 
     let error = $times.error
 
-    // Wipe the error or else we'll keep seeing it
-    // TODO Determine if necessary
-    // if (error) {
-    //     times.update(t => {
-    //         t.error = '';
-    //         return t;
-    //     })
-    // }
-
     /**
     * @param {string | number | null} value
     * @param {(arg0: any) => string} formatter
