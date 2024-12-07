@@ -22,5 +22,4 @@
     <h1>Time Tracker</h1>
 </div>
 
-<Stopwatch/>
 <Times/>
