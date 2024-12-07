@@ -44,6 +44,16 @@ export async function GET({ params }) {
 /**
  * Handle a PUT request.
  * 
+ * Update a task with the given category. The duration of the task
+ * and end time is calculated and updated on the task. The task
+ * is automatically moved to COMPLETED state and the next ACTIVE
+ * task is created.
+ * 
+ * It seems overloaded for this endpoint to be responsible for creating 
+ * the new ACTIVE task so it is worth looking into in future to
+ * perhaps add a trigger onto the database that automatically creates
+ * a new ACTIVE task when the last one gets moved to COMPLETED.
+ * 
  * @param {RequestEvent} request - The request event object.
  * @returns {Promise<Response>} The response object.
  */

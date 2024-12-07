@@ -8,6 +8,17 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive 
 information.
 
+## Sat 7th Dec
+
+Just steamtrained some work in about an hour.
+
+Had some code that was taking parameters from the client to update a task such as the duration and realised this was a problem
+because we should never trust the client. It would be incredibly easy to 'hack' and forcibly input tasks with arbitrarily
+large durations. Instead, now we calculate the duration on the server when the request comes in.
+
+I also added the `/api/tasks/[id]` endpoint such that the client (and the server) can retrieve an individual task by ID
+and also update a task by ID.
+
 ## Fri 6th Dec
 
 Back to it after a little while off.
