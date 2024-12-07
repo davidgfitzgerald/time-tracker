@@ -7,6 +7,7 @@
  * displays the correct duration.
  */
 import { duration } from "$lib/stores";
+import { calculateDuration } from "./time";
 
 /**
  * Finds the active task and calculates the elapsed duration.
@@ -16,9 +17,7 @@ import { duration } from "$lib/stores";
 export function updateDuration(tasks) {
     const activeTask = tasks.find((t) => t.status === "ACTIVE");
     if (activeTask) {
-        const now = new Date();
-        const startDate = new Date(activeTask.startTime);
-        duration.set(Math.floor((now.valueOf() - startDate.valueOf()) / 1000));
+        duration.set(calculateDuration(activeTask.startTime))
     }
 }
 

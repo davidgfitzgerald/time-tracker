@@ -52,3 +52,14 @@ export function convertUTCToLocal(utcDateStr) {
 
     return local;
 }
+
+/**
+ * @param {string} startTime
+ * @returns {number} Duration in seconds
+ * Calculate duration start time and now.
+ */
+export function calculateDuration(startTime) {
+    const now = new Date();
+    const startDate = new Date(startTime);
+    return Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
+}

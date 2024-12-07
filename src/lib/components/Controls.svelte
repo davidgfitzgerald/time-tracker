@@ -1,14 +1,14 @@
 <script>
-    import { times, duration } from "$lib/stores";
-	import { formatDuration, getCurrentTime } from "$lib/utils/time";
+	import { times, duration } from '$lib/stores';
+	import { formatDuration } from '$lib/utils/time';
 
 	let modalOpen = false;
 	let category = '';
 
-    /**
-     * @type {import("$lib/stores").Task | undefined}
-     */
-    let activeTask;
+	/**
+	 * @type {import("$lib/stores").Task | undefined}
+	 */
+	let activeTask;
 
 	/**
 	 * Function to log the stopwatch
@@ -16,53 +16,61 @@
 	function openModal() {
 		if ($duration == 0) {
 			console.error('Frontend: Cannot log 0 time');
-			return
-		} 
-		
-		modalOpen = true
+			return;
+		}
+		modalOpen = true;
 	}
-	
+
 	async function updateTask() {
 		activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
 		if (!activeTask) {
-			alert("Please try again.")
-			console.error("Active task expected but not found")
-			return
+			alert('Please try again.');
+			console.error('Active task expected but not found');
+			return;
 		}
-		let endTime = getCurrentTime();
-		const id = activeTask.id
-		const timeSpent = $duration
+		const id = activeTask.id;
+		const timeSpent = $duration;
 
-		const res = await fetch('/api/tasks', {
-			method: 'PUT',
-			body: JSON.stringify({ id, category, timeSpent, endTime }),
-		});
-
-		if (res.ok) {
-			const { tasks: { updated: updatedTask, new: newTask } } = await res.json();
-
-			times.update((current) => {
-				let newTasks = current.tasks.map((task) => {
-						if (task.id === id) {
-							return {
-								...task,
-								...updatedTask // Merge current with new properties
-							};
-						}
-						// Return unchanged task if ID's don't match
-						return task;
-					})
-				newTasks.push(newTask)
-				return {
-					tasks: newTasks,
-					error: current.error
-				};
-			})
-		} else {
-			console.log(res);  // TODO debugging only
-			alert("Failed to add task");
+		try {
+			const res = await fetch('/api/tasks', {
+				method: 'PUT',
+				body: JSON.stringify({ id, category, timeSpent })
+			});
+			if (res.ok) {
+				const { updatedTask, newTask } = await res.json();
+				updateTaskStore(updatedTask, newTask);
+			} else {
+				alert('Failed to add task');
+			}
+		} catch (error) {
+			console.error(error);
 		}
+
 		modalOpen = false;
+	}
+
+	/**
+	 * @param {import("$lib/stores").Task} updatedTask
+	 * @param {import("$lib/stores").Task} newTask
+	 */
+	function updateTaskStore(updatedTask, newTask) {
+		times.update((current) => {
+			let newTasks = current.tasks.map((task) => {
+				if (task.id === updatedTask.id) {
+					return {
+						...task,
+						...updatedTask // Merge current with new properties
+					};
+				}
+				// Return unchanged task if ID's don't match
+				return task;
+			});
+			newTasks.push(newTask);
+			return {
+				tasks: newTasks,
+				error: current.error
+			};
+		});
 	}
 
 	/**
@@ -88,6 +96,33 @@
 		}
 	}
 </script>
+
+<div class="controls">
+	<button on:click={openModal}>Log</button>
+	<button on:click={clearDB} class="warn-button">Clear DB</button>
+</div>
+
+{#if modalOpen}
+	<div class="modal-background">
+		<div class="modal-content" on:click|stopPropagation>
+			<h2>Track Time</h2>
+			<p>You are about to track {formatDuration($duration)}.</p>
+
+			<form on:submit|preventDefault={updateTask}>
+				<label>
+					Task Category:
+					<input type="text" bind:value={category} required />
+				</label>
+
+				<!-- <label>
+				<input type="number" bind:value={$duration} min="1" required hidden />
+			</label> -->
+
+				<button class="add-task" type="submit">Add Task</button>
+			</form>
+		</div>
+	</div>
+{/if}
 
 <style>
 	/* Buttons */
@@ -145,30 +180,3 @@
 		border-radius: 3px;
 	}
 </style>
-
-<div class="controls">
-	<button on:click={openModal}>Log</button>
-	<button on:click={clearDB} class="warn-button">Clear DB</button>
-</div>
-
-{#if modalOpen}
-<div class="modal-background">
-	<div class="modal-content" on:click|stopPropagation>
-		<h2>Track Time</h2>
-		<p>You are about to track {formatDuration($duration)}.</p>
-
-		<form on:submit|preventDefault={updateTask}>
-			<label>
-				Task Category:
-				<input type="text" bind:value={category} required />
-			</label>
-
-			<!-- <label>
-				<input type="number" bind:value={$duration} min="1" required hidden />
-			</label> -->
-
-			<button class="add-task" type="submit">Add Task</button>
-		</form>
-	</div>
-</div>
-{/if}

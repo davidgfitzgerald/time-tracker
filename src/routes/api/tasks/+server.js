@@ -72,7 +72,7 @@ export async function POST() {
  * @returns {Promise<Response>} The response object.
  */
 export async function PUT({ request }) {
-    const { id, category, timeSpent, endTime } = await request.json();
+    const { id, category, timeSpent } = await request.json();
 
     try {
         let query = `
@@ -98,6 +98,7 @@ export async function PUT({ request }) {
                 end_time AS "endTime",
                 status;
         `
+		let endTime = getCurrentTime();
         let values = [category, timeSpent, endTime, id]
         // console.debug(`Backend: Updating row ID=${id}`)
         const result = await pool.query(query, values)
@@ -107,9 +108,10 @@ export async function PUT({ request }) {
         // Create one new task - we always have at least one active
         const response = await POST()
         const data = await response.json()
+        console.debug("updated:", row)
+        console.debug("new:", data.task)
 
-        // console.debug(`Backend: Task: ${row}`)
-        return json({ tasks: {updated: row, new: data.task}})
+        return json({ updatedTask: row, newTask: data.task })
     } catch (error) {
         console.error(error)
         return json({ error: 'Failed to update task' }, { status: 500 });
