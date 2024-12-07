@@ -1,15 +1,17 @@
 import { json } from '@sveltejs/kit';
 import pool from '../../../db/pool';
+import { calculateDuration, getCurrentTime } from '$lib/utils/time';
 /**
  * @typedef {import('@sveltejs/kit').RequestEvent} RequestEvent
  */
 
 /**
- * Handle a GET request.
+ * Handle a GET request for all tasks.
  * 
  * @returns {Promise<Response>} The response object.
  */
 export async function GET() {
+    console.log("Fetching tasks from DB")
     const query = `
         SELECT 
             id,
@@ -21,7 +23,6 @@ export async function GET() {
         FROM tasks;
     `;
     try {
-        console.log("Retrieving tasks...")
         const tasks = await pool.query(query);
         return json(tasks.rows);
     } catch (error) {
@@ -34,12 +35,10 @@ export async function GET() {
 /**
  * Handle a POST request.
  * 
- * @param {RequestEvent} request - The request event object.
  * @returns {Promise<Response>} The response object.
  */
-export async function POST({ request }) {
-    const { startTime } = await request.json();
-    // console.log(`startTime: ${startTime}`)
+export async function POST() {
+    const startTime = getCurrentTime()
     try {
         const query = `
             INSERT INTO tasks (
@@ -56,61 +55,13 @@ export async function POST({ request }) {
             `
         const values = [startTime]
         
-        // console.debug("Backend: Inserting row")
         const res = await pool.query(query, values)
-        // console.debug("Backend: Inserted row")
         const row = res.rows[0]
-        // console.debug(`Backend: startTime: ${row.startTime}`)
+        console.log(`Task ${row.id} created`);
         return json({ task: row });
     } catch (error) {
         console.error(error)
         return json({ error: 'Failed to add task' }, { status: 500 });
-    }
-}
-
-/**
- * Handle a PUT request.
- * 
- * @param {RequestEvent} request - The request event object.
- * @returns {Promise<Response>} The response object.
- */
-export async function PUT({ request }) {
-    const { taskId, category, timeSpent, endTime } = await request.json();
-
-    try {
-        let query = `
-            UPDATE tasks 
-            SET (
-                category,
-                time_spent,
-                end_time,
-                status
-            ) = (
-                $1,
-                $2,
-                $3,
-                'COMPLETE'
-            )
-            WHERE 
-                id = $4
-            RETURNING
-                id,
-                category,
-                time_spent AS "timeSpent",
-                start_time AS "startTime",
-                end_time AS "endTime",
-                status;
-        `
-        let values = [category, timeSpent, endTime, taskId]
-        // console.debug(`Backend: Updating row ID=${taskId}`)
-        const res = await pool.query(query, values)
-        // console.debug(`Backend: Updated row ID=${taskId}`)
-        const row = res.rows[0]
-        // console.debug(`Backend: Task: ${row}`)
-        return json({ task: row})
-    } catch (error) {
-        console.error(error)
-        return json({ error: 'Failed to update task' }, { status: 500 });
     }
 }
 
@@ -122,13 +73,16 @@ export async function PUT({ request }) {
 export async function DELETE() {
     try {
         // Delete all tasks from the database
-        // console.log("Clearing DB")
-        const query = 'DELETE FROM tasks'
-        await pool.query(query);
-        // console.log("Cleared DB")
+        await pool.query('DELETE FROM tasks');
+        console.log("Cleared DB")
+        
+        // Create one new task - we always have at least one active
+        const res = await POST()
+        const data = await res.json()
 
-        return json({ message: 'All tasks deleted successfully' });
+        return json({ task: data.task, message: 'All tasks deleted successfully' });
     } catch (error) {
+        console.error(error)
         return json({ error: 'Failed to delete tasks' }, { status: 500 });
     }
 }

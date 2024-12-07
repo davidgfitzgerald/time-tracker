@@ -1,19 +1,21 @@
-// Function to format the time (hh:mm:ss)
 /**
- * @param {number} time
+ * Convert duration to HH:MM:SS format
+ * 
+ * @param {number} duration (seconds)
+ * @returns {string} duration in HH:MM:SS format
  */
-export function formatDuration(time) {
-    const hours = String(Math.floor(time / 3600)).padStart(2, '0');
-    const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
-    const seconds = String(time % 60).padStart(2, '0');
+export function formatDuration(duration) {
+    const hours = String(Math.floor(duration / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((duration % 3600) / 60)).padStart(2, '0');
+    const seconds = String(duration % 60).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
 }
 
 
 /**
- * Get the current time in 'YYYY-MM-DD HH:MM:SS' format.
+ * Get the current time in YYYY-MM-DD HH:MM:SS format.
  * 
- * @returns {string} - The current time in the specified format.
+ * @returns {string} - The current time in the specified format
  */
 export function getCurrentTime() {
     const date = new Date();
@@ -33,8 +35,8 @@ export function getCurrentTime() {
 /**
  * Convert a UTC date/time string to local time.
  * 
- * @param {string} utcDateStr - The UTC date/time string in 'YYYY-MM-DD HH:MM:SS' format.
- * @returns {string} - The local date/time string in 'YYYY-MM-DD HH:MM:SS' format.
+ * @param {string} utcDateStr The UTC date/time string in YYYY-MM-DD HH:MM:SS format
+ * @returns {string} The local date/time string in YYYY-MM-DD HH:MM:SS format
  */
 export function convertUTCToLocal(utcDateStr) {
     const date = new Date(utcDateStr)
@@ -49,4 +51,15 @@ export function convertUTCToLocal(utcDateStr) {
     const local = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 
     return local;
+}
+
+/**
+ * @param {string} startTime
+ * @returns {number} Duration in seconds
+ * Calculate duration start time and now.
+ */
+export function calculateDuration(startTime) {
+    const now = new Date();
+    const startDate = new Date(startTime);
+    return Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
 }
