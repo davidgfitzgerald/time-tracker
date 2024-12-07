@@ -67,3 +67,11 @@
 <div class="stopwatch">
 	<h1>{formatDuration(duration)}</h1>
 </div>
+
+<style>
+    .stopwatch {
+		font-size: 2em;
+		margin: 20px;
+		text-align: center;
+	}
+</style>

@@ -37,8 +37,14 @@
 		background-color: rgb(214, 40, 40);
 		color: white;
 	}
+
+	.controls {
+		font-size: 2em;
+		margin: 20px;
+		text-align: center;
+	}
 </style>
 
-<div class="stopwatch">
+<div class="controls">
 	<button on:click={clearDB} class="warn-button">Clear DB</button>
 </div>
