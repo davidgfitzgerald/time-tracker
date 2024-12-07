@@ -38,7 +38,7 @@ export async function GET() {
  * @param {RequestEvent} request - The request event object.
  * @returns {Promise<Response>} The response object.
  */
-export async function POST({ request }) {
+export async function POST() {
     const startTime = getCurrentTime()
     try {
         const query = `
@@ -56,11 +56,9 @@ export async function POST({ request }) {
             `
         const values = [startTime]
         
-        // console.debug("Backend: Inserting row")
         const res = await pool.query(query, values)
-        // console.debug("Backend: Inserted row")
         const row = res.rows[0]
-        // console.debug(`Backend: startTime: ${row.startTime}`)
+        console.log(`Task ${row.id} created`);
         return json({ task: row });
     } catch (error) {
         console.error(error)
@@ -122,13 +120,16 @@ export async function PUT({ request }) {
 export async function DELETE() {
     try {
         // Delete all tasks from the database
-        console.log("Clearing DB")
-        const query = 'DELETE FROM tasks'
-        await pool.query(query);
+        await pool.query('DELETE FROM tasks');
         console.log("Cleared DB")
+        
+        // Create one new task - we always have at least one active
+        const res = await POST()
+        const data = await res.json()
 
-        return json({ message: 'All tasks deleted successfully' });
+        return json({ task: data.task, message: 'All tasks deleted successfully' });
     } catch (error) {
+        console.error(error)
         return json({ error: 'Failed to delete tasks' }, { status: 500 });
     }
 }

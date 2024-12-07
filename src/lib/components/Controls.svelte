@@ -9,11 +9,10 @@
 
 		if (res.ok) {
 			const result = await res.json();
-			console.log('Frontend: Tasks DB Wiped');
 
 			times.update(() => {
 				return {
-					tasks: [], // Reset the tasks to empty
+					tasks: [result.task], // Reset the tasks to just a new one
 					error: ''
 				};
 			});
