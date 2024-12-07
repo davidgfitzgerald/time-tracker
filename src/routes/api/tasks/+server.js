@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import pool from '../../../db/pool';
+import { getCurrentTime } from '$lib/utils/time';
 /**
  * @typedef {import('@sveltejs/kit').RequestEvent} RequestEvent
  */
@@ -10,6 +11,7 @@ import pool from '../../../db/pool';
  * @returns {Promise<Response>} The response object.
  */
 export async function GET() {
+    console.log("Fetching tasks from DB")
     const query = `
         SELECT 
             id,
@@ -37,8 +39,7 @@ export async function GET() {
  * @returns {Promise<Response>} The response object.
  */
 export async function POST({ request }) {
-    const { startTime } = await request.json();
-    // console.log(`startTime: ${startTime}`)
+    const startTime = getCurrentTime()
     try {
         const query = `
             INSERT INTO tasks (
@@ -121,10 +122,10 @@ export async function PUT({ request }) {
 export async function DELETE() {
     try {
         // Delete all tasks from the database
-        // console.log("Clearing DB")
+        console.log("Clearing DB")
         const query = 'DELETE FROM tasks'
         await pool.query(query);
-        // console.log("Cleared DB")
+        console.log("Cleared DB")
 
         return json({ message: 'All tasks deleted successfully' });
     } catch (error) {

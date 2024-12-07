@@ -1,5 +1,6 @@
 <script>
     import Times from "$lib/components/Times.svelte";
+    import Controls from "$lib/components/Controls.svelte";
     
     import { times } from "$lib/stores.js";
 
@@ -7,7 +8,6 @@
     // returns data.
     export let data;
     times.set(data)
-    console.log("Stored times on front end")
 </script>
 
 <style>
@@ -22,4 +22,5 @@
     <h1>Time Tracker</h1>
 </div>
 
+<Controls/>
 <Times/>
