@@ -1,12 +1,12 @@
 import { json } from '@sveltejs/kit';
 import pool from '../../../db/pool';
-import { getCurrentTime } from '$lib/utils/time';
+import { calculateDuration, getCurrentTime } from '$lib/utils/time';
 /**
  * @typedef {import('@sveltejs/kit').RequestEvent} RequestEvent
  */
 
 /**
- * Handle a GET request.
+ * Handle a GET request for all tasks.
  * 
  * @returns {Promise<Response>} The response object.
  */
@@ -62,59 +62,6 @@ export async function POST() {
     } catch (error) {
         console.error(error)
         return json({ error: 'Failed to add task' }, { status: 500 });
-    }
-}
-
-/**
- * Handle a PUT request.
- * 
- * @param {RequestEvent} request - The request event object.
- * @returns {Promise<Response>} The response object.
- */
-export async function PUT({ request }) {
-    const { id, category, timeSpent } = await request.json();
-
-    try {
-        let query = `
-            UPDATE tasks 
-            SET (
-                category,
-                time_spent,
-                end_time,
-                status
-            ) = (
-                $1,
-                $2,
-                $3,
-                'COMPLETE'
-            )
-            WHERE 
-                id = $4
-            RETURNING
-                id,
-                category,
-                time_spent AS "timeSpent",
-                start_time AS "startTime",
-                end_time AS "endTime",
-                status;
-        `
-		let endTime = getCurrentTime();
-        let values = [category, timeSpent, endTime, id]
-        // console.debug(`Backend: Updating row ID=${id}`)
-        const result = await pool.query(query, values)
-        // console.debug(`Backend: Updated row ID=${id}`)
-        const row = result.rows[0]
-        
-        // Create one new task - we always have at least one active
-        const response = await POST()
-        const data = await response.json()
-        console.debug("updated:", row)
-        console.debug("new:", data.task)
-
-        return json({ updatedTask: row, newTask: data.task })
-    } catch (error) {
-        console.error(error)
-        return json({ error: 'Failed to update task' }, { status: 500 });
     }
 }
 

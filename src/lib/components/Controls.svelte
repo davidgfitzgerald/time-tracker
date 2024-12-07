@@ -28,13 +28,10 @@
 			console.error('Active task expected but not found');
 			return;
 		}
-		const id = activeTask.id;
-		const timeSpent = $duration;
-
 		try {
-			const res = await fetch('/api/tasks', {
+			const res = await fetch(`/api/tasks/${activeTask.id}`, {
 				method: 'PUT',
-				body: JSON.stringify({ id, category, timeSpent })
+				body: JSON.stringify({ category })
 			});
 			if (res.ok) {
 				const { updatedTask, newTask } = await res.json();
