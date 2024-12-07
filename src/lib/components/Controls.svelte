@@ -1,9 +1,7 @@
 <script>
-    import { times } from "$lib/stores";
+    import { times, duration } from "$lib/stores";
 	import { formatDuration, getCurrentTime } from "$lib/utils/time";
-	import { onDestroy, onMount } from "svelte";
 
-    let duration = 0;
 	let modalOpen = false;
 	let category = '';
 
@@ -11,64 +9,12 @@
      * @type {import("$lib/stores").Task | undefined}
      */
     let activeTask;
-    
-    /**
-     * @type {number | NodeJS.Timeout | undefined}
-     */
-	 let intervalId;
-
-	/** 
-	 * @type {import('svelte/store').Unsubscriber | undefined} 
-	 * */
-	let unsubscribe;
-
-	onMount(async () => {
-		/**
-		 * Start two approaches of repeatedly updating 
-		 * the clock display.
-		 * 
-		 * Firstly, the interval updates the clock
-		 * every second.
-		 * 
-		 * Secondly, observed changes in the times store
-		 * immediately update the clock.
-		*/
-		intervalId = setInterval(() => {
-			updateDuration()
-		}, 1000)
-
-		unsubscribe = times.subscribe(()=> {
-			updateDuration()
-		})
-	});
-
-	onDestroy(() => {
-		/**
-		 * Teardown both the interval and times
-		 * store subscriber initialised in onMount.
-		*/
-		if (intervalId) {
-			clearInterval(intervalId)
-		}
-		if (unsubscribe) {
-			unsubscribe();
-		}
-	})
-
-	function updateDuration() {
-		activeTask = $times.tasks.find((t) => t.status == 'ACTIVE');
-		if (activeTask) {
-			const now = new Date();
-			const startDate = new Date(activeTask.startTime);
-			duration = Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
-		}
-	}
 
 	/**
 	 * Function to log the stopwatch
 	 */
 	function openModal() {
-		if (duration == 0) {
+		if ($duration == 0) {
 			console.error('Frontend: Cannot log 0 time');
 			return
 		} 
@@ -85,11 +31,10 @@
 		}
 		let endTime = getCurrentTime();
 		const id = activeTask.id
-		const timeSpent = duration
+		const timeSpent = $duration
 
 		const res = await fetch('/api/tasks', {
 			method: 'PUT',
-			headers: {'Content-Type': 'application/json'}, // TODO confirm whether header required or provided by default
 			body: JSON.stringify({ id, category, timeSpent, endTime }),
 		});
 
@@ -121,7 +66,7 @@
 	}
 
 	/**
-	 * Function to deleteTasks
+	 * Function to delete tasks
 	 */
 	async function clearDB() {
 		const res = await fetch('/api/tasks', {
@@ -210,7 +155,7 @@
 <div class="modal-background">
 	<div class="modal-content" on:click|stopPropagation>
 		<h2>Track Time</h2>
-		<p>You are about to track {formatDuration(duration)}.</p>
+		<p>You are about to track {formatDuration($duration)}.</p>
 
 		<form on:submit|preventDefault={updateTask}>
 			<label>
@@ -219,7 +164,7 @@
 			</label>
 
 			<!-- <label>
-				<input type="number" bind:value={duration} min="1" required hidden />
+				<input type="number" bind:value={$duration} min="1" required hidden />
 			</label> -->
 
 			<button class="add-task" type="submit">Add Task</button>

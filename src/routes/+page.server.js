@@ -37,12 +37,7 @@ export async function load({ fetch }) {
  * @returns {Promise<import("$lib/stores").Task>}
  */
 async function createTask(fetch) {
-    const res = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    const res = await fetch('/api/tasks', {method: 'POST'});
     const { task } = await res.json();
     return task
 }
