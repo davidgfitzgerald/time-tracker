@@ -35,7 +35,6 @@ export async function GET() {
 /**
  * Handle a POST request.
  * 
- * @param {RequestEvent} request - The request event object.
  * @returns {Promise<Response>} The response object.
  */
 export async function POST() {
@@ -73,7 +72,7 @@ export async function POST() {
  * @returns {Promise<Response>} The response object.
  */
 export async function PUT({ request }) {
-    const { taskId, category, timeSpent, endTime } = await request.json();
+    const { id, category, timeSpent, endTime } = await request.json();
 
     try {
         let query = `
@@ -99,13 +98,18 @@ export async function PUT({ request }) {
                 end_time AS "endTime",
                 status;
         `
-        let values = [category, timeSpent, endTime, taskId]
-        // console.debug(`Backend: Updating row ID=${taskId}`)
-        const res = await pool.query(query, values)
-        // console.debug(`Backend: Updated row ID=${taskId}`)
-        const row = res.rows[0]
+        let values = [category, timeSpent, endTime, id]
+        // console.debug(`Backend: Updating row ID=${id}`)
+        const result = await pool.query(query, values)
+        // console.debug(`Backend: Updated row ID=${id}`)
+        const row = result.rows[0]
+        
+        // Create one new task - we always have at least one active
+        const response = await POST()
+        const data = await response.json()
+
         // console.debug(`Backend: Task: ${row}`)
-        return json({ task: row})
+        return json({ tasks: {updated: row, new: data.task}})
     } catch (error) {
         console.error(error)
         return json({ error: 'Failed to update task' }, { status: 500 });
