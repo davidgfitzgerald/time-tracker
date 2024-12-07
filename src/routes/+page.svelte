@@ -7,7 +7,7 @@
     // returns data.
     export let data;
     times.set(data)
-    // console.log("Stored times on front end")
+    console.log("Stored times on front end")
 </script>
 
 <style>

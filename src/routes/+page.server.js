@@ -8,6 +8,7 @@ let error = '';
 // and automatically passes it back to the client in +page.svelte.
 export async function load({ fetch }) {
     try {
+        console.log("Fetching tasks from API endpoint")
         const res = await fetch('/api/tasks');
         if (res.ok) {
             tasks = await res.json();
