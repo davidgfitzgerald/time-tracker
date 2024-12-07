@@ -4,6 +4,8 @@
 let tasks = [];
 let error = '';
 
+// This always loads data from DB on initial page hydration on the server
+// and automatically passes it back to the client in +page.svelte.
 export async function load({ fetch }) {
     try {
         const res = await fetch('/api/tasks');

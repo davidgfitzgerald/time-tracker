@@ -1,11 +1,11 @@
 <script>
-    import Stopwatch from "$lib/components/Stopwatch.svelte";
     import Times from "$lib/components/Times.svelte";
-    export let data;
-
+    
     import { times } from "$lib/stores.js";
-    // console.log("Storing times on front end")
-    // console.log(`Data to store: ${JSON.stringify(data)}`)
+
+    // The load function in +page.server.js automatically
+    // returns data.
+    export let data;
     times.set(data)
     // console.log("Stored times on front end")
 </script>

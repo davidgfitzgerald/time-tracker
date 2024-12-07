@@ -21,7 +21,6 @@ export async function GET() {
         FROM tasks;
     `;
     try {
-        console.log("Retrieving tasks...")
         const tasks = await pool.query(query);
         return json(tasks.rows);
     } catch (error) {
