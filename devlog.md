@@ -22,6 +22,34 @@ I have reconfigured my `~/.pg_service.conf` and `~/.pgpass` to point to the corr
 Although I can run the app locally and it will communicate with RDS, once I run the app from a docker 
 container, I encounter an error. I'm not going to worry about fixing this right now.
 
+### Big Refactor
+
+Made a great refactor to the project and I think it is working way better and smoother and the code looks better and more maintainable.
+I was doing some things in dumb ways like couple reponsibility for the clock to create new tasks.
+
+Have understood a lot more about svelte now and how it's operating and started to make some bigger developmental strides.
+
+I also ran the app locally with the DB locally and that worked fine.
+
+Then, all I have to do to point the app to the "prod" aws DB is change the `POSTGRES_HOST` in the `.env` file.
+
+### Next Steps
+
+There is a potential bug I need to solve where the trigger identifies more than one active row in the DB at once which should be impossible.
+It might be that I have to implement some DB locking to prevent this.
+
+It also appears that `undefined` could get returned in the list and thus the rendering on `Time.svelte` would beak.
+
+Additionally, I should now look to deploy the application in the cloud such that I can start using it.
+
+When I deploy I'll need to work out how best to do a quick CI style implementation such that I can quickly build and deploy changes to prod.
+
+Another thing that would be fantastic to implement at some point would be synchronising UIs. It may be that I require implementing websockets for this.
+It would be fantastic if when I view concurrently on both my phone and laptop that any edits to tasks are pushed out to both of my clients.
+
+By extension, at some point it would be interesting to implement users and authentication but this is a lower priority or maybe never even a priority for me
+because I am now forseeing this app being used by anybody asides from me. Who knows, maybe that could end up being the case!
+
 ## Wed 13th Nov
 
 ## Mon 11th Nov

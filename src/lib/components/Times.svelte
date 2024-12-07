@@ -5,7 +5,7 @@
     let error = $times.error
 
     // Wipe the error or else we'll keep seeing it
-    // Determine if necessary
+    // TODO Determine if necessary
     // if (error) {
     //     times.update(t => {
     //         t.error = '';
@@ -18,7 +18,7 @@
     * @param {(arg0: any) => string} formatter
     * Helper function to handle null or undefined values
     */
-    function formatValue(value, formatter) {
+    function handleNull(value, formatter) {
         return value == null ? 'TBC' : formatter(value);
     }
 </script>
@@ -63,9 +63,9 @@
 			<tr>
 				<td>{time.id}</td>
 				<td>{time.category || "TBC"}</td>
-				<td>{formatValue(time.timeSpent, formatDuration)}</td>
-				<td>{formatValue(time.startTime, convertUTCToLocal)}</td>
-				<td>{formatValue(time.endTime, convertUTCToLocal)}</td>
+				<td>{handleNull(time.timeSpent, formatDuration)}</td>
+				<td>{handleNull(time.startTime, convertUTCToLocal)}</td>
+				<td>{handleNull(time.endTime, convertUTCToLocal)}</td>
 				<td>{time.status}</td>
 			</tr>
 		{/each}
