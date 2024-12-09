@@ -22,13 +22,13 @@ resource "aws_instance" "tailscale-subnet-router" {
 # Useful when needing to SSH into the subnet router to re-setup tailscale
 output "tailscale_subnet_id" {
   value = aws_instance.tailscale-subnet-router.subnet_id
-  
+
 }
 
 # Useful when needing to SSH into the subnet router to re-setup tailscale
 output "tailscale_subnet_router_ip" {
   value = aws_instance.tailscale-subnet-router.public_ip
-  
+
 }
 
 resource "aws_security_group" "tailscale" {
