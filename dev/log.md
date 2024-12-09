@@ -8,6 +8,155 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive 
 information.
 
+## Mon 9th Dec
+
+Gonna try using `terraformer` to see if I can import the AWS infrastructure into terraform.
+
+Gave up on that, then tried importing each resource individually and it became a proper pain in the ass so I've opted for the dumb
+decision to just delete all my existing AWS infra and start again.
+
+That'll teach me for not verison controlling my `terraform.tfstate`.
+
+Right.
+
+I'm running `terraform apply` again and it is creating 13 resources.
+
+I will have to manually set up the tailscale subnet router again but that's not the end of the world.
+
+## Sun 8th Dec
+
+Great!
+
+I'm happy with where the app is up to at this point, I'm happy that we have:
+
+- A database in the cloud
+- An interface to create tasks
+- A UI that reactively updates tasks as they are altered
+
+I just headed out into town to do some shopping and thought I'd go to a café and do some 
+more coding.
+
+I remembered just as I picked up my laptop that my server would stop running.
+Haha. This problem again.
+
+Ok. I am now at a point where I must have the app running in the cloud. 
+
+Though, as an aside, I did look at my unused raspberry pi earlier and think... ooooh!
+It could be cool to run the app from a server on my raspberry pi at home. The positive of this
+is that I wouldn't incur AWS costs. Already for one month of an idle RDS deployment it cost over $20.
+The downside would be that I am at the mercy of my home internet. If the internet goes down
+for any reason... it happens from time to time! I would lose connection to the app.
+Something to consider for future. It would be great to use the raspberry pi and understand how to set 
+up a server on it.
+
+Anyways, back to the main work. I am going to try to spin up an EC2 instance with terraform
+and see if I can run my app on it.
+
+I've created an issue for this:
+
+https://github.com/davidgfitzgerald/time-tracker/issues/8
+
+Let's go!
+
+### Asking God (AKA Chat GPT)
+
+Here's my prompt for god:
+
+> I have a svelte app I am running locally.
+> 
+> I would now like to run the app in the cloud. Specifically with AWS.
+> 
+> I have already set up, configured and deployed a VPC with terraform in the cloud.
+> 
+> Currently it has two nodes. One is an RDS node and the other is an EC2 instance acting as a tailscale subnet router.
+> 
+> I would like to add another node into the cluster, probably another EC2 instance but I am open to options that could reduce cost.
+> 
+> I would like this node to be accessible when I join my tailnet.
+> 
+> My tailscale subnet router runs this command in the AWS VPC:
+> 
+> sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
+> 
+> This means new nodes should automatically be accessible by me from my laptop connected to the tailnet.
+> 
+> Help me write the terraform to deploy a container that can run my application and help me consider how I can push my local development code onto the container and re-run it. In a future question I will probably ask you about how can I add CI/CD such that when I push commits, the app is automatically reloaded with the changes.
+
+## Sun 8th Dec
+
+Great!
+
+I'm happy with where the app is up to at this point, I'm happy that we have:
+
+- A database in the cloud
+- An interface to create tasks
+- A UI that reactively updates tasks as they are altered
+
+I just headed out into town to do some shopping and thought I'd go to a café and do some 
+more coding.
+
+I remembered just as I picked up my laptop that my server would stop running.
+Haha. This problem again.
+
+Ok. I am now at a point where I must have the app running in the cloud. 
+
+Though, as an aside, I did look at my unused raspberry pi earlier and think... ooooh!
+It could be cool to run the app from a server on my raspberry pi at home. The positive of this
+is that I wouldn't incur AWS costs. Already for one month of an idle RDS deployment it cost over $20.
+The downside would be that I am at the mercy of my home internet. If the internet goes down
+for any reason... it happens from time to time! I would lose connection to the app.
+Something to consider for future. It would be great to use the raspberry pi and understand how to set 
+up a server on it.
+
+Anyways, back to the main work. I am going to try to spin up an EC2 instance with terraform
+and see if I can run my app on it.
+
+I've created an issue for this:
+
+https://github.com/davidgfitzgerald/time-tracker/issues/8
+
+Let's go!
+
+### Asking God (AKA Chat GPT)
+
+Here's my prompt for god:
+
+> I have a svelte app I am running locally.
+> 
+> I would now like to run the app in the cloud. Specifically with AWS.
+> 
+> I have already set up, configured and deployed a VPC with terraform in the cloud.
+> 
+> Currently it has two nodes. One is an RDS node and the other is an EC2 instance acting as a tailscale subnet router.
+> 
+> I would like to add another node into the cluster, probably another EC2 instance but I am open to options that could reduce cost.
+> 
+> I would like this node to be accessible when I join my tailnet.
+> 
+> My tailscale subnet router runs this command in the AWS VPC:
+> 
+> sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
+> 
+> This means new nodes should automatically be accessible by me from my laptop connected to the tailnet.
+> 
+> Help me write the terraform to deploy a container that can run my application and help me consider how I can push my local development code onto the container and re-run it. In a future question I will probably ask you about how can I add CI/CD such that when I push commits, the app is automatically reloaded with the changes.
+
+**Note:** For me to enable `ls ~/Desktop` I had to grant VSCode full disk access in `System Settings`
+
+### Considering Fargate
+
+Following image taken from https://aws.amazon.com/fargate/
+
+![Fargate](fargate.png)
+
+Seems like it could be interesting at some point to consider switching out my infrasturcture management for fargate too. 
+For now, I'll stick with my approach as I've already implemented it but I should be mindful of this as a possible solution to lower
+my AWS costs.
+
+Back to the task at hand.
+
+
+
 ## Sat 7th Dec
 
 Just steamtrained some work in about an hour.
