@@ -35,4 +35,3 @@ FROM postgres:latest AS db
 
 # Copy the schema.sql file into the Docker container
 COPY db/schema.sql /docker-entrypoint-initdb.d/
-COPY db/seed.sql /docker-entrypoint-initdb.d/

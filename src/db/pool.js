@@ -1,7 +1,6 @@
 import fs from 'fs';
 import pkg from 'pg'; // Import the default export from the pg package
 import 'dotenv/config';
-import _ from 'lodash';
 
 
 // Destructure Pool from the default export
@@ -22,7 +21,7 @@ console.log("    database", database, "\n")
 /**
  * @type {pkg.PoolConfig}
  */
-let creds = {
+const DB_CREDS = {
     user,
     host,
     database,
@@ -34,45 +33,15 @@ let creds = {
     }
 }
 
-if (host == "localhost") {
-    delete creds.ssl
+// If we run docker locally then we do not need AWS SSL config
+const LOCAL_DEV = process.env.LOCAL_DEV ? process.env.LOCAL_DEV : false;
+console.log("    LOCAL_DEV", LOCAL_DEV, "\n")
+if (LOCAL_DEV) {
+    delete DB_CREDS.ssl
 }
 
 // Create a pool instance with your PostgreSQL connection details
-const pool = new Pool(creds);
-
-// Validate that the we can connect to (and work with) the DB
-await validateDb();
-
-
-async function validateDb() {
-    const query = `
-    SELECT 
-    table_name
-    FROM 
-    information_schema.tables
-    WHERE 
-    table_schema = 'public'
-    AND 
-    table_type = 'BASE TABLE';
-    `;
-    
-    console.log(`Connection to DB: Pending`)
-    const res = await pool.query(query);
-    console.log(`Connection to DB: OK`);
-
-    console.log("Checking DB tables: Pending")
-    const dbTables = res.rows.map((item) => item.table_name);
-    const expectedDbTables = ["tasks"];
-    
-    if (!_.isEqual(dbTables, expectedDbTables)) {
-        console.log("Unexpected DB tables.\n");
-        console.log("got", dbTables);
-        console.log("expected", expectedDbTables);
-        process.exit(1);
-    }
-    console.log("Checking DB tables: OK")    
-}
+const POOL = new Pool(DB_CREDS);
 
 // Export the pool for use in your application
-export default pool;
+export default POOL;
