@@ -23,6 +23,8 @@ I'm running `terraform apply` again and it is creating 13 resources.
 
 I will have to manually set up the tailscale subnet router again but that's not the end of the world.
 
+Ok, the infrastructure is now good again. Now I am trying to dockerise the app so that I can push it up to ECR and run it on an EC2 instance.
+
 ## Sun 8th Dec
 
 Great!

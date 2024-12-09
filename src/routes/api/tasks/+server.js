@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import pool from '../../../db/pool';
+import POOL from '../../../db/pool';
 import { calculateDuration, getCurrentTime } from '$lib/utils/time';
 /**
  * @typedef {import('@sveltejs/kit').RequestEvent} RequestEvent
@@ -23,7 +23,7 @@ export async function GET() {
         FROM tasks;
     `;
     try {
-        const tasks = await pool.query(query);
+        const tasks = await POOL.query(query);
         return json(tasks.rows);
     } catch (error) {
         console.error(error)
@@ -55,7 +55,7 @@ export async function POST() {
             `
         const values = [startTime]
         
-        const res = await pool.query(query, values)
+        const res = await POOL.query(query, values)
         const row = res.rows[0]
         console.log(`Task ${row.id} created`);
         return json({ task: row });
@@ -73,7 +73,7 @@ export async function POST() {
 export async function DELETE() {
     try {
         // Delete all tasks from the database
-        await pool.query('DELETE FROM tasks');
+        await POOL.query('DELETE FROM tasks');
         console.log("Cleared DB")
         
         // Create one new task - we always have at least one active

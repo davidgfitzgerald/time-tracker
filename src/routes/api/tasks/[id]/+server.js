@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import pool from '../../../../db/pool';
+import POOL from '../../../../db/pool';
 import { calculateDuration, getCurrentTime } from '$lib/utils/time';
 /**
  * @typedef {import('@sveltejs/kit').RequestEvent} RequestEvent
@@ -28,7 +28,7 @@ export async function GET({ params }) {
     `;
     try {
         const values = [id]
-        const task = await pool.query(query, values);
+        const task = await POOL.query(query, values);
         if (task.rowCount != 1) {
             throw new Error("Duplicate task ID found in database!")
         }
@@ -94,7 +94,7 @@ export async function PUT({ params, request, fetch }) {
 
         // TODO - make updating existing row AND creating the
         // new row atomic. This is a potential bug.
-        const result = await pool.query(query, values)
+        const result = await POOL.query(query, values)
         const updatedTask = result.rows[0]
         
         // Create one new task - we always have at least one active
