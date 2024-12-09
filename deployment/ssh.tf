@@ -17,4 +17,8 @@ resource "aws_security_group" "allow_ssh_only_me" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "Allow SSH from my IP only"
+  }
 }

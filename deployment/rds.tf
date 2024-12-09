@@ -21,6 +21,10 @@ resource "aws_db_instance" "postgres" {
   publicly_accessible    = false                                       # Restrict public internet access
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]  # Allow communication to/from VPC subnet
   db_subnet_group_name   = aws_db_subnet_group.private.name
+
+  tags = {
+    Name = "Postgres RDS Instance"
+  }
 }
 
 output "db_instance_endpoint" {
@@ -53,6 +57,10 @@ resource "aws_security_group" "rds_security_group" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "VPC-RDS access"
+  }
 }
 
 # Define a subnet group containing all private VPC subnets
@@ -62,5 +70,9 @@ resource "aws_db_subnet_group" "private" {
     aws_subnet.private-subnet-2a.id,
     aws_subnet.private-subnet-2b.id,
   ]
+
+  tags = {
+    Name = "Private VPC Subnets"
+  }
 }
 
