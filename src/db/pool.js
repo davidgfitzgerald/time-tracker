@@ -29,7 +29,7 @@ const DB_CREDS = {
     port,
     ssl: { 
         rejectUnauthorized: true,
-        ca: fs.readFileSync('deployment/us-west-2-bundle.pem').toString(),
+        ca: fs.readFileSync('src/db/us-west-2-bundle.pem').toString(),
     }
 }
 

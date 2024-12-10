@@ -125,10 +125,6 @@ sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
 
 The environment variable template file for the deployment.
 
-## `us-west-2-bundle.pem`
-
-Required by the app such that the app can connect to the RDS DB securely via SSL.
-
 ## `vars.tf`
 
 The definition of environment variables mapped to terraform variables for use through the deployment.

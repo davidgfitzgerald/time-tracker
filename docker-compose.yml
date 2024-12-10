@@ -14,10 +14,14 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       LOCAL_DEV: ${LOCAL_DEV}
+      PLATFORM: ${PLATFORM}
+    
     depends_on:
       - db
     ports:
     - "5173:5173"
+    volumes:
+    - ./src:/app/src
 
   db:
     build:
