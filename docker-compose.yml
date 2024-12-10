@@ -4,6 +4,9 @@ services:
     build:
       context: .
       target: app
+    image: time-tracker:latest
+    container_name: time-tracker-app
+    platform: ${PLATFORM}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -11,7 +14,6 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_PORT: ${POSTGRES_PORT}
       LOCAL_DEV: ${LOCAL_DEV}
-    container_name: time-tracker-app
     depends_on:
       - db
     ports:
