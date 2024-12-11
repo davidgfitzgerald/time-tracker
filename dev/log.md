@@ -19,6 +19,8 @@ Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cl
 Spending some time researching some front end tips and tricks of how I can display my table nicer and have it 
 be both mobile an desktop suitable.
 
+Made the UI slightly nicer. Enough to move forward to implement some other features.
+
 ## Tue 10th Dec
 
 - Made the EC2 time_tracker instance IP static

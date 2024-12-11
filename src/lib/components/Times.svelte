@@ -12,39 +12,44 @@
 	}
 </script>
 
-<table>
-	<thead>
-		<tr>
-			<th>Category</th>
-			<th>Time Spent</th>
-			<th>Start Time</th>
-			<th>End Time</th>
-		</tr>
-	</thead>
-	<tbody>
-		{#each $times.tasks as time}
+<div class="container">
+	<table>
+		<thead>
 			<tr>
-				<td>{time.category || 'TBC'}</td>
-				<td>{handleNull(time.timeSpent, formatDuration)}</td>
-				<td>{handleNull(time.startTime, convertUTCToLocal)}</td>
-				<td>{handleNull(time.endTime, convertUTCToLocal)}</td>
+				<th>Category</th>
+				<th>Time Spent</th>
+				<th>Start Time</th>
+				<th>End Time</th>
 			</tr>
-		{/each}
-	</tbody>
-</table>
+		</thead>
+		<tbody>
+			{#each $times.tasks as time}
+				<tr>
+					<td data-cell="category">{time.category || 'TBC'}</td>
+					<td data-cell="timeSpent">{handleNull(time.timeSpent, formatDuration)}</td>
+					<td data-cell="startTime">{handleNull(time.startTime, convertUTCToLocal)}</td>
+					<td data-cell="endTime">{handleNull(time.endTime, convertUTCToLocal)}</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+</div>
 
 <style>
+	.container {
+		max-width: 100%;
+		overflow-x: auto;
+	}
 
 	table {
 		width: 100%;
-		overflow-x: auto;
 		border-collapse: collapse;
 		font-size: 0.9em;
 		box-shadow: 5px 5px 5px rgb(92, 92, 92);
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 	}
-	
+
 	th:first-child {
 		border-top-left-radius: 10px;
 	}
@@ -69,7 +74,7 @@
 	}
 
 	table tbody tr:nth-of-type(even) {
-		background-color: #f3f3f3;
+		background-color: hsl(0 0% 0% / 0.05)
 	}
 
 	table tbody tr:last-of-type {
