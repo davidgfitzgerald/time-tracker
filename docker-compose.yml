@@ -1,8 +1,6 @@
 version: '3.8'
 services:
   app:
-    env_file:
-      - .env.dev
     build:
       context: .
       target: app
