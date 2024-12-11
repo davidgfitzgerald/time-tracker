@@ -97,14 +97,44 @@ This file defines an EC2 instance in the VPC which acts as a tailscale subnet ro
 
 Essentially, this node acts as a router such that traffic on your tailnet can be routed into the VPC to access nodes such as the RDS DB.
 
+To set up tailscale on the EC2 instance:
+
+1. Add tailscale security group
+2. `ssh` into EC2 instance
+3. Run these commands to install and run tailscale
+```bash
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo
+sudo yum install -y tailscale
+sudo systemctl enable --now tailscaled
+echo 'net.ipv4.ip_forward = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale.conf
+sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
+sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
+```
+4. Visit the link that appears in the terminal. Log into tailscale locally on the GUI to authorise the EC2 instance
+5. Login to https://login.tailscale.com/admin locally
+6. Follow all the steps in https://tailscale.com/kb/1019/subnets to configure the subnet router
+7. Add the AWS DNS to the tailnet to allow this:
+    ```bash
+    pgcli -h terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com -U david -d time_tracker
+    ```
+8. Remove SSH access to EC2 instance
+
 ## `terraform.tfvars.example`
 
 The environment variable template file for the deployment.
 
-## `us-west-2-bundle.pem`
-
-Required by the app such that the app can connect to the RDS DB securely via SSL.
-
 ## `vars.tf`
 
 The definition of environment variables mapped to terraform variables for use through the deployment.
+
+# CI
+
+For the time being, a quick and dirty CI can be used to build, push and run a docker container in EC2 with:
+
+```bash
+./deployment/scripts/ci.sh
+```
+
+It is slow and by no means full proof but at least we have an automated method for deploying to prod now!

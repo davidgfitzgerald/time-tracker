@@ -17,7 +17,7 @@ db_instance_class = "db.t4g.micro"
 aws_region = "us-west-2"
 
 # Can be retrieved with curl -4 ifconfig.me
-my_ip = "xxx.xxx.xxx.xxx/32"
+my_ip = "xxx.xxx.xxx.xxx"
 
 # CIDR of the AWS VPC
 vpc_cidr = "172.31.0.0/16"
