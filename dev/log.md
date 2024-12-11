@@ -22,6 +22,18 @@ Watching these videos:
 - [Table Design Ideas For Mobile. How to Represent Data Tables on Mobile](https://www.youtube.com/watch?v=dfy_8llodDE)
 - [Designing Components: Generic vs Specific, or Composable vs Pre-Composed](https://www.youtube.com/watch?v=qculS3r8BYM)
 
+Worth watching this one in full:
+
+- [Learn SvelteKit in 2 hours](https://www.freecodecamp.org/news/learn-sveltekit-full-course/)
+
+Could read this:
+
+- [How to Use Breakpoints for Responsive Web Design](https://www.freecodecamp.org/news/breakpoints-for-responsive-web-design/)
+
+Free Course on reactive web design:
+
+- [Responsive Web Design Certification](https://www.freecodecamp.org/learn/2022/responsive-web-design/)
+
 ## Mon 9th Dec
 
 Gonna try using `terraformer` to see if I can import the AWS infrastructure into terraform.

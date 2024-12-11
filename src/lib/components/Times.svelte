@@ -33,16 +33,18 @@
 					<th>Status</th>
 				</tr>
 			</thead>
-			{#each $times.tasks as time}
-				<tr>
-					<td>{time.id}</td>
-					<td>{time.category || 'TBC'}</td>
-					<td>{handleNull(time.timeSpent, formatDuration)}</td>
-					<td>{handleNull(time.startTime, convertUTCToLocal)}</td>
-					<td>{handleNull(time.endTime, convertUTCToLocal)}</td>
-					<td>{time.status}</td>
-				</tr>
-			{/each}
+			<tbody>
+				{#each $times.tasks as time}
+					<tr>
+						<td>{time.id}</td>
+						<td>{time.category || 'TBC'}</td>
+						<td>{handleNull(time.timeSpent, formatDuration)}</td>
+						<td>{handleNull(time.startTime, convertUTCToLocal)}</td>
+						<td>{handleNull(time.endTime, convertUTCToLocal)}</td>
+						<td>{time.status}</td>
+					</tr>
+				{/each}
+			</tbody>
 		</table>
 	{/if}
 </div>
