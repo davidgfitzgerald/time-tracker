@@ -34,7 +34,6 @@
 </table>
 
 <style>
-
 	table {
 		width: 100%;
 		border-collapse: collapse;
@@ -73,44 +72,5 @@
 
 	table tbody tr:last-of-type {
 		border-bottom: 2px solid #cccdcd;
-	}
-
-	@media (max-width: 650px) {
-		th {
-			display: none
-		}
-		td {
-			display: block;
-			padding: 0.5rem 1rem
-		}
-		td:first-child {
-			padding-top: 2rem;
-		}
-		td:last-child {
-			padding-bottom: 2rem;
-		}
-
-		td::before {
-			font-weight: 700; /* bold */
-			text-transform: capitalize;
-		}
-
-		td:nth-of-type(1)::before {
-			content: "name";
-		}
-
-		td:nth-of-type(2)::before {
-			content: "time spent";
-		}
-
-		td:nth-of-type(3)::before {
-			content: "start time";
-		}
-
-		td:nth-of-type(4)::before {
-			content: "end time";
-		}
-
-
 	}
 </style>

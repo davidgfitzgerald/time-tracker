@@ -27,6 +27,55 @@ WIP:
 
 Will carry on later.
 
+### Back
+
+Came back and finished that video. There are some useful tips in there but ultimately at a smaller screen size 
+I still want a regular table, I don't want it to snap.
+
+I'll past this here as I decided to take it out of the source code but this was interesting for repurposing
+a table at a smaller size into a grid layout:
+
+```css
+	@media (max-width: 650px) {
+		th {
+			display: none
+		}
+		td {
+			display: grid;
+			gap: 0.5rem;
+			grid-template-columns: 15ch auto;
+			padding: 0.5rem 1rem
+		}
+		td:first-child {
+			padding-top: 2rem;
+		}
+		td:last-child {
+			padding-bottom: 2rem;
+		}
+
+		td::before {
+			font-weight: 700; /* bold */
+			text-transform: capitalize;
+		}
+
+		td:nth-of-type(1)::before {
+			content: "name";
+		}
+
+		td:nth-of-type(2)::before {
+			content: "time spent";
+		}
+
+		td:nth-of-type(3)::before {
+			content: "start time";
+		}
+
+		td:nth-of-type(4)::before {
+			content: "end time";
+		}
+	}
+```
+
 ## Tue 10th Dec
 
 - Made the EC2 time_tracker instance IP static
