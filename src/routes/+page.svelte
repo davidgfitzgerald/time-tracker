@@ -11,18 +11,6 @@
     times.set(data)
 </script>
 
-<style>
-    .title {
-        font-size: 2em;
-        margin: 20px;
-        text-align: center;
-    }
-</style>
-
-<div class="title">
-    <h1>Time Tracker</h1>
-</div>
-
 <Clock/>
 <Controls/>
 <Times/>

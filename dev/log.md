@@ -13,6 +13,14 @@ information.
 - Made the EC2 time_tracker instance IP static
 - Added a `ci.sh` script that can be used as a poor-man's script to build, push and run a docker container in EC2
 
+### Improving UI/UX
+
+I have merged the infra CI/CD PR and now working on making the app a bit more pleasing on mobile.
+
+Watching this video:
+[Table Design Ideas For Mobile. How to Represent Data Tables on Mobile](https://www.youtube.com/watch?v=dfy_8llodDE)
+
+
 ## Mon 9th Dec
 
 Gonna try using `terraformer` to see if I can import the AWS infrastructure into terraform.
