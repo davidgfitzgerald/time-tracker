@@ -19,8 +19,8 @@ resource "aws_instance" "ec2_time_tracker" {
     aws_security_group.app_security_group.id,
   ]
 
-  # Installs docker, pulls image and runs container
-  user_data = file("${path.module}/scripts/install_and_run.sh")
+  # Automatically installs docker, pulls image and runs container
+  user_data = file("${path.module}/scripts/bootstrap.sh")
 }
 
 output "ec2_time_tracker" {

@@ -30,9 +30,11 @@ Could read this:
 
 - [How to Use Breakpoints for Responsive Web Design](https://www.freecodecamp.org/news/breakpoints-for-responsive-web-design/)
 
-Free Course on reactive web design:
+Free Courses:
 
 - [Responsive Web Design Certification](https://www.freecodecamp.org/learn/2022/responsive-web-design/)
+- [Data Visualization Certification](https://www.freecodecamp.org/learn/data-visualization/#data-visualization-with-d3)
+
 
 ## Mon 9th Dec
 

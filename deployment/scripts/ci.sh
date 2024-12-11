@@ -5,7 +5,6 @@
 
 # The full path to this dir, e.g.: ~/code/time-tracker/deployment/scripts
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
-# echo "SCRIPT_DIR=${SCRIPT_DIR}"
 
 # Build and push docker app image to ECR
 ${SCRIPT_DIR}/build_and_push.sh
@@ -31,6 +30,7 @@ fi
 terraform taint aws_instance.ec2_time_tracker
 
 # Defensive: Make sure we don't unexpectedly change more infrastructure
+# than we expect to.
 terraform plan | grep "1 to add, 1 to change, 1 to destroy"
 if [[ $? -ne 0 ]]; then
     echo "Aborted deployment."
@@ -42,10 +42,12 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-# Rebuild the AWS infra
-# Slightly playing with fire by adding -auto-approve.
-# Since this is a solo development project I am 
-# going to risk it and hope I don't get bitten.
+# Adjust the AWS infra.
+#
+# This will re-deploy the EC2 app instance. This
+# instance uses a bootstrapping script to install
+# docker, pull the new image from ECR and then run
+# a docker container.
 terraform apply -auto-approve  
 
 # cd back to wherever this was called from
