@@ -11,16 +11,22 @@
 	let activeTask;
 
 	/**
-	 * Function to log the stopwatch
+	 * Open the modal to log the stopwatch
 	 */
 	function openModal() {
-		if ($duration == 0) {
-			console.error('Frontend: Cannot log 0 time');
-			return;
-		}
 		modalOpen = true;
 	}
 
+	/**
+	 * Close the modal
+	 */
+	function closeModal() {
+		modalOpen = false
+	}
+	
+	/**
+	 * Function to log the stopwatch
+	 */
 	async function updateTask() {
 		activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
 		if (!activeTask) {
@@ -43,7 +49,7 @@
 			console.error(error);
 		}
 
-		modalOpen = false;
+		closeModal();
 	}
 
 	/**
@@ -100,7 +106,7 @@
 </div>
 
 {#if modalOpen}
-	<div class="modal-background">
+	<div class="modal-background" on:click={closeModal}>
 		<div class="modal-content" on:click|stopPropagation>
 			<h2>Track Time</h2>
 			<p>You are about to track {formatDuration($duration)}.</p>
