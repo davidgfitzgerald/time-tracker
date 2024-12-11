@@ -12,34 +12,28 @@
 	}
 </script>
 
-<div class="container">
-	<table>
-		<thead>
+<table>
+	<thead>
+		<tr>
+			<th>Category</th>
+			<th>Time Spent</th>
+			<th>Start Time</th>
+			<th>End Time</th>
+		</tr>
+	</thead>
+	<tbody>
+		{#each $times.tasks as time}
 			<tr>
-				<th>Category</th>
-				<th>Time Spent</th>
-				<th>Start Time</th>
-				<th>End Time</th>
+				<td>{time.category || 'TBC'}</td>
+				<td>{handleNull(time.timeSpent, formatDuration)}</td>
+				<td>{handleNull(time.startTime, convertUTCToLocal)}</td>
+				<td>{handleNull(time.endTime, convertUTCToLocal)}</td>
 			</tr>
-		</thead>
-		<tbody>
-			{#each $times.tasks as time}
-				<tr>
-					<td data-cell="category">{time.category || 'TBC'}</td>
-					<td data-cell="timeSpent">{handleNull(time.timeSpent, formatDuration)}</td>
-					<td data-cell="startTime">{handleNull(time.startTime, convertUTCToLocal)}</td>
-					<td data-cell="endTime">{handleNull(time.endTime, convertUTCToLocal)}</td>
-				</tr>
-			{/each}
-		</tbody>
-	</table>
-</div>
+		{/each}
+	</tbody>
+</table>
 
 <style>
-	.container {
-		max-width: 100%;
-		overflow-x: auto;
-	}
 
 	table {
 		width: 100%;
@@ -79,5 +73,44 @@
 
 	table tbody tr:last-of-type {
 		border-bottom: 2px solid #cccdcd;
+	}
+
+	@media (max-width: 650px) {
+		th {
+			display: none
+		}
+		td {
+			display: block;
+			padding: 0.5rem 1rem
+		}
+		td:first-child {
+			padding-top: 2rem;
+		}
+		td:last-child {
+			padding-bottom: 2rem;
+		}
+
+		td::before {
+			font-weight: 700; /* bold */
+			text-transform: capitalize;
+		}
+
+		td:nth-of-type(1)::before {
+			content: "name";
+		}
+
+		td:nth-of-type(2)::before {
+			content: "time spent";
+		}
+
+		td:nth-of-type(3)::before {
+			content: "start time";
+		}
+
+		td:nth-of-type(4)::before {
+			content: "end time";
+		}
+
+
 	}
 </style>

@@ -21,6 +21,12 @@ be both mobile an desktop suitable.
 
 Made the UI slightly nicer. Enough to move forward to implement some other features.
 
+WIP:
+
+21:47 in this YT vid: [How to create a responsive HTML table](https://www.youtube.com/watch?v=czZ1PvNW5hk)
+
+Will carry on later.
+
 ## Tue 10th Dec
 
 - Made the EC2 time_tracker instance IP static
