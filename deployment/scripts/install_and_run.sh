@@ -1,7 +1,9 @@
 #!/bin/bash
 
-# This will run in the cloud in the EC2 instance running the time-tracker app
-# It will install docker, pull the image and run the container
+# This bootstrapping script will run in the cloud in the 
+# EC2 instance that runs the time-tracker app container. 
+# It will install docker, pull the  image and run the 
+# container.
 
 # Exit immediately if any command fails
 set -e

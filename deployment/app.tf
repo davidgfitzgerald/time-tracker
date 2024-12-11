@@ -20,7 +20,7 @@ resource "aws_instance" "ec2_time_tracker" {
   ]
 
   # Installs docker, pulls image and runs container
-  user_data = file("${path.module}/scripts/install_and_run.sh") 
+  user_data = file("${path.module}/scripts/install_and_run.sh")
 }
 
 output "ec2_time_tracker" {
@@ -36,14 +36,6 @@ resource "aws_security_group" "app_security_group" {
   name        = "app-ec2-sg"
   description = "Security group for application EC2 instance"
   vpc_id      = aws_default_vpc.default.id
-
-  # Allow SSH from the Tailscale subnet router
-  # ingress {
-  #   from_port   = 22
-  #   to_port     = 22
-  #   protocol    = "tcp"
-  #   cidr_blocks = [aws_instance.tailscale-subnet-router.private_ip] # Allow only the bastion node
-  # }
 
   # Allow internal VPC communication if necessary
   ingress {

@@ -128,3 +128,13 @@ The environment variable template file for the deployment.
 ## `vars.tf`
 
 The definition of environment variables mapped to terraform variables for use through the deployment.
+
+# CI
+
+For the time being, a quick and dirty CI can be used to build, push and run a docker container in EC2 with:
+
+```bash
+./deployment/scripts/ci.sh
+```
+
+It is slow and by no means full proof but at least we have an automated method for deploying to prod now!
