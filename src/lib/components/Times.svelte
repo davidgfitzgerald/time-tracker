@@ -16,7 +16,8 @@
 
 <style>
     table {
-        width: 100%;
+		display:	block;
+		overflow-x: auto;
         border-collapse: collapse;
     }
 
