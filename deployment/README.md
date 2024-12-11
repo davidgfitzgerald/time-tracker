@@ -58,6 +58,10 @@ To set up the project for deployment, follow these steps:
 
    Confirm with `yes` if you are happy.
 
+## `app.tf`
+
+Defines an EC2 instance in the cloud with a static IP that runs the app in a docker container.
+
 ## `config.tf`
 
 Currently only `us-west-2` is supported but other AWS regions could be supported in future.

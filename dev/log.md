@@ -8,6 +8,14 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Wed 11th Dec
+
+Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cloud.
+
+```bash
+172.31.20.153 time-tracker
+```
+
 ## Tue 10th Dec
 
 - Made the EC2 time_tracker instance IP static

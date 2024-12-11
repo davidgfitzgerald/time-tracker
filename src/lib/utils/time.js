@@ -62,3 +62,13 @@ export function calculateDuration(startTime) {
 	const startDate = new Date(startTime);
 	return Math.floor((now.valueOf() - startDate.valueOf()) / 1000);
 }
+
+/**
+ * 
+ * @param {number} secs 
+ * @returns 
+ */
+export function sleep(secs) {
+	const ms = secs * 1000
+	return new Promise(resolve => setTimeout(resolve, ms));
+  }

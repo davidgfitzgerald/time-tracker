@@ -1,6 +1,5 @@
 /**
- * Functions extracted out of +layout.svelte in order to keep
- * that file more visually clear of the layout.
+ * Functions that manage the clock display.
  *
  * These functions mount for the lifetime of the application.
  * The duration store is updated such that the timer always
@@ -18,6 +17,8 @@ export function updateDuration(tasks) {
 	const activeTask = tasks.find((t) => t.status === 'ACTIVE');
 	if (activeTask) {
 		duration.set(calculateDuration(activeTask.startTime));
+	} else {
+		console.debug("Couldn't find an active task. Not updating duration.")
 	}
 }
 
@@ -31,9 +32,11 @@ export function updateDuration(tasks) {
 export function setupClock(times, updateCallback) {
 	const intervalId = setInterval(() => updateCallback(), 1000);
 	const unsubscribe = times.subscribe(() => updateCallback());
+	console.debug("Clock update callbacks set up.")
 
 	return () => {
 		clearInterval(intervalId);
 		unsubscribe();
+		console.debug("Clock update callbacks destroyed.")
 	};
 }

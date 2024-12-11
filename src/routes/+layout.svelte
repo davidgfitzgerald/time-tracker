@@ -1,6 +1,6 @@
 <script>
 	import NavBar from '$lib/components/NavBar.svelte';
-	import { onMount, onDestroy } from 'svelte';
+	import { onDestroy } from 'svelte';
 	import { times } from '$lib/stores';
 	import { setupClock, updateDuration } from '$lib/utils/clock.js';
 
@@ -9,11 +9,12 @@
 	 */
 	let teardownClock;
 
-	// During the lifecycle of the application, update the clock
-	onMount(() => {
-		teardownClock = setupClock(times, () => {
-			updateDuration($times.tasks);
-		});
+	/**
+	 * Start task to periodicially update clock
+	*/
+	console.debug("+layout.svelte running to set up clock")
+	teardownClock = setupClock(times, () => {
+		updateDuration($times.tasks);
 	});
 
 	onDestroy(() => {

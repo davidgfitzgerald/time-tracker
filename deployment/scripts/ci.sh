@@ -12,34 +12,40 @@ ${SCRIPT_DIR}/build_and_push.sh
 # cd to deployment/
 pushd "${SCRIPT_DIR}/../" 1>/dev/null
 
-# Don't taint the EC2 instance if terraform
-# infrastructure is not correct.
-terraform plan | grep "Your infrastructure matches the configuration"
-if [[ $? -ne 0 ]]; then
-    echo "Aborted deployment."
-    echo "Check terraform plan."
+# If --force is passed, do the deployment 
+# regardless of what infra changes might incur
+if [[ ! $1 = "--force" ]]; then
+    # Don't taint the EC2 instance if terraform
+    # infrastructure is not correct.
+    terraform plan | grep "Your infrastructure matches the configuration"
+    if [[ $? -ne 0 ]]; then
+        echo "Aborted deployment."
+        echo "Check terraform plan."
 
-    # cd back to wherever this was called from
-    popd 1>/dev/null
+        # cd back to wherever this was called from
+        popd 1>/dev/null
 
-    exit 1
+        exit 1
+    fi
 fi
 
 # Taint the EC2 instance so it is forcibly re-deployed and
-# picks up new changes.
+# runs a new docker image.
 terraform taint aws_instance.ec2_time_tracker
 
-# Defensive: Make sure we don't unexpectedly change more infrastructure
-# than we expect to.
-terraform plan | grep "1 to add, 1 to change, 1 to destroy"
-if [[ $? -ne 0 ]]; then
-    echo "Aborted deployment."
-    echo "Check terraform plan."
+if [[ ! $1 = "--force" ]]; then
+    # Defensive: Make sure we don't unexpectedly change more infrastructure
+    # than we expect to.
+    terraform plan | grep "1 to add, 1 to change, 1 to destroy"
+    if [[ $? -ne 0 ]]; then
+        echo "Aborted deployment."
+        echo "Check terraform plan."
 
-    # cd back to wherever this was called from
-    popd 1>/dev/null
+        # cd back to wherever this was called from
+        popd 1>/dev/null
 
-    exit 1
+        exit 1
+    fi
 fi
 
 # Adjust the AWS infra.

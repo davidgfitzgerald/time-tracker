@@ -11,8 +11,10 @@ export async function load({ fetch }) {
 	let error = '';
 
 	try {
-		console.log('Page loaded!');
+		console.log('Client requesting first page load!');
+		console.log('Fetching tasks from backend.');
 		const res = await fetch('/api/tasks');
+		console.log('Fetched tasks from DB.');
 		if (res.ok) {
 			tasks = await res.json();
 			if (tasks.length == 0) {
