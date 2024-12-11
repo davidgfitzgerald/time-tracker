@@ -102,8 +102,8 @@
 </script>
 
 <div class="controls">
-	<button on:click={openModal}>Log</button>
-	<button on:click={clearDB} class="warn-button">Clear DB</button>
+	<button on:click={openModal} class="submit">Track</button>
+	<!-- <button on:click={clearDB} class="warn">Clear DB</button> -->
 </div>
 
 {#if modalOpen}
@@ -126,16 +126,23 @@
 <style>
 	/* Buttons */
 	button {
-		margin: 10px;
 		padding: 10px 20px;
 		font-size: 1em;
 		cursor: pointer;
 		border: 1px;
 		border-radius: 1rem;
+		box-shadow: 2px 2px 5px rgb(92, 92, 92);
+
 	}
 
-	/* Warning buttons */
-	.warn-button {
+	/* Submit button */
+	.submit {
+		background-color: rgb(61, 177, 219);
+		color: white;
+	}
+
+	/* Warning button */
+	.warn {
 		background-color: rgb(214, 40, 40);
 		color: white;
 	}
@@ -143,7 +150,7 @@
 	/* Controls container */
 	.controls {
 		font-size: 2em;
-		margin: 20px;
+		padding-bottom: 10px;
 		text-align: center;
 	}
 

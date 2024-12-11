@@ -10,7 +10,10 @@
 <style>
 	.stopwatch {
 		font-size: 2em;
-		margin: 20px;
 		text-align: center;
+	}
+
+	h1 {
+		padding: 0px;
 	}
 </style>

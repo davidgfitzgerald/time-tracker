@@ -11,8 +11,5 @@ body {
 body {
 	font-family: Arial, sans-serif; /* Customize as needed */
 	/* font-size: 16px; */
-}
-
-.content {
-	padding: 1rem;
+	background-color: grey;
 }
