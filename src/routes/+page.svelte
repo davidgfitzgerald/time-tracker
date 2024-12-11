@@ -14,8 +14,17 @@
 	
 	console.debug("Updating duration manually in +page.svelte.")
 	updateDuration($times.tasks);
+
+	let error = $times.error;
 </script>
 
 <Clock />
 <Controls />
-<Times />
+
+{#if error}
+	<p>{error}</p>
+{:else if $times.tasks.length === 0}
+	<p>No tasks found.</p>
+{:else}
+	<Times />
+{/if}

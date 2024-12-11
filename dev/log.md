@@ -16,6 +16,9 @@ Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cl
 172.31.20.153 time-tracker
 ```
 
+Spending some time researching some front end tips and tricks of how I can display my table nicer and have it 
+be both mobile an desktop suitable.
+
 ## Tue 10th Dec
 
 - Made the EC2 time_tracker instance IP static
