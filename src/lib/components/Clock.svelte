@@ -1,6 +1,6 @@
 <script>
-    import { formatDuration } from "$lib/utils/time";
-    import { duration } from "$lib/stores";
+	import { formatDuration } from '$lib/utils/time';
+	import { duration } from '$lib/stores';
 </script>
 
 <div class="stopwatch">
@@ -8,7 +8,7 @@
 </div>
 
 <style>
-    .stopwatch {
+	.stopwatch {
 		font-size: 2em;
 		margin: 20px;
 		text-align: center;

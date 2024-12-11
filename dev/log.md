@@ -4,8 +4,8 @@ This is a place where I can write my thoughts during the app development.
 
 The log will go in reverse chronological order (latest first).
 
-**Disclaimer:** I'm happy to version control this as it's a personal project but in 
-practice/production I would not publically publish this potentially sensitive 
+**Disclaimer:** I'm happy to version control this as it's a personal project but in
+practice/production I would not publically publish this potentially sensitive
 information.
 
 ## Tue 10th Dec
@@ -17,9 +17,10 @@ information.
 
 I have merged the infra CI/CD PR and now working on making the app a bit more pleasing on mobile.
 
-Watching this video:
-[Table Design Ideas For Mobile. How to Represent Data Tables on Mobile](https://www.youtube.com/watch?v=dfy_8llodDE)
+Watching these videos:
 
+- [Table Design Ideas For Mobile. How to Represent Data Tables on Mobile](https://www.youtube.com/watch?v=dfy_8llodDE)
+- [Designing Components: Generic vs Specific, or Composable vs Pre-Composed](https://www.youtube.com/watch?v=qculS3r8BYM)
 
 ## Mon 9th Dec
 
@@ -48,20 +49,20 @@ I'm happy with where the app is up to at this point, I'm happy that we have:
 - An interface to create tasks
 - A UI that reactively updates tasks as they are altered
 
-I just headed out into town to do some shopping and thought I'd go to a café and do some 
+I just headed out into town to do some shopping and thought I'd go to a café and do some
 more coding.
 
 I remembered just as I picked up my laptop that my server would stop running.
 Haha. This problem again.
 
-Ok. I am now at a point where I must have the app running in the cloud. 
+Ok. I am now at a point where I must have the app running in the cloud.
 
 Though, as an aside, I did look at my unused raspberry pi earlier and think... ooooh!
 It could be cool to run the app from a server on my raspberry pi at home. The positive of this
 is that I wouldn't incur AWS costs. Already for one month of an idle RDS deployment it cost over $20.
 The downside would be that I am at the mercy of my home internet. If the internet goes down
 for any reason... it happens from time to time! I would lose connection to the app.
-Something to consider for future. It would be great to use the raspberry pi and understand how to set 
+Something to consider for future. It would be great to use the raspberry pi and understand how to set
 up a server on it.
 
 Anyways, back to the main work. I am going to try to spin up an EC2 instance with terraform
@@ -78,23 +79,23 @@ Let's go!
 Here's my prompt for god:
 
 > I have a svelte app I am running locally.
-> 
+>
 > I would now like to run the app in the cloud. Specifically with AWS.
-> 
+>
 > I have already set up, configured and deployed a VPC with terraform in the cloud.
-> 
+>
 > Currently it has two nodes. One is an RDS node and the other is an EC2 instance acting as a tailscale subnet router.
-> 
+>
 > I would like to add another node into the cluster, probably another EC2 instance but I am open to options that could reduce cost.
-> 
+>
 > I would like this node to be accessible when I join my tailnet.
-> 
+>
 > My tailscale subnet router runs this command in the AWS VPC:
-> 
+>
 > sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
-> 
+>
 > This means new nodes should automatically be accessible by me from my laptop connected to the tailnet.
-> 
+>
 > Help me write the terraform to deploy a container that can run my application and help me consider how I can push my local development code onto the container and re-run it. In a future question I will probably ask you about how can I add CI/CD such that when I push commits, the app is automatically reloaded with the changes.
 
 **Note:** For me to enable `ls ~/Desktop` I had to grant VSCode full disk access in `System Settings`
@@ -105,7 +106,7 @@ Following image taken from https://aws.amazon.com/fargate/
 
 ![Fargate](fargate.png)
 
-Seems like it could be interesting at some point to consider switching out my infrasturcture management for fargate too. 
+Seems like it could be interesting at some point to consider switching out my infrasturcture management for fargate too.
 For now, I'll stick with my approach as I've already implemented it but I should be mindful of this as a possible solution to lower
 my AWS costs.
 
@@ -133,7 +134,7 @@ in the last month.
 
 I have reconfigured my `~/.pg_service.conf` and `~/.pgpass` to point to the correct AWS RDS host.
 
-Although I can run the app locally and it will communicate with RDS, once I run the app from a docker 
+Although I can run the app locally and it will communicate with RDS, once I run the app from a docker
 container, I encounter an error. I'm not going to worry about fixing this right now.
 
 ### Big Refactor
@@ -253,11 +254,13 @@ if I could just join my tailnet and then I don't need to worry about anything. I
 Reading this:
 
 https://tailscale.com/kb/1021/install-aws
+
 > Connect to an AWS VPC using subnet routes
 
 There is also this article
 
 https://tailscale.com/kb/1141/aws-rds
+
 > Access AWS RDS privately using Tailscale
 
 I'm going to go with the latter. I think they are both similar though.
@@ -278,6 +281,7 @@ I followed the tutorials and they worked. So the steps were as follows:
 1. Add tailscale security group
 2. `ssh` into EC2 instance
 3. Run these commands to install and run tailscale
+
 ```bash
 sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://pkgs.tailscale.com/stable/amazon-linux/2/tailscale.repo
@@ -288,13 +292,14 @@ echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a /etc/sysctl.d/99-tailscale
 sudo sysctl -p /etc/sysctl.d/99-tailscale.conf
 sudo tailscale up --advertise-routes=172.31.0.0/16 --accept-dns=false
 ```
+
 4. Log into tailscale locally on the GUI to authorise the EC2 instance
 5. Login to https://login.tailscale.com/admin locally
 6. Follow all the steps in https://tailscale.com/kb/1019/subnets to configure the subnet router
 7. Add the AWS DNS to the tailnet to allow this:
-    ```bash
-    pgcli -h terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com -U david -d time_tracker
-    ```
+   ```bash
+   pgcli -h terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com -U david -d time_tracker
+   ```
 8. Remove SSH access to EC2 instance
 
 So, I may need to address this at some point but if terraform ever decides to destroy and re-create the subnet router
@@ -363,7 +368,7 @@ I'm going to watch some YT videos on connecting to RDS locally now.
 Now watching this youtube video:
 
 > How can I connect to a private Amazon RDS instance from local system through EC2 as a bastion host?
-https://www.youtube.com/watch?v=ypWzL3PdKx0
+> https://www.youtube.com/watch?v=ypWzL3PdKx0
 
 Though I'm making progress with the bastion approach I am more interested now in this tailscale tutorial on connecting
 to an AWS VPC: https://tailscale.com/kb/1021/install-aws.
@@ -373,11 +378,11 @@ When running `terraform apply` with my `key.tf` I found it was repeatedly trying
 ```log
 ╷
 │ Error: importing EC2 Key Pair (macbook-id-rsa): operation error EC2: ImportKeyPair, https response error StatusCode: 400, RequestID: 1790407a-9002-473d-95c5-508ccceda585, api error InvalidKeyPair.Duplicate: The keypair already exists
-│ 
+│
 │   with aws_key_pair.macbook_id_rsa,
 │   on key.tf line 2, in resource "aws_key_pair" "macbook_id_rsa":
 │    2: resource "aws_key_pair" "macbook_id_rsa" {
-│ 
+│
 ╵
 ```
 
@@ -389,20 +394,20 @@ terraform import aws_key_pair.macbook_id_rsa macbook-id-rsa
 
 ### Continuing
 
-It is the evening now and I'm gonna give this another go. I can't manage to ssh into the bastion since adding the subnets so I think 
+It is the evening now and I'm gonna give this another go. I can't manage to ssh into the bastion since adding the subnets so I think
 the networking is misconfigured somehow.
 
 I'm going to follow this youtube tutorial architecturally and hope it works:
 
 > How to Access a Private RDS Database (Using a Jump Box) From Your Home Network
-https://www.youtube.com/watch?v=buqBSiEEdQc
+> https://www.youtube.com/watch?v=buqBSiEEdQc
 
 A jump box is another term for a bastion.
 
-I think a lot of this is clicking now. 
+I think a lot of this is clicking now.
 
 Basically in AWS you have a default VPC which defines default public subnets, a main route table associated to each subnet and an intenet gateway.
-The RDS instance has to have at least two private subnets so those have to be created, along with a private routing table. 
+The RDS instance has to have at least two private subnets so those have to be created, along with a private routing table.
 
 Ok holy shit.
 
@@ -423,7 +428,6 @@ pgcli -h localhost -U david -d time_tracker
 ```
 
 Ok great. I'm definitely stopping there for the day. It's 12:30am now, but end on a high, thank god! What a Saturday night eh.
-
 
 ## Fri 8th Nov
 
@@ -503,7 +507,7 @@ ChatGPT how I could leverage tailscale to connect to my RDS DB instance. Basical
 an EC2 instance running tailscale, that allows SSH access from my private machine. That instance
 would be on the same VPC as the RDS instance. Then when I connect to the tailnet, I should
 automatically be able to connect to the RDS instance, in theory. Something to try next time. I would need
-to understand whether I could add the tailscale VPN to the VPC itself thus bypassing the need for the 
+to understand whether I could add the tailscale VPN to the VPC itself thus bypassing the need for the
 EC2 instance or whether the EC2 instance would be necessary,
 
 ## Thu 7th Nov
@@ -546,12 +550,12 @@ not valid.
 ```
 
 So, it appears the problem was that due to the `cloud-integration.tf` file I was specifying to use the terraform cloud
-and though the AWS credentials were available locally, I had not configured them in the terraform cloud. For now I will 
+and though the AWS credentials were available locally, I had not configured them in the terraform cloud. For now I will
 proceed using terraform locally.
 
 Finally running `terraform apply` with the tutorial infrastructure which should provision an EC2 instance.
 
-Because I changed the AWS region from `us-west-2` to `eu-west-2` I have to find and change the `AMI` (Amazon Machine Image) 
+Because I changed the AWS region from `us-west-2` to `eu-west-2` I have to find and change the `AMI` (Amazon Machine Image)
 specified to avoid this error:
 
 ```log
@@ -568,26 +572,25 @@ How frustrating. My AWS has been blocked and I have now opened a support ticket 
 aws_instance.app_server: Creating...
 ╷
 │ Error: creating EC2 Instance: operation error EC2: RunInstances, https response error StatusCode: 400, RequestID: 96ed64c8-a7eb-4dcc-aec9-dd76fa98b6af, api error Blocked: This account is currently blocked and not recognized as a valid account. Please contact https://support.console.aws.amazon.com/support/home?region=us-east-1#/case/create?issueType=customer-service&serviceCode=account-management&categoryCode=account-verification if you have questions.
-│ 
+│
 ```
 
 I'm gonna stop for the day. Spent 2hr20m trying to just instantiate some AWS infrastructure with (and without) terraform. Sigh. It would be nice
 to actually do some app development. Oh well, we solider on. We will get there.
-
 
 ## Wed 6th Nov
 
 ### Deployment
 
 I am currently tackling deploying a postgres DB to the cloud. I am experimenting with using Terraform to deploy a free-tier 12-month
-AWS RDS DB on-demand compute unit. I just want something that I can forget about and won't kill me with fees at the end of the 12-month 
+AWS RDS DB on-demand compute unit. I just want something that I can forget about and won't kill me with fees at the end of the 12-month
 period. It looks like a `db.t3.micro` instance would cost 1.09 USD per month if it is used 2/24 hours a day. I think that might be realistic?
 
 For now, I am going to carry on.
 
 I need to make a note that on Nov 6th 2025 the DB will start incurring costs.
 
-I created the `deployment` directory and then ran `terraform init` within. I added `.terraform` to the `.gitignore`. The `.terraform.lock.hcl` file 
+I created the `deployment` directory and then ran `terraform init` within. I added `.terraform` to the `.gitignore`. The `.terraform.lock.hcl` file
 has the required information that would mean `terraform init` uses the same provider version. In practice this is only one aws provider. I could
 commit `.terraform` but to keep things smaller I decided not to.
 
@@ -605,5 +608,5 @@ the recommended route is via IAM Identify Center.
 
 I added these credentials with `aws configure`.
 
-This now means that `terraform plan` works and shows what would be created when running `terraform create` which is where I should probably 
+This now means that `terraform plan` works and shows what would be created when running `terraform create` which is where I should probably
 start next development session.

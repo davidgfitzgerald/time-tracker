@@ -21,9 +21,9 @@
 	 * Close the modal
 	 */
 	function closeModal() {
-		modalOpen = false
+		modalOpen = false;
 	}
-	
+
 	/**
 	 * Function to log the stopwatch
 	 */
@@ -49,7 +49,8 @@
 			console.error(error);
 		}
 
-		closeModal();
+		category = ''; // Disable pre-population next tune
+		closeModal(); // Close the time log modal
 	}
 
 	/**
@@ -116,11 +117,6 @@
 					Task Category:
 					<input type="text" bind:value={category} required />
 				</label>
-
-				<!-- <label>
-				<input type="number" bind:value={$duration} min="1" required hidden />
-			</label> -->
-
 				<button class="add-task" type="submit">Add Task</button>
 			</form>
 		</div>

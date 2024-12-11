@@ -1,13 +1,13 @@
 /**
  * Functions extracted out of +layout.svelte in order to keep
  * that file more visually clear of the layout.
- * 
+ *
  * These functions mount for the lifetime of the application.
- * The duration store is updated such that the timer always 
+ * The duration store is updated such that the timer always
  * displays the correct duration.
  */
-import { duration } from "$lib/stores";
-import { calculateDuration } from "./time";
+import { duration } from '$lib/stores';
+import { calculateDuration } from './time';
 
 /**
  * Finds the active task and calculates the elapsed duration.
@@ -15,10 +15,10 @@ import { calculateDuration } from "./time";
  * @param {import("$lib/stores").Task[]} tasks
  */
 export function updateDuration(tasks) {
-    const activeTask = tasks.find((t) => t.status === "ACTIVE");
-    if (activeTask) {
-        duration.set(calculateDuration(activeTask.startTime))
-    }
+	const activeTask = tasks.find((t) => t.status === 'ACTIVE');
+	if (activeTask) {
+		duration.set(calculateDuration(activeTask.startTime));
+	}
 }
 
 /**
@@ -29,11 +29,11 @@ export function updateDuration(tasks) {
  * @returns {() => void} Cleanup function
  */
 export function setupClock(times, updateCallback) {
-    const intervalId = setInterval(() => updateCallback(), 1000);
-    const unsubscribe = times.subscribe(() => updateCallback());
+	const intervalId = setInterval(() => updateCallback(), 1000);
+	const unsubscribe = times.subscribe(() => updateCallback());
 
-    return () => {
-        clearInterval(intervalId);
-        unsubscribe();
-    };
+	return () => {
+		clearInterval(intervalId);
+		unsubscribe();
+	};
 }
