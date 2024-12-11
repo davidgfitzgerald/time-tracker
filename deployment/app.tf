@@ -1,8 +1,17 @@
+resource "aws_eip" "time_tacker_ip" {
+  domain = "vpc"
+
+  instance                  = aws_instance.ec2_time_tracker.id
+  associate_with_private_ip = "172.31.20.153"
+}
+
+
 resource "aws_instance" "ec2_time_tracker" {
   ami           = "ami-066a7fbea5161f451" # Amazon Linux 2023 AMI. Username is ec2-user
   instance_type = "t2.micro"
   key_name      = aws_key_pair.local_id_rsa.key_name
   subnet_id     = data.aws_subnets.default_vpc.ids[3] # One of the default VPC public subnets
+  private_ip    = "172.31.20.153"
 
   iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
 
