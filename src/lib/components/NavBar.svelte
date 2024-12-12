@@ -8,15 +8,16 @@
 	 * @type {Link[]}
 	 */
 	let links = [
-		// { name: 'Home', href: '/' },
-		// { name: 'About', href: '/about' },
-		// { name: 'Contact', href: '/contact' }
+		{ name: 'Home', href: '/' },
+		{ name: 'Timeline', href: '/timeline'}
 	];
 </script>
 
 <nav>
 	<div class="navbar">
-		<div class="logo">Time Tracker</div>
+		<div class="logo">
+			<a href="/">Time Tracker</a>
+		</div>
 		<div class="menu">
 			{#each links as link}
 				<a href={link.href}>{link.name}</a>
@@ -41,6 +42,11 @@
 	.logo {
 		font-size: 1.5rem;
 		font-weight: bold;
+	}
+
+	.logo a {
+		color: white;
+		text-decoration: none;
 	}
 
 	.menu {
