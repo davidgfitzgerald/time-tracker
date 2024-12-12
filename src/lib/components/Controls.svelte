@@ -11,16 +11,22 @@
 	let activeTask;
 
 	/**
-	 * Function to log the stopwatch
+	 * Open the modal to log the stopwatch
 	 */
 	function openModal() {
-		if ($duration == 0) {
-			console.error('Frontend: Cannot log 0 time');
-			return;
-		}
 		modalOpen = true;
 	}
 
+	/**
+	 * Close the modal
+	 */
+	function closeModal() {
+		modalOpen = false;
+	}
+
+	/**
+	 * Function to log the stopwatch
+	 */
 	async function updateTask() {
 		activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
 		if (!activeTask) {
@@ -43,7 +49,8 @@
 			console.error(error);
 		}
 
-		modalOpen = false;
+		category = ''; // Disable pre-population next tune
+		closeModal(); // Close the time log modal
 	}
 
 	/**
@@ -95,12 +102,12 @@
 </script>
 
 <div class="controls">
-	<button on:click={openModal}>Log</button>
-	<button on:click={clearDB} class="warn-button">Clear DB</button>
+	<button on:click={openModal} class="submit">Track</button>
+	<!-- <button on:click={clearDB} class="warn">Clear DB</button> -->
 </div>
 
 {#if modalOpen}
-	<div class="modal-background">
+	<div class="modal-background" on:click={closeModal}>
 		<div class="modal-content" on:click|stopPropagation>
 			<h2>Track Time</h2>
 			<p>You are about to track {formatDuration($duration)}.</p>
@@ -110,11 +117,6 @@
 					Task Category:
 					<input type="text" bind:value={category} required />
 				</label>
-
-				<!-- <label>
-				<input type="number" bind:value={$duration} min="1" required hidden />
-			</label> -->
-
 				<button class="add-task" type="submit">Add Task</button>
 			</form>
 		</div>
@@ -124,16 +126,23 @@
 <style>
 	/* Buttons */
 	button {
-		margin: 10px;
 		padding: 10px 20px;
 		font-size: 1em;
 		cursor: pointer;
 		border: 1px;
 		border-radius: 1rem;
+		box-shadow: 2px 2px 5px rgb(92, 92, 92);
+
 	}
 
-	/* Warning buttons */
-	.warn-button {
+	/* Submit button */
+	.submit {
+		background-color: rgb(61, 177, 219);
+		color: white;
+	}
+
+	/* Warning button */
+	.warn {
 		background-color: rgb(214, 40, 40);
 		color: white;
 	}
@@ -141,7 +150,7 @@
 	/* Controls container */
 	.controls {
 		font-size: 2em;
-		margin: 20px;
+		padding-bottom: 10px;
 		text-align: center;
 	}
 

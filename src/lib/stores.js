@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
 /**
  * @typedef {Object} Task
@@ -20,8 +20,8 @@ import { writable } from "svelte/store";
  * @type {import('svelte/store').Writable<TimesStore>}
  */
 export let times = writable({
-    tasks: [],
-    error: ''
+	tasks: [],
+	error: ''
 });
 
 /**

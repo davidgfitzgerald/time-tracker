@@ -28,7 +28,6 @@ ENV PLATFORM=${PLATFORM}
 WORKDIR /app
 COPY ./src ./src
 COPY ./static ./static
-# COPY jsconfig.json .
 COPY package.json .
 COPY svelte.config.js .
 COPY vite.config.js .

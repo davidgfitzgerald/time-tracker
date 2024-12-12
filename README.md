@@ -33,7 +33,7 @@ npm run dev
 
 ## Deployment
 
-The `deployment/` directory provides terraform code that will provision an AWS RDS instance 
+The `deployment/` directory provides terraform code that will provision an AWS RDS instance
 in the default VPC.
 
 To deploy the app follow `deployment/README.md`.

@@ -9,10 +9,10 @@
 set -e
 
 # Redirect output and errors to a log file
-exec > >(tee -a /var/log/install_and_run.log) 2>&1
+exec > >(tee -a /var/log/bootstrap.log) 2>&1
 
 # Start script
-echo -e "\n\nStarting install_and_run.sh script\n\n"
+echo -e "\n\nStarting bootstrap.sh script\n\n"
 
 # Install Docker
 echo "Installing Docker..."
@@ -50,5 +50,5 @@ echo "Running docker container ..."
 docker run -p 5173:5173 --rm ${ECR_IMAGE}
 echo "Docker container running."
 
-echo "Completed install_and_run.sh script"
+echo "Completed bootstrap.sh script"
 
