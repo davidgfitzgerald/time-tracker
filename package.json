@@ -17,25 +17,23 @@
 		"dbcli": "pgcli --host localhost time_tracker"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.9.0",
-		"@sveltejs/vite-plugin-svelte": "^3.0.0",
-		"@types/eslint": "^9.6.0",
-		"eslint": "^9.0.0",
+		"@sveltejs/adapter-auto": "^3.3.1",
+		"@sveltejs/kit": "^2.10.1",
+		"@sveltejs/vite-plugin-svelte": "^5.0.1",
+		"@types/eslint": "^9.6.1",
+		"eslint": "^9.16.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-svelte": "^2.36.0",
-		"globals": "^15.0.0",
-		"prettier": "^3.1.1",
-		"prettier-plugin-svelte": "^3.1.2",
-		"svelte": "^4.2.7",
-		"svelte-check": "^4.0.0",
-		"typescript": "^5.0.0",
-		"vite": "^5.0.3",
-		"vitest": "^2.0.0"
+		"eslint-plugin-svelte": "^2.46.1",
+		"globals": "^15.13.0",
+		"luxon": "^3.5.0",
+		"pg": "^8.13.1",
+		"prettier": "^3.4.2",
+		"prettier-plugin-svelte": "^3.3.2",
+		"svelte": "^5.11.2",
+		"svelte-check": "^4.1.1",
+		"typescript": "^5.7.2",
+		"vite": "^6.0.3",
+		"vitest": "^2.1.8"
 	},
-	"type": "module",
-	"dependencies": {
-		"dotenv": "^16.4.5",
-		"pg": "^8.12.0"
-	}
+	"type": "module"
 }

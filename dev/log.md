@@ -8,6 +8,7 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+
 ## Wed 11th Dec
 
 Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cloud.
@@ -75,6 +76,30 @@ a table at a smaller size into a grid layout:
 		}
 	}
 ```
+
+This [Awesome Svelte](https://github.com/TheComputerM/awesome-svelte) repo looks really interesting. It is peoples'
+curated list of svelte resources.
+
+**Check Out:**
+
+- [x] Read this article [Getting Started with Svelte 5: A Guide for React Developers](https://www.edistys.dev/blog/getting-started-with-svelte-5-a-guide-for-react-developers)
+- [x] Watch https://www.youtube.com/watch?v=ZOBwBPt7q8Y
+- [x] https://adrianroselli.com/2024/12/development-advent-calendars-for-2024.html
+- [ ] https://flowbite-svelte.com/
+- [ ] https://madewithsvelte.com/ui-library
+- [ ] https://www.shadcn-svelte.com/
+- [ ] https://www.youtube.com/watch?v=fAPFsRP-mbc&t=16s
+- [ ] https://24pullrequests.com/
+- [ ] https://adventjs.dev/challenges/2024/1
+
+## Ideation
+
+Did some designing on paper. Got some nice ideas for visualising the progress of your time spent during the week against targets (and including a pro-rata target)
+
+Quickly going to play around with creating a timeline scroller.
+
+Looking into the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) for implementing infinite scrolling
+- https://www.youtube.com/watch?v=2IbRtjez6ag&t=58s
 
 ## Tue 10th Dec
 
