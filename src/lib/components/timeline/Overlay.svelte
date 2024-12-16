@@ -1,12 +1,21 @@
 <script>
 	import { Interval } from "luxon";
 
+    /**
+	 * @param {Interval} interval
+	 */
     export let interval;
+    /**
+	 * @type {number}
+	 */
+    export let cellHeight;
+    /**
+	 * @type {number}
+	 */
+     export let offset;
 
-    const hoursInDay = 3
-    const cellHeightPx = 100;
-    const headerHeightPx = cellHeightPx;
-    const bodyHeightPx = hoursInDay * cellHeightPx;
+    const hoursInDay = 24
+    const bodyHeightPx = hoursInDay * cellHeight;
     const secondsInHour = 60 * 60
     const totalSecondsInDay = hoursInDay * secondsInHour
     /**
@@ -16,7 +25,7 @@
         const start = interval.start
         const secondsSinceStartOfDay = start.toSeconds() - start.startOf("day").toSeconds()
         const pixelOffset = secondsToPixels(secondsSinceStartOfDay)
-        const top = pixelOffset + headerHeightPx
+        const top = pixelOffset + offset
         return `${top}px`
     }
 
@@ -41,25 +50,27 @@
 </script>
 
 <div
-    class="cell highlight"
+    class="highlight"
     style:--top={top}
     style:--height={height}
     >
 </div>
 
 <style>
-    .cell {
-        text-align: left;
-        outline: 0.5px solid grey;
-        height: 100px;
+    .highlight {
+        position: absolute;
+        background-color: rgba(255, 166, 0, 0.808);  /* Orange with opacity */
+        border: none;
+        border-radius: 10px;
+        top: var(--top);
+        height: var(--height);
         width: 100px;
     }
 
-    .highlight {
-        position: absolute;
-        background-color: rgba(255, 165, 0, 0.7); /* Orange with opacity */
-        
-        top: var(--top);
-        height: var(--height);
+    .highlight:hover {
+        filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
+        transform: rotateZ(3deg);
+        transition: all 0.3s ease;
+        cursor: pointer;
     }
 </style>

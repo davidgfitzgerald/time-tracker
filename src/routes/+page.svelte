@@ -10,16 +10,6 @@
 	updateDuration($times.tasks);
 
 	let error = $times.error;
-
-	// The load function in +page.server.js automatically
-	// returns data.
-	/**
-	 * @type {import('$lib/stores').TimesStore} data
-	 */
-	export let data;
-	console.debug("Initial backend data loaded.")
-	console.log("Data retrieved is :", data)
-	times.set(data);
 </script>
 
 <Clock />

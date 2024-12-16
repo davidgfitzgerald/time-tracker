@@ -5,7 +5,7 @@ import { writable } from 'svelte/store';
  * @property {number} id - The ID of the task
  * @property {string | null} category - The category of the task
  * @property {number | null} timeSpent - Time spent on the task in seconds
- * @property {string | null} startTime - The start timestamp of the task
+ * @property {string} startTime - The start timestamp of the task
  * @property {string | null} endTime - The end timestamp of the task
  * @property {string} status - The status of the task, either 'ACTIVE' or 'COMPLETE'
  */

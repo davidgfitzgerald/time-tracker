@@ -1,54 +1,101 @@
 <script>
-	import { DateTime, Interval } from "luxon";
-	import Overlay from "./Overlay.svelte";
+	import { DateTime, Interval } from 'luxon';
+	import Overlay from './Overlay.svelte';
+	import { times } from '$lib/stores';
 
-    const start = DateTime.fromISO('2024-12-15T00:25:00.000')
-    const end = DateTime.fromISO('2024-12-15T01:55:00.000')
+	const now = DateTime.now();
+    
+    /**
+	 * @param {Interval} interval
+	 * @param {DateTime} time
+	 * @returns {boolean}
+	 */
+    function happensOnThisDay(interval, time) {
+        const startOfDay = time.startOf('day')
+        const startOfTomorrow = startOfDay.plus({days: 1})
+        const day = Interval.fromDateTimes(startOfDay, startOfTomorrow)
 
-    const interval = Interval.fromDateTimes(start, end)
+        return interval.overlaps(day)
+    }
 
-    const hoursInDay = 3
-    const cellHeight = 100;
-    const cellWidth = 100;
-    const headerPixelHeight = cellHeight;
-    const tableBodyHeight = hoursInDay * cellHeight;
-    const totalSecondsInDay = hoursInDay * 60 * 60
+	/**
+	 * @param {import('$lib/stores').Task} task
+	 * @returns {task is import('$lib/stores').Task & { endTime: string }}
+	 */
+	function nonActive(task) {
+		return task.endTime !== null && task.status !== "ACTIVE";
+	}
+
+	const intervals = $times.tasks
+		.filter(nonActive)
+		.map(task => Interval.fromDateTimes(
+			DateTime.fromISO(task.startTime),
+			DateTime.fromISO(task.endTime),
+		))
+
+	const hoursInDay = 24;
+	const cellHeight = 100;
+	const offset = cellHeight;  // Header cell height
+
+	let hours = [];
+	for (let i = 0; i < hoursInDay; i++) {
+		hours.push(`${i.toString().padStart(2, '0')}:00`);
+	}
+
+	let daysInWeek = [now];
+	for (let i = 1; i < 7; i++) {
+		daysInWeek.push(now.plus({ days: i }));
+		daysInWeek.unshift(now.minus({ days: i }));
+	}
 </script>
 
 <div class="calendar">
-    <div class="column">
+	<div class="column">
         <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}>00:00</div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}>01:00</div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}>02:00</div>
-    </div>
-    <div class="column">
-        <div class="cell" style:--cell-height={`${cellHeight}px`}>{DateTime.now().toFormat('ccc dd')}</div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-        <Overlay {interval}></Overlay>
-    </div>
-    <div class="column">
-        <div class="cell" style:--cell-height={`${cellHeight}px`}>{DateTime.now().plus({days: 1}).toFormat('ccc dd')}</div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
-    </div>
+		{#each hours as hour}
+			<div class="cell" style:--cell-height={`${cellHeight}px`}>{hour}</div>
+		{/each}
+	</div>
+	{#each daysInWeek as day}
+		<div class="column">
+			<div class="cell header" style:--cell-height={`${cellHeight}px`}>
+				{day.toFormat('ccc dd')}
+			</div>
+            {#each hours as hour}
+                <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
+            {/each}
+			{#each intervals as interval}
+				{#if happensOnThisDay(interval, day)}
+					<Overlay {interval} {cellHeight} {offset}></Overlay>
+				{/if}
+			{/each}
+		</div>
+	{/each}
 </div>
 
 <style>
-    .calendar {
-        display: flex;
-        flex-direction: row;
-    }
-    .column {
-        position: relative;
-    }
-    .cell {
-        text-align: left;
-        outline: 0.5px solid grey;
-        height: var(--cell-height);
-        width: var(--cell-height);
-    }
+	.calendar {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.header {
+		text-align: center;
+		justify-content: center;
+	}
+
+	.column {
+		position: relative;
+	}
+
+	.header {
+		text-align: center;
+
+	}
+
+	.cell {
+		border-bottom: 1px solid hsl(0, 0%, 80%);
+		height: var(--cell-height);
+		width: var(--cell-height);
+	}
 </style>

@@ -35,7 +35,7 @@
 
 <style>
 	table {
-		width: 100%;
+		min-width: 100%;
 		border-collapse: collapse;
 		font-size: 0.9em;
 		box-shadow: 5px 5px 5px rgb(92, 92, 92);
