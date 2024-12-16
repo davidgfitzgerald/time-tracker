@@ -8,6 +8,14 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Mon 16th
+
+On lunch at work set up the project on work laptop and actually got it running without much of an issue.
+
+I did accidentally delete `+page.server.js` and not quite sure how I managed that!
+
+Starting to refactor the design for the timeblock display.
+
 ## Sun 15th
 
 Worked on front end code to display time blocks overlaid onto a calendar style view.
