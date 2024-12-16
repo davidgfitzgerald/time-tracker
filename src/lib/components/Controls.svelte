@@ -28,7 +28,7 @@
 	 * Function to log the stopwatch
 	 */
 	async function updateTask() {
-		activeTask = $times.tasks.find((t) => t.status === 'ACTIVE');
+		activeTask = $times.tasks?.find((t) => t.status === 'ACTIVE');
 		if (!activeTask) {
 			alert('Please try again.');
 			console.error('Active task expected but not found');

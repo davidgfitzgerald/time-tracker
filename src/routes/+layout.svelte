@@ -4,15 +4,6 @@
 	import { times } from '$lib/stores';
 	import { setupClock, updateDuration } from '$lib/utils/clock.js';
 
-	// The load function in +page.server.js automatically
-	// returns data.
-	/**
-	 * @type {import('$lib/stores').TimesStore} data
-	 */
-	export let data;
-	console.debug("Initial backend data loaded.")
-	times.set(data);
-
 	/**
 	 * @type {() => void}
 	 */

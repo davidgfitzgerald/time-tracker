@@ -14,7 +14,7 @@ import { calculateDuration } from './time';
  * @param {import("$lib/stores").Task[]} tasks
  */
 export function updateDuration(tasks) {
-	const activeTask = tasks.find((t) => t.status === 'ACTIVE');
+	const activeTask = tasks?.find((t) => t.status === 'ACTIVE');
 	if (activeTask) {
 		duration.set(calculateDuration(activeTask.startTime));
 	} else {
