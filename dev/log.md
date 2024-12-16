@@ -8,6 +8,18 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Sun 15th
+
+Worked on front end code to display time blocks overlaid onto a calendar style view.
+
+Had to calculate the proportion of the screen that would be taken up from the duration.
+This is based on the number of pixels in the display. 
+
+Have put a fair bit of the ground work in now to providing a data display view that 
+should hopefully be more visually appealling that simply a table.
+
+![Time Overlay](/dev/time-overlay.png)
+
 
 ## Wed 11th Dec
 
