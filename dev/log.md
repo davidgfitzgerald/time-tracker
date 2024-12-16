@@ -32,6 +32,9 @@ I imported the data from the prod DB into my local dev DB like so:
 
 2. Secondly, edit the `Dockerfile` to replace the `schema.sql` with this `timetracker-live.sql`
 
+I realised also that I intentionally renamed `+page.server.js` to `+layout.server.js` earlier but forgot
+to commit it so that's why it appeared like I accidentally deleted the `+page.server.js`.
+
 ## Sun 15th
 
 Worked on front end code to display time blocks overlaid onto a calendar style view.

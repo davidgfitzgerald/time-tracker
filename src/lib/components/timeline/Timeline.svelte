@@ -35,7 +35,7 @@
 
 	const hoursInDay = 24;
 	const cellHeight = 100;
-	const offset = cellHeight;  // Header cell height
+	const externalOffset = cellHeight;  // Header cell height
 
 	let hours = [];
 	for (let i = 0; i < hoursInDay; i++) {
@@ -49,24 +49,24 @@
 	}
 </script>
 
-<div class="calendar">
+<div class="calendar" style="--cell-height: {cellHeight}">
 	<div class="column">
-        <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
+        <div class="cell"></div>
 		{#each hours as hour}
-			<div class="cell" style:--cell-height={`${cellHeight}px`}>{hour}</div>
+			<div class="cell">{hour}</div>
 		{/each}
 	</div>
 	{#each daysInWeek as day}
 		<div class="column">
-			<div class="cell header" style:--cell-height={`${cellHeight}px`}>
+			<div class="cell header">
 				{day.toFormat('ccc dd')}
 			</div>
-            {#each hours as hour}
-                <div class="cell" style:--cell-height={`${cellHeight}px`}></div>
+            {#each hours}
+                <div class="cell"></div>
             {/each}
 			{#each intervals as interval}
 				{#if happensOnThisDay(interval, day)}
-					<Overlay {interval} {cellHeight} {offset}></Overlay>
+					<Overlay {interval} {cellHeight} {externalOffset}></Overlay>
 				{/if}
 			{/each}
 		</div>
@@ -95,7 +95,7 @@
 
 	.cell {
 		border-bottom: 1px solid hsl(0, 0%, 80%);
-		height: var(--cell-height);
-		width: var(--cell-height);
+		height: calc(var(--cell-height) * 1px);
+		width: calc(var(--cell-height) * 1px);
 	}
 </style>

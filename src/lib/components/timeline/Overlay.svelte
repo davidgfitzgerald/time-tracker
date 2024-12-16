@@ -12,7 +12,7 @@
     /**
 	 * @type {number}
 	 */
-     export let offset;
+    export let externalOffset;
 
     const hoursInDay = 24
     const bodyHeightPx = hoursInDay * cellHeight;
@@ -25,8 +25,8 @@
         const start = interval.start
         const secondsSinceStartOfDay = start.toSeconds() - start.startOf("day").toSeconds()
         const pixelOffset = secondsToPixels(secondsSinceStartOfDay)
-        const top = pixelOffset + offset
-        return `${top}px`
+        const top = pixelOffset + externalOffset
+        return top
     }
 
     /**
@@ -41,8 +41,7 @@
 	 * @param {Interval} interval
 	 */
     function calculateHeight(interval) {
-        const seconds = interval.length("seconds")
-        return `${secondsToPixels(seconds)}px`
+        return secondsToPixels(interval.length("seconds"))
     }
 
     const top = calculateTop(interval);
@@ -62,14 +61,14 @@
         background-color: rgba(255, 166, 0, 0.808);  /* Orange with opacity */
         border: none;
         border-radius: 10px;
-        top: var(--top);
-        height: var(--height);
+        top: calc(var(--top) * 1px);
+        height: calc(var(--height) * 1px);
         width: 100px;
     }
 
     .highlight:hover {
         filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
-        transform: rotateZ(3deg);
+        transform: rotateZ(1deg);
         transition: all 0.3s ease;
         cursor: pointer;
     }
