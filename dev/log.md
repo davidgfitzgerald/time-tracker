@@ -10,11 +10,27 @@ information.
 
 ## Mon 16th
 
+### Daytime
+
 On lunch at work set up the project on work laptop and actually got it running without much of an issue.
 
 I did accidentally delete `+page.server.js` and not quite sure how I managed that!
 
 Starting to refactor the design for the timeblock display.
+
+### Evening
+
+Have done more work to get the real data now displayed on the calendar so making some progress.
+
+I imported the data from the prod DB into my local dev DB like so:
+
+1. Firstly, dump the live DB
+
+	```bash
+	pg_dump service=rds -F p -f timetracker-live.sql
+	```
+
+2. Secondly, edit the `Dockerfile` to replace the `schema.sql` with this `timetracker-live.sql`
 
 ## Sun 15th
 
