@@ -1,9 +1,22 @@
+
+# -------- #
+# app base #
+# -------- #
+FROM node:18-alpine AS app_base
+WORKDIR /app
+COPY package.json .
+
+# Unsure exactly what this does?
+RUN npm set progress=false && npm config set depth 0
+RUN npm install
+
 # --- #
 # app #
 # --- #
 
 # Base image for Node.js
-FROM node:18-alpine AS app
+FROM app_base AS app
+# copy production node_modules
 
 # Port on which app will run
 EXPOSE 5173
@@ -24,15 +37,17 @@ ENV POSTGRES_HOST=${POSTGRES_HOST}
 ENV POSTGRES_PORT=${POSTGRES_PORT}
 ENV PLATFORM=${PLATFORM}
 
-# Setup
+# Work from /app
 WORKDIR /app
+
+# Copy dependencies from app_base
+COPY --from=app_base /app/node_modules ./node_modules
+
+# Copy source code
 COPY ./src ./src
 COPY ./static ./static
-COPY package.json .
 COPY svelte.config.js .
 COPY vite.config.js .
-
-RUN npm install
 
 # Build
 RUN npm run build
