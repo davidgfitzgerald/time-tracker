@@ -64,11 +64,11 @@ export function calculateDuration(startTime) {
 }
 
 /**
- * 
- * @param {number} secs 
- * @returns 
+ *
+ * @param {number} secs
+ * @returns
  */
 export function sleep(secs) {
-	const ms = secs * 1000
-	return new Promise(resolve => setTimeout(resolve, ms));
-  }
+	const ms = secs * 1000;
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

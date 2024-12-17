@@ -18,7 +18,7 @@ export function updateDuration(tasks) {
 	if (activeTask) {
 		duration.set(calculateDuration(activeTask.startTime));
 	} else {
-		console.debug("Couldn't find an active task. Not updating duration.")
+		console.debug("Couldn't find an active task. Not updating duration.");
 		// TODO investigate why this is gettng called
 	}
 }
@@ -33,11 +33,11 @@ export function updateDuration(tasks) {
 export function setupClock(times, updateCallback) {
 	const intervalId = setInterval(() => updateCallback(), 1000);
 	const unsubscribe = times.subscribe(() => updateCallback());
-	console.debug("Clock update callbacks set up.")
+	console.debug('Clock update callbacks set up.');
 
 	return () => {
 		clearInterval(intervalId);
 		unsubscribe();
-		console.debug("Clock update callbacks destroyed.")
+		console.debug('Clock update callbacks destroyed.');
 	};
 }

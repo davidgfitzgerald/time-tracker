@@ -30,9 +30,9 @@ I imported the data from the prod DB into my local dev DB like so:
 
 1. Firstly, dump the live DB
 
-	```bash
-	pg_dump service=rds -F p -f timetracker-live.sql
-	```
+   ```bash
+   pg_dump service=rds -F p -f timetracker-live.sql
+   ```
 
 2. Secondly, edit the `Dockerfile` to replace the `schema.sql` with this `timetracker-live.sql`
 
@@ -71,13 +71,12 @@ Here is a little glance on the updated UI:
 Worked on front end code to display time blocks overlaid onto a calendar style view.
 
 Had to calculate the proportion of the screen that would be taken up from the duration.
-This is based on the number of pixels in the display. 
+This is based on the number of pixels in the display.
 
-Have put a fair bit of the ground work in now to providing a data display view that 
+Have put a fair bit of the ground work in now to providing a data display view that
 should hopefully be more visually appealling than a simple table.
 
 ![Time Overlay](/dev/time-overlay.png)
-
 
 ## Wed 11th Dec
 
@@ -87,7 +86,7 @@ Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cl
 172.31.20.153 time-tracker
 ```
 
-Spending some time researching some front end tips and tricks of how I can display my table nicer and have it 
+Spending some time researching some front end tips and tricks of how I can display my table nicer and have it
 be both mobile an desktop suitable.
 
 Made the UI slightly nicer. Enough to move forward to implement some other features.
@@ -100,51 +99,51 @@ Will carry on later.
 
 ### Back
 
-Came back and finished that video. There are some useful tips in there but ultimately at a smaller screen size 
+Came back and finished that video. There are some useful tips in there but ultimately at a smaller screen size
 I still want a regular table, I don't want it to snap.
 
 I'll past this here as I decided to take it out of the source code but this was interesting for repurposing
 a table at a smaller size into a grid layout:
 
 ```css
-	@media (max-width: 650px) {
-		th {
-			display: none
-		}
-		td {
-			display: grid;
-			gap: 0.5rem;
-			grid-template-columns: 15ch auto;
-			padding: 0.5rem 1rem
-		}
-		td:first-child {
-			padding-top: 2rem;
-		}
-		td:last-child {
-			padding-bottom: 2rem;
-		}
-
-		td::before {
-			font-weight: 700; /* bold */
-			text-transform: capitalize;
-		}
-
-		td:nth-of-type(1)::before {
-			content: "name";
-		}
-
-		td:nth-of-type(2)::before {
-			content: "time spent";
-		}
-
-		td:nth-of-type(3)::before {
-			content: "start time";
-		}
-
-		td:nth-of-type(4)::before {
-			content: "end time";
-		}
+@media (max-width: 650px) {
+	th {
+		display: none;
 	}
+	td {
+		display: grid;
+		gap: 0.5rem;
+		grid-template-columns: 15ch auto;
+		padding: 0.5rem 1rem;
+	}
+	td:first-child {
+		padding-top: 2rem;
+	}
+	td:last-child {
+		padding-bottom: 2rem;
+	}
+
+	td::before {
+		font-weight: 700; /* bold */
+		text-transform: capitalize;
+	}
+
+	td:nth-of-type(1)::before {
+		content: 'name';
+	}
+
+	td:nth-of-type(2)::before {
+		content: 'time spent';
+	}
+
+	td:nth-of-type(3)::before {
+		content: 'start time';
+	}
+
+	td:nth-of-type(4)::before {
+		content: 'end time';
+	}
+}
 ```
 
 This [Awesome Svelte](https://github.com/TheComputerM/awesome-svelte) repo looks really interesting. It is peoples'
@@ -169,6 +168,7 @@ Did some designing on paper. Got some nice ideas for visualising the progress of
 Quickly going to play around with creating a timeline scroller.
 
 Looking into the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) for implementing infinite scrolling
+
 - https://www.youtube.com/watch?v=2IbRtjez6ag&t=58s
 
 ## Tue 10th Dec
@@ -197,7 +197,6 @@ Free Courses:
 
 - [Responsive Web Design Certification](https://www.freecodecamp.org/learn/2022/responsive-web-design/)
 - [Data Visualization Certification](https://www.freecodecamp.org/learn/data-visualization/#data-visualization-with-d3)
-
 
 ## Mon 9th Dec
 

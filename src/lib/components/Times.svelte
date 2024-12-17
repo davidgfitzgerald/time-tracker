@@ -60,14 +60,13 @@
 	th {
 		background-color: #333;
 		color: white;
-
 	}
 	table tbody tr {
 		border-bottom: 1px solid #dddddd;
 	}
 
 	table tbody tr:nth-of-type(even) {
-		background-color: hsl(0 0% 0% / 0.05)
+		background-color: hsl(0 0% 0% / 0.05);
 	}
 
 	table tbody tr:last-of-type {
