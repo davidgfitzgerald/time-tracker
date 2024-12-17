@@ -40,14 +40,27 @@ Got some behaviour to now display all the time data and display the category on 
 Didn't need this type hint in the end but figured I'd keep note of it as it took me a while to work out
 the MouseEvent type hint.
 
-	```javascript
-	/**
-	 * @param {MouseEvent} event - The mouseover event
-	 */
-	function show(event) {
-		// console.log(event.target)
-	}
-	```
+```javascript
+/**
+ * @param {MouseEvent} event - The mouseover event
+ */
+function show(event) {
+	// console.log(event.target)
+}
+```
+
+Great little bit of progress on the data visualisation front.
+
+We are now:
+
+1. Displaying a 24hr grid for a 2 week period (13 days actually, weirdly)
+2. Calculating where to overlay the tracked intervals onto the grid
+3. Colouring the tasks naively based on simple pattern matching
+4. Displaying the category when hovering over the overlay
+
+Here is a little glance on the updated UI:
+
+![Time Overlay With Colour](/dev/time-overlay-with-colour.png)
 
 ## Sun 15th
 
@@ -57,7 +70,7 @@ Had to calculate the proportion of the screen that would be taken up from the du
 This is based on the number of pixels in the display. 
 
 Have put a fair bit of the ground work in now to providing a data display view that 
-should hopefully be more visually appealling that simply a table.
+should hopefully be more visually appealling than a simple table.
 
 ![Time Overlay](/dev/time-overlay.png)
 
