@@ -24,6 +24,8 @@ aws ecr get-login-password --region ${REGION} | docker login --username AWS --pa
 
 # Set prod env vars required for build
 set -o allexport; source .env.prod; set +o allexport
+
+# Display env vars for debugging/info purposes
 echo "POSTGRES_USER = ${POSTGRES_USER}"
 echo "POSTGRES_PASSWORD = [REDACTED]"
 echo "POSTGRES_DB = ${POSTGRES_DB}"

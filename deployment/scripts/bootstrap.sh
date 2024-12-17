@@ -2,8 +2,8 @@
 
 # This bootstrapping script will run in the cloud in the 
 # EC2 instance that runs the time-tracker app container. 
-# It will install docker, pull the  image and run the 
-# container.
+# It will install docker, pull the app docker image and 
+# run the app container.
 
 # Exit immediately if any command fails
 set -e
@@ -24,8 +24,8 @@ echo "Starting docker service..."
 sudo service docker start
 echo "Docker service started."
 
-# Add ec2-user to the docker group to avoid needing sudo
-# Logging back into the shell appears to be required
+# Add ec2-user to the docker group to avoid needing sudo.
+# (Logging back into the shell appears to be required)
 sudo usermod -a -G docker ec2-user
 
 # Confirm Docker installation

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run locally for the time being. This is likely a lazy CI just 
+# Run locally for the time being. This is like a lazy CI just 
 # so I can focus on development and get changes pushed to prod.
 
 # The full path to this dir, e.g.: ~/code/time-tracker/deployment/scripts
@@ -12,19 +12,20 @@ ${SCRIPT_DIR}/build_and_push.sh
 # cd to deployment/
 pushd "${SCRIPT_DIR}/../" 1>/dev/null
 
-# If --force is passed, do the deployment 
-# regardless of what infra changes might incur
+# If --force is passed, deploy regardless of any 
+# infrastructure changes that may incur
 if [[ ! $1 = "--force" ]]; then
-    # Don't taint the EC2 instance if terraform
-    # infrastructure is not correct.
+
+    # If --force is not passed and infrastructure 
+    # is not correct, don't taint the EC2 
+    # instance - abort
     terraform plan | grep "Your infrastructure matches the configuration"
     if [[ $? -ne 0 ]]; then
-        echo "Aborted deployment."
+        echo "Deployment aborted."
         echo "Check terraform plan."
 
         # cd back to wherever this was called from
         popd 1>/dev/null
-
         exit 1
     fi
 fi
@@ -53,7 +54,7 @@ fi
 # This will re-deploy the EC2 app instance. This
 # instance uses a bootstrapping script to install
 # docker, pull the new image from ECR and then run
-# a docker container.
+# a (potentially) new docker container.
 terraform apply -auto-approve  
 
 # cd back to wherever this was called from
