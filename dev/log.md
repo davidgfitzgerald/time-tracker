@@ -8,6 +8,10 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+# TODO
+
+Confirm that prod doesn't break if we remove `PLATFORM` env var.
+
 ## Mon 16th
 
 ### Daytime
