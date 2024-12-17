@@ -35,6 +35,20 @@ I imported the data from the prod DB into my local dev DB like so:
 I realised also that I intentionally renamed `+page.server.js` to `+layout.server.js` earlier but forgot
 to commit it so that's why it appeared like I accidentally deleted the `+page.server.js`.
 
+Got some behaviour to now display all the time data and display the category on hover.
+
+Didn't need this type hint in the end but figured I'd keep note of it as it took me a while to work out
+the MouseEvent type hint.
+
+	```javascript
+	/**
+	 * @param {MouseEvent} event - The mouseover event
+	 */
+	function show(event) {
+		// console.log(event.target)
+	}
+	```
+
 ## Sun 15th
 
 Worked on front end code to display time blocks overlaid onto a calendar style view.

@@ -26,12 +26,27 @@
 		return task.endTime !== null && task.status !== "ACTIVE";
 	}
 
-	const intervals = $times.tasks
+	/**
+	 * @typedef {Object} TaskAndInterval
+	 * @property {import('$lib/stores').Task} task - Array of tasks
+	 * @property {Interval} interval - Error message, if any
+	 */
+
+	/**
+	 * @type {TaskAndInterval[]}
+	 */
+	const taskAndIntervals = $times.tasks
 		.filter(nonActive)
-		.map(task => Interval.fromDateTimes(
-			DateTime.fromISO(task.startTime),
-			DateTime.fromISO(task.endTime),
-		))
+		.map(task => {
+			return {
+				task,
+				interval: Interval.fromDateTimes(
+					DateTime.fromISO(task.startTime),
+					DateTime.fromISO(task.endTime),
+				)
+			}
+		}
+	)
 
 	const hoursInDay = 24;
 	const cellHeight = 100;
@@ -64,9 +79,9 @@
             {#each hours}
                 <div class="cell"></div>
             {/each}
-			{#each intervals as interval}
+			{#each taskAndIntervals as {task, interval}}
 				{#if happensOnThisDay(interval, day)}
-					<Overlay {interval} {cellHeight} {externalOffset}></Overlay>
+					<Overlay {interval} {cellHeight} {externalOffset} {task}></Overlay>
 				{/if}
 			{/each}
 		</div>
