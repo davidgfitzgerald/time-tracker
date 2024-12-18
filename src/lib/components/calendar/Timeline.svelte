@@ -43,19 +43,27 @@
 	/**
 	 * @type {import("./overlay").TaskAndPositions[]}
 	 */
-	const tasksAndPositions = $derived($times.tasks
-		.filter(nonActive)
-		.filter(inBounds)
-		.map((task) => {
-			const interval = Interval.fromDateTimes(
-				DateTime.fromISO(task.startTime),
-				DateTime.fromISO(task.endTime)
-			);
-			const intervals = splitIntervalByDays(interval);
-			const positions = calculatePositions(intervals, cellHeight, cellWidth, headerHeight, daysToDisplay);
+	const tasksAndPositions = $derived(
+		$times.tasks
+			.filter(nonActive)
+			.filter(inBounds)
+			.map((task) => {
+				const interval = Interval.fromDateTimes(
+					DateTime.fromISO(task.startTime),
+					DateTime.fromISO(task.endTime)
+				);
+				const intervals = splitIntervalByDays(interval);
+				const positions = calculatePositions(
+					intervals,
+					cellHeight,
+					cellWidth,
+					headerHeight,
+					daysToDisplay
+				);
 
-			return { task, positions };
-		}))
+				return { task, positions };
+			})
+	);
 </script>
 
 <div class="calendar" style="--cell-height: {cellHeight}">

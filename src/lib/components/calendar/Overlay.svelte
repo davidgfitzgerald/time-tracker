@@ -28,7 +28,7 @@
 
 <div class="overlay-group">
 	{#each positions as { top, left, height, width }}
-			<div
+		<div
 			class="interval"
 			style:--top={top}
 			style:--height={height}

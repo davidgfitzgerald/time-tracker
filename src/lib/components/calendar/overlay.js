@@ -1,7 +1,6 @@
 import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 import { DateTime, Interval } from 'luxon';
 
-
 /**
  * Position of an overlay on the calendar.
  * @typedef {Object} Position
@@ -49,7 +48,7 @@ export function calculateTop(interval, cellHeight, externalOffset) {
  * @param {number} seconds - Number of seconds
  * @param {number} cellHeight - Height of a cell in pixels
  * @returns {number} - Number of pixels that equate to that number of seconds
-*/
+ */
 function secondsToPx(seconds, cellHeight) {
 	const bodyHeightPx = HRS_IN_DAY * cellHeight;
 	const proportion = seconds / SECS_IN_DAY;
@@ -89,7 +88,13 @@ export function calculateHeight(interval, top, cellHeight, externalOffset) {
  * @param {DateTime[]} daysToDisplay
  * @return {Position[]}
  */
-export function calculatePositions(intervals, cellHeight, cellWidth, externalOffset, daysToDisplay) {
+export function calculatePositions(
+	intervals,
+	cellHeight,
+	cellWidth,
+	externalOffset,
+	daysToDisplay
+) {
 	return intervals.map((interval) => {
 		const dayIndex = findDayIndex(daysToDisplay, interval.start);
 		const left = cellWidth * (dayIndex + 1);
@@ -99,7 +104,7 @@ export function calculatePositions(intervals, cellHeight, cellWidth, externalOff
 			top,
 			left,
 			height,
-			width: cellWidth,
+			width: cellWidth
 		};
 	});
 }
