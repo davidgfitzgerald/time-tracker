@@ -8,6 +8,17 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Wed 18th
+
+Focusing on making the app more mobile friendly.
+
+Watching this video on tips on responsive design concepts:
+
+https://www.youtube.com/watch?v=TUD1AWZVgQ8
+
+Main takeaways:
+
+
 ## Tue 17th
 
 Confirmed that prod doesn't break if we remove `PLATFORM` env var.
