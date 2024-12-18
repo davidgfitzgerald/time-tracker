@@ -1,4 +1,4 @@
-import { DateTime, Interval } from "luxon";
+import { DateTime, Interval } from 'luxon';
 
 const hoursInDay = 24;
 const cellHeight = 100;
@@ -15,7 +15,7 @@ const screenHeightPx = secondsToPx(totalSecondsInDay);
  * @property {number} top
  * @property {number} left
  * @property {number} height
-*/
+ */
 
 /**
  * @typedef {Object} TaskAndPositions
@@ -23,31 +23,29 @@ const screenHeightPx = secondsToPx(totalSecondsInDay);
  * @property {Position[]} positions - Overlay positions
  */
 
-
 /**
  * Find the index of a day within a list.
- * 
+ *
  * Returns -1 if the day is not found.
- * @param {DateTime[]} days 
- * @param {DateTime} day 
- * @returns 
+ * @param {DateTime[]} days
+ * @param {DateTime} day
+ * @returns
  */
 export function findDayIndex(days, day) {
-    const formattedDays = days.map(d => d.toFormat("yyyy-LL-dd"))
-    const i = formattedDays.indexOf(day.toFormat("yyyy-LL-dd"))
-    return i 
+	const formattedDays = days.map((d) => d.toFormat('yyyy-LL-dd'));
+	const i = formattedDays.indexOf(day.toFormat('yyyy-LL-dd'));
+	return i;
 }
-
 
 /**
  * @param {Interval<import("luxon/src/_util").Valid>} interval
  */
 export function calculateTop(interval) {
-    const start = interval.start;
-    const secondsSinceStartOfDay = start.toSeconds() - start.startOf('day').toSeconds();
-    const pxOffset = secondsToPx(secondsSinceStartOfDay);
-    const top = pxOffset + externalOffset;
-    return top;
+	const start = interval.start;
+	const secondsSinceStartOfDay = start.toSeconds() - start.startOf('day').toSeconds();
+	const pxOffset = secondsToPx(secondsSinceStartOfDay);
+	const top = pxOffset + externalOffset;
+	return top;
 }
 
 /**
@@ -55,8 +53,8 @@ export function calculateTop(interval) {
  * @returns {number} - Number of pixels that equate to that number of seconds
  */
 function secondsToPx(seconds) {
-    const proportion = seconds / totalSecondsInDay;
-    return proportion * bodyHeightPx;
+	const proportion = seconds / totalSecondsInDay;
+	return proportion * bodyHeightPx;
 }
 
 /**
@@ -64,21 +62,21 @@ function secondsToPx(seconds) {
  * @param {number} top - Pixel distance between top of view and start of this overlay
  */
 export function calculateHeight(interval, top) {
-    const requiredPx = secondsToPx(interval.length('seconds'));
-    const remainingPx = screenHeightPx - top + externalOffset;
+	const requiredPx = secondsToPx(interval.length('seconds'));
+	const remainingPx = screenHeightPx - top + externalOffset;
 
-    /**
-     * Aim to use the required px but resort to
-     * displaying only for the remaining pixels left
-     * for that day.
-     *
-     * Otherwise overlay will spill over out of the
-     * day.
-     *
-     * TODO - Handle the case when time spills over
-     * into a new day.
-     */
-    return Math.min(requiredPx, remainingPx);
+	/**
+	 * Aim to use the required px but resort to
+	 * displaying only for the remaining pixels left
+	 * for that day.
+	 *
+	 * Otherwise overlay will spill over out of the
+	 * day.
+	 *
+	 * TODO - Handle the case when time spills over
+	 * into a new day.
+	 */
+	return Math.min(requiredPx, remainingPx);
 }
 
 /**
@@ -87,15 +85,15 @@ export function calculateHeight(interval, top) {
  * @return {Position[]}
  */
 export function calculatePositions(intervals, daysToDisplay) {
-    return intervals.map((interval) => {
-        const dayIndex = findDayIndex(daysToDisplay, interval.start)
-        const left = cellWidth * (dayIndex + 1)
-        const top = calculateTop(interval);
-        const height = calculateHeight(interval, top);
-        return {
-            top,
-            left,
-            height,
-        }
-    })
+	return intervals.map((interval) => {
+		const dayIndex = findDayIndex(daysToDisplay, interval.start);
+		const left = cellWidth * (dayIndex + 1);
+		const top = calculateTop(interval);
+		const height = calculateHeight(interval, top);
+		return {
+			top,
+			left,
+			height
+		};
+	});
 }

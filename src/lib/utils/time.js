@@ -77,11 +77,11 @@ export function sleep(secs) {
 
 /**
  * Split an interval up by days.
- * 
+ *
  * For example, if you provided the interval:
  *  <2000-01-30 6pm - 2000-01-31 3pm>
- * 
- * then this would split that interval up into 
+ *
+ * then this would split that interval up into
  * two subintervals:
  * 	<2000-01-30 6pm - 2000-01-31 00:00am>
  * 	and
@@ -90,15 +90,15 @@ export function sleep(secs) {
  * @returns {Interval[]}
  */
 export function splitIntervalByDays(interval) {
-	let intervals = []
-	let startPointer = interval.start
+	let intervals = [];
+	let startPointer = interval.start;
 
 	while (startPointer.day != interval.end.day) {
-		let endPointer = startPointer.plus({days: 1}).startOf("day")
-		intervals.push(Interval.fromDateTimes(startPointer, endPointer))
-		startPointer = endPointer
+		let endPointer = startPointer.plus({ days: 1 }).startOf('day');
+		intervals.push(Interval.fromDateTimes(startPointer, endPointer));
+		startPointer = endPointer;
 	}
-	intervals.push(Interval.fromDateTimes(startPointer, interval.end))
+	intervals.push(Interval.fromDateTimes(startPointer, interval.end));
 
-	return intervals
+	return intervals;
 }

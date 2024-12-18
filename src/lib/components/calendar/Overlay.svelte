@@ -6,7 +6,7 @@
 	 * }}
 	 */
 	let { task, position } = $props();
-	const { top, left, height } = position
+	const { top, left, height } = position;
 
 	/**
 	 * Choose a colour for this overlay.
@@ -27,12 +27,13 @@
 	const colour = chooseColour(task);
 </script>
 
-<div class="highlight"
+<div
+	class="highlight"
 	style:--top={top}
 	style:--height={height}
 	style:--left={left}
 	style:--colour={colour}
-	>
+>
 	<span>{task.category}</span>
 </div>
 

@@ -5,7 +5,7 @@
 	import { splitIntervalByDays } from '$lib/utils/time';
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
-	
+
 	const now = DateTime.now();
 
 	const cellHeight = 100;
@@ -29,12 +29,12 @@
 	 * @returns {task is import('$lib/stores').Task & { endTime: string }}
 	 */
 	function inBounds(task) {
-		if (task.endTime === null) return false
+		if (task.endTime === null) return false;
 
-		const start = DateTime.fromISO(task.startTime)
-		const end = DateTime.fromISO(task.endTime)
-		const startInBounds = findDayIndex(daysToDisplay, start) != -1
-		const endInBounds = findDayIndex(daysToDisplay, end) != -1
+		const start = DateTime.fromISO(task.startTime);
+		const end = DateTime.fromISO(task.endTime);
+		const startInBounds = findDayIndex(daysToDisplay, start) != -1;
+		const endInBounds = findDayIndex(daysToDisplay, end) != -1;
 		return startInBounds && endInBounds;
 	}
 
@@ -48,11 +48,11 @@
 			const interval = Interval.fromDateTimes(
 				DateTime.fromISO(task.startTime),
 				DateTime.fromISO(task.endTime)
-			)
-			const intervals = splitIntervalByDays(interval)
-			const positions = calculatePositions(intervals, daysToDisplay)
+			);
+			const intervals = splitIntervalByDays(interval);
+			const positions = calculatePositions(intervals, daysToDisplay);
 
-			return {task, positions}
+			return { task, positions };
 		});
 </script>
 
