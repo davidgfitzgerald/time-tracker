@@ -35,12 +35,13 @@
 
 <style>
 	table {
-		width: 100%;
+		min-width: 100%;
 		border-collapse: collapse;
 		font-size: 0.9em;
-		box-shadow: 5px 5px 5px rgb(92, 92, 92);
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
+		box-shadow: 5px 5px 5px rgb(92, 92, 92);
+		transform: translate3d(0,0,0); /* Hack to fix poor box-shadow rendering on iOS*/
 	}
 
 	th:first-child {
@@ -60,14 +61,13 @@
 	th {
 		background-color: #333;
 		color: white;
-
 	}
 	table tbody tr {
 		border-bottom: 1px solid #dddddd;
 	}
 
 	table tbody tr:nth-of-type(even) {
-		background-color: hsl(0 0% 0% / 0.05)
+		background-color: hsl(0 0% 0% / 0.05);
 	}
 
 	table tbody tr:last-of-type {

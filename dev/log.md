@@ -8,6 +8,97 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Tue 17th
+
+Confirmed that prod doesn't break if we remove `PLATFORM` env var.
+
+Did a decent amount of front end stuff and some project refactoring.
+
+Got the height/width of the calendar working reactively so the overlay displays correctly.
+
+Now correctly splitting a time interval into separate smaller intervals by day
+but still linking them as the "same" element though they are physically separated
+on the display when a day resets to `00:00`.
+
+Added some rudimentary controls to add or remove days from the calendar display.
+
+Adding a new task also reactively adds the data on screen.
+
+Really satisfying to see this working in action now.
+
+Tip, if restarting the DB, this is the easiest way to get some prod data back in:
+
+```bash
+psql service=local -f db/wipe.sql
+psql service=local -f timetracker-live.sql
+```
+
+## Mon 16th
+
+### Daytime
+
+On lunch at work set up the project on work laptop and actually got it running without much of an issue.
+
+I did accidentally delete `+page.server.js` and not quite sure how I managed that!
+
+Starting to refactor the design for the timeblock display.
+
+### Evening
+
+Have done more work to get the real data now displayed on the calendar so making some progress.
+
+I imported the data from the prod DB into my local dev DB like so:
+
+1. Firstly, dump the live DB
+
+   ```bash
+   pg_dump service=rds -F p -f timetracker-live.sql
+   ```
+
+2. Secondly, edit the `Dockerfile` to replace the `schema.sql` with this `timetracker-live.sql`
+
+I realised also that I intentionally renamed `+page.server.js` to `+layout.server.js` earlier but forgot
+to commit it so that's why it appeared like I accidentally deleted the `+page.server.js`.
+
+Got some behaviour to now display all the time data and display the category on hover.
+
+Didn't need this type hint in the end but figured I'd keep note of it as it took me a while to work out
+the MouseEvent type hint.
+
+```javascript
+/**
+ * @param {MouseEvent} event - The mouseover event
+ */
+function show(event) {
+	// console.log(event.target)
+}
+```
+
+Great little bit of progress on the data visualisation front.
+
+We are now:
+
+1. Displaying a 24hr grid for a 2 week period (13 days actually, weirdly)
+2. Calculating where to overlay the tracked intervals onto the grid
+3. Colouring the tasks naively based on simple pattern matching
+4. Displaying the category when hovering over the overlay
+
+Here is a little glance on the updated UI:
+
+![Time Overlay With Colour](/dev/time-overlay-with-colour.png)
+
+## Sun 15th
+
+Worked on front end code to display time blocks overlaid onto a calendar style view.
+
+Had to calculate the proportion of the screen that would be taken up from the duration.
+This is based on the number of pixels in the display.
+
+Have put a fair bit of the ground work in now to providing a data display view that
+should hopefully be more visually appealling than a simple table.
+
+![Time Overlay](/dev/time-overlay.png)
+
 ## Wed 11th Dec
 
 Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cloud.
@@ -16,7 +107,7 @@ Edited `/etc/hosts/` to set a hostname for the time-tracker app hosted in the cl
 172.31.20.153 time-tracker
 ```
 
-Spending some time researching some front end tips and tricks of how I can display my table nicer and have it 
+Spending some time researching some front end tips and tricks of how I can display my table nicer and have it
 be both mobile an desktop suitable.
 
 Made the UI slightly nicer. Enough to move forward to implement some other features.
@@ -29,52 +120,77 @@ Will carry on later.
 
 ### Back
 
-Came back and finished that video. There are some useful tips in there but ultimately at a smaller screen size 
+Came back and finished that video. There are some useful tips in there but ultimately at a smaller screen size
 I still want a regular table, I don't want it to snap.
 
 I'll past this here as I decided to take it out of the source code but this was interesting for repurposing
 a table at a smaller size into a grid layout:
 
 ```css
-	@media (max-width: 650px) {
-		th {
-			display: none
-		}
-		td {
-			display: grid;
-			gap: 0.5rem;
-			grid-template-columns: 15ch auto;
-			padding: 0.5rem 1rem
-		}
-		td:first-child {
-			padding-top: 2rem;
-		}
-		td:last-child {
-			padding-bottom: 2rem;
-		}
-
-		td::before {
-			font-weight: 700; /* bold */
-			text-transform: capitalize;
-		}
-
-		td:nth-of-type(1)::before {
-			content: "name";
-		}
-
-		td:nth-of-type(2)::before {
-			content: "time spent";
-		}
-
-		td:nth-of-type(3)::before {
-			content: "start time";
-		}
-
-		td:nth-of-type(4)::before {
-			content: "end time";
-		}
+@media (max-width: 650px) {
+	th {
+		display: none;
 	}
+	td {
+		display: grid;
+		gap: 0.5rem;
+		grid-template-columns: 15ch auto;
+		padding: 0.5rem 1rem;
+	}
+	td:first-child {
+		padding-top: 2rem;
+	}
+	td:last-child {
+		padding-bottom: 2rem;
+	}
+
+	td::before {
+		font-weight: 700; /* bold */
+		text-transform: capitalize;
+	}
+
+	td:nth-of-type(1)::before {
+		content: 'name';
+	}
+
+	td:nth-of-type(2)::before {
+		content: 'time spent';
+	}
+
+	td:nth-of-type(3)::before {
+		content: 'start time';
+	}
+
+	td:nth-of-type(4)::before {
+		content: 'end time';
+	}
+}
 ```
+
+This [Awesome Svelte](https://github.com/TheComputerM/awesome-svelte) repo looks really interesting. It is peoples'
+curated list of svelte resources.
+
+**Check Out:**
+
+- [x] Read this article [Getting Started with Svelte 5: A Guide for React Developers](https://www.edistys.dev/blog/getting-started-with-svelte-5-a-guide-for-react-developers)
+- [x] Watch https://www.youtube.com/watch?v=ZOBwBPt7q8Y
+- [x] https://adrianroselli.com/2024/12/development-advent-calendars-for-2024.html
+- [ ] https://flowbite-svelte.com/
+- [ ] https://madewithsvelte.com/ui-library
+- [ ] https://www.shadcn-svelte.com/
+- [ ] https://www.youtube.com/watch?v=fAPFsRP-mbc&t=16s
+- [ ] https://24pullrequests.com/
+- [ ] https://adventjs.dev/challenges/2024/1
+
+## Ideation
+
+Did some designing on paper. Got some nice ideas for visualising the progress of your time spent during the week against targets (and including a pro-rata target)
+
+Quickly going to play around with creating a timeline scroller.
+
+Looking into the [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API) for implementing infinite scrolling
+
+- https://www.youtube.com/watch?v=2IbRtjez6ag&t=58s
 
 ## Tue 10th Dec
 
@@ -102,7 +218,6 @@ Free Courses:
 
 - [Responsive Web Design Certification](https://www.freecodecamp.org/learn/2022/responsive-web-design/)
 - [Data Visualization Certification](https://www.freecodecamp.org/learn/data-visualization/#data-visualization-with-d3)
-
 
 ## Mon 9th Dec
 

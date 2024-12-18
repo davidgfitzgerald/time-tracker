@@ -1,30 +1,35 @@
 <script>
-	import Times from '$lib/components/Times.svelte';
 	import Controls from '$lib/components/Controls.svelte';
 	import Clock from '$lib/components/Clock.svelte';
-
-	import { times } from '$lib/stores.js';
-	import { updateDuration } from '$lib/utils/clock.js';
-
-	// The load function in +page.server.js automatically
-	// returns data.
-	export let data;
-	console.debug("Initial backend data loaded.")
-	times.set(data);
-	
-	console.debug("Updating duration manually in +page.svelte.")
-	updateDuration($times.tasks);
-
-	let error = $times.error;
+	import Timeline from '$lib/components/calendar/Timeline.svelte';
 </script>
 
-<Clock />
-<Controls />
+<div class="body">
+	<div class="left-column">
+		<Timeline />
+	</div>
+	<div class="right-column">
+		<Clock />
+		<Controls />
+	</div>
+</div>
 
-{#if error}
-	<p>{error}</p>
-{:else if $times.tasks.length === 0}
-	<p>No tasks found.</p>
-{:else}
-	<Times />
-{/if}
+<style>
+	.body {
+		height: 80vh;
+		display: flex;
+		overflow: hidden;
+	}
+
+	.left-column {
+		width: 85%;
+		height: 100%;
+		overflow-y: auto; /* Enable vertical scrolling */
+	}
+
+	.right-column {
+		width: 15%;
+		height: 100%;
+		overflow: hidden; /* Prevent scrolling */
+	}
+</style>

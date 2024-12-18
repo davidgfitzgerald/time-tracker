@@ -1,3 +1,9 @@
+import { Interval } from 'luxon';
+
+export const HRS_IN_DAY = 24;
+export const SECS_IN_HR = 60 * 60;
+export const SECS_IN_DAY = HRS_IN_DAY * SECS_IN_HR;
+
 /**
  * Convert duration to HH:MM:SS format
  *
@@ -55,7 +61,7 @@ export function convertUTCToLocal(utcDateStr) {
 /**
  * @param {string} startTime
  * @returns {number} Duration in seconds
- * Calculate duration start time and now.
+ * Calculate duration between start time and now.
  */
 export function calculateDuration(startTime) {
 	const now = new Date();
@@ -64,11 +70,39 @@ export function calculateDuration(startTime) {
 }
 
 /**
- * 
- * @param {number} secs 
- * @returns 
+ *
+ * @param {number} secs
+ * @returns
  */
 export function sleep(secs) {
-	const ms = secs * 1000
-	return new Promise(resolve => setTimeout(resolve, ms));
-  }
+	const ms = secs * 1000;
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Split an interval up by days.
+ *
+ * For example, if you provided the interval:
+ *  <2000-01-30 6pm - 2000-01-31 3pm>
+ *
+ * then this would split that interval up into
+ * two subintervals at midnight:
+ * 	<2000-01-30 6pm - 2000-01-31 00:00am>
+ * 	and
+ * 	<2000-01-31 00:00am - 2000-01-31 3pm>
+ * @param {Interval<import('luxon/src/_util').Valid>} interval
+ * @returns {Interval[]}
+ */
+export function splitIntervalByDays(interval) {
+	let intervals = [];
+	let startPointer = interval.start;
+
+	while (startPointer.day != interval.end.day) {
+		let endPointer = startPointer.plus({ days: 1 }).startOf('day');
+		intervals.push(Interval.fromDateTimes(startPointer, endPointer));
+		startPointer = endPointer;
+	}
+	intervals.push(Interval.fromDateTimes(startPointer, interval.end));
+
+	return intervals;
+}
