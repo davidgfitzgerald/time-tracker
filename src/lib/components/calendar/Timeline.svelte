@@ -43,7 +43,7 @@
 	/**
 	 * @type {import("./overlay").TaskAndPositions[]}
 	 */
-	const tasksAndPositions = $times.tasks
+	const tasksAndPositions = $derived($times.tasks
 		.filter(nonActive)
 		.filter(inBounds)
 		.map((task) => {
@@ -55,7 +55,7 @@
 			const positions = calculatePositions(intervals, cellHeight, cellWidth, headerHeight, daysToDisplay);
 
 			return { task, positions };
-		});
+		}))
 </script>
 
 <div class="calendar" style="--cell-height: {cellHeight}">
