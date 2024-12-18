@@ -2,20 +2,23 @@
 	import { DateTime, Interval } from 'luxon';
 	import Overlay from './Overlay.svelte';
 	import { times } from '$lib/stores';
-
+	import { splitIntervalByDays } from '$lib/utils/time';
+	import { calculatePositions, findDayIndex } from './overlay';
+	
 	const now = DateTime.now();
 
-	/**
-	 * @param {Interval} interval
-	 * @param {DateTime} time
-	 * @returns {boolean}
-	 */
-	function happensOnThisDay(interval, time) {
-		const startOfDay = time.startOf('day');
-		const startOfTomorrow = startOfDay.plus({ days: 1 });
-		const day = Interval.fromDateTimes(startOfDay, startOfTomorrow);
+	const hoursInDay = 24;
+	const cellHeight = 100;
 
-		return interval.overlaps(day);
+	let hours = [];
+	for (let i = 0; i < hoursInDay; i++) {
+		hours.push(`${i.toString().padStart(2, '0')}:00`);
+	}
+
+	let daysToDisplay = [now];
+	for (let i = 1; i < 7; i++) {
+		daysToDisplay.push(now.plus({ days: i }));
+		daysToDisplay.unshift(now.minus({ days: i }));
 	}
 
 	/**
@@ -27,38 +30,35 @@
 	}
 
 	/**
-	 * @typedef {Object} TaskAndInterval
-	 * @property {import('$lib/stores').Task} task - Array of tasks
-	 * @property {Interval} interval - Error message, if any
+	 * @param {import('$lib/stores').Task} task
+	 * @returns {task is import('$lib/stores').Task & { endTime: string }}
 	 */
+	function inBounds(task) {
+		if (task.endTime === null) return false
+
+		const start = DateTime.fromISO(task.startTime)
+		const end = DateTime.fromISO(task.endTime)
+		const startInBounds = findDayIndex(daysToDisplay, start) != -1
+		const endInBounds = findDayIndex(daysToDisplay, end) != -1
+		return startInBounds && endInBounds;
+	}
 
 	/**
-	 * @type {TaskAndInterval[]}
+	 * @type {import("./overlay").TaskAndPositions[]}
 	 */
-	const taskAndIntervals = $times.tasks.filter(nonActive).map((task) => {
-		return {
-			task,
-			interval: Interval.fromDateTimes(
+	const tasksAndPositions = $times.tasks
+		.filter(nonActive)
+		.filter(inBounds)
+		.map((task) => {
+			const interval = Interval.fromDateTimes(
 				DateTime.fromISO(task.startTime),
 				DateTime.fromISO(task.endTime)
 			)
-		};
-	});
+			const intervals = splitIntervalByDays(interval)
+			const positions = calculatePositions(intervals, daysToDisplay)
 
-	const hoursInDay = 24;
-	const cellHeight = 100;
-	const externalOffset = cellHeight; // Header cell height
-
-	let hours = [];
-	for (let i = 0; i < hoursInDay; i++) {
-		hours.push(`${i.toString().padStart(2, '0')}:00`);
-	}
-
-	let daysInWeek = [now];
-	for (let i = 1; i < 7; i++) {
-		daysInWeek.push(now.plus({ days: i }));
-		daysInWeek.unshift(now.minus({ days: i }));
-	}
+			return {task, positions}
+		});
 </script>
 
 <div class="calendar" style="--cell-height: {cellHeight}">
@@ -68,7 +68,7 @@
 			<div class="cell">{hour}</div>
 		{/each}
 	</div>
-	{#each daysInWeek as day}
+	{#each daysToDisplay as day, i}
 		<div class="column">
 			<div class="cell header">
 				{day.toFormat('ccc dd')}
@@ -76,12 +76,12 @@
 			{#each hours}
 				<div class="cell"></div>
 			{/each}
-			{#each taskAndIntervals as { task, interval }}
-				{#if happensOnThisDay(interval, day)}
-					<Overlay {interval} {cellHeight} {externalOffset} {task}></Overlay>
-				{/if}
-			{/each}
 		</div>
+		{/each}
+	{#each tasksAndPositions as { task, positions }}
+		{#each positions as position}
+			<Overlay {position} {task}></Overlay>
+		{/each}
 	{/each}
 </div>
 
@@ -89,6 +89,7 @@
 	.calendar {
 		display: flex;
 		flex-direction: row;
+		position: relative;
 	}
 
 	.header {
