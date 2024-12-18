@@ -8,9 +8,30 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
-# TODO
+## Tue 17th
 
-Confirm that prod doesn't break if we remove `PLATFORM` env var.
+Confirmed that prod doesn't break if we remove `PLATFORM` env var.
+
+Did a decent amount of front end stuff and some project refactoring.
+
+Got the height/width of the calendar working reactively so the overlay displays correctly.
+
+Now correctly splitting a time interval into separate smaller intervals by day
+but still linking them as the "same" element though they are physically separated
+on the display when a day resets to `00:00`.
+
+Added some rudimentary controls to add or remove days from the calendar display.
+
+Adding a new task also reactively adds the data on screen.
+
+Really satisfying to see this working in action now.
+
+Tip, if restarting the DB, this is the easiest way to get some prod data back in:
+
+```bash
+psql service=local -f db/wipe.sql
+psql service=local -f timetracker-live.sql
+```
 
 ## Mon 16th
 
