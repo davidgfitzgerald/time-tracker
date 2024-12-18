@@ -6,7 +6,7 @@
 	 * }}
 	 */
 	let { task, position } = $props();
-	const { top, left, height } = position;
+	const { top, left, height, width } = position;
 
 	/**
 	 * Choose a colour for this overlay.
@@ -31,6 +31,7 @@
 	class="highlight"
 	style:--top={top}
 	style:--height={height}
+	style:--width={width}
 	style:--left={left}
 	style:--colour={colour}
 >
@@ -46,7 +47,7 @@
 		top: calc(var(--top) * 1px);
 		height: calc(var(--height) * 1px);
 		left: calc(var(--left) * 1px);
-		width: 100px;
+		width: calc(var(--width) * 1px);
 	}
 
 	.highlight:hover {

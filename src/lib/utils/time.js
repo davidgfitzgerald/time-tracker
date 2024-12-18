@@ -1,4 +1,8 @@
-import { DateTime, Interval } from 'luxon';
+import { Interval } from 'luxon';
+
+export const HRS_IN_DAY = 24;
+export const SECS_IN_HR = 60 * 60;
+export const SECS_IN_DAY = HRS_IN_DAY * SECS_IN_HR;
 
 /**
  * Convert duration to HH:MM:SS format

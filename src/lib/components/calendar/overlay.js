@@ -1,13 +1,6 @@
+import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 import { DateTime, Interval } from 'luxon';
 
-const hoursInDay = 24;
-const cellHeight = 100;
-const cellWidth = cellHeight;
-const externalOffset = cellHeight; // Header cell height
-const bodyHeightPx = hoursInDay * cellHeight;
-const secondsInHour = 60 * 60;
-const totalSecondsInDay = hoursInDay * secondsInHour;
-const screenHeightPx = secondsToPx(totalSecondsInDay);
 
 /**
  * Position of an overlay on the calendar.
@@ -15,6 +8,7 @@ const screenHeightPx = secondsToPx(totalSecondsInDay);
  * @property {number} top
  * @property {number} left
  * @property {number} height
+ * @property {number} width
  */
 
 /**
@@ -39,61 +33,73 @@ export function findDayIndex(days, day) {
 
 /**
  * @param {Interval<import("luxon/src/_util").Valid>} interval
+ * @param {number} cellHeight - Height of a cell in pixels
+ * @param {number} externalOffset - Additional height to offset (to take into account header row)
+ * TODO remove need for externalOffset
  */
-export function calculateTop(interval) {
+export function calculateTop(interval, cellHeight, externalOffset) {
 	const start = interval.start;
 	const secondsSinceStartOfDay = start.toSeconds() - start.startOf('day').toSeconds();
-	const pxOffset = secondsToPx(secondsSinceStartOfDay);
+	const pxOffset = secondsToPx(secondsSinceStartOfDay, cellHeight);
 	const top = pxOffset + externalOffset;
 	return top;
 }
 
 /**
  * @param {number} seconds - Number of seconds
+ * @param {number} cellHeight - Height of a cell in pixels
  * @returns {number} - Number of pixels that equate to that number of seconds
- */
-function secondsToPx(seconds) {
-	const proportion = seconds / totalSecondsInDay;
+*/
+function secondsToPx(seconds, cellHeight) {
+	const bodyHeightPx = HRS_IN_DAY * cellHeight;
+	const proportion = seconds / SECS_IN_DAY;
 	return proportion * bodyHeightPx;
 }
 
 /**
  * @param {Interval} interval - The interval of time to display
  * @param {number} top - Pixel distance between top of view and start of this overlay
+ * @param {number} cellHeight - Height of a cell in pixels
+ * @param {number} externalOffset - Additional height to offset (to take into account header row)
+ * TODO remove need for externalOffset
  */
-export function calculateHeight(interval, top) {
-	const requiredPx = secondsToPx(interval.length('seconds'));
+export function calculateHeight(interval, top, cellHeight, externalOffset) {
+	const screenHeightPx = secondsToPx(SECS_IN_DAY, cellHeight);
+
+	const proposedPx = secondsToPx(interval.length('seconds'), cellHeight);
 	const remainingPx = screenHeightPx - top + externalOffset;
 
 	/**
-	 * Aim to use the required px but resort to
-	 * displaying only for the remaining pixels left
+	 * Aim to use the proposed px but resort to
+	 * displaying only the remaining pixels left
 	 * for that day.
 	 *
-	 * Otherwise overlay will spill over out of the
+	 * Otherwise overlay could spill out of the
 	 * day.
-	 *
-	 * TODO - Handle the case when time spills over
-	 * into a new day.
 	 */
-	return Math.min(requiredPx, remainingPx);
+	return Math.min(proposedPx, remainingPx);
 }
 
 /**
  * @param {Interval<import("luxon/src/_util").Valid>[]} intervals
+ * @param {number} cellHeight - Height of a cell in pixels
+ * @param {number} cellWidth - Width of a cell in pixels
+ * @param {number} externalOffset - Additional height to offset (to take into account header row)
+ * TODO remove need for externalOffset
  * @param {DateTime[]} daysToDisplay
  * @return {Position[]}
  */
-export function calculatePositions(intervals, daysToDisplay) {
+export function calculatePositions(intervals, cellHeight, cellWidth, externalOffset, daysToDisplay) {
 	return intervals.map((interval) => {
 		const dayIndex = findDayIndex(daysToDisplay, interval.start);
 		const left = cellWidth * (dayIndex + 1);
-		const top = calculateTop(interval);
-		const height = calculateHeight(interval, top);
+		const top = calculateTop(interval, cellHeight, externalOffset);
+		const height = calculateHeight(interval, top, cellHeight, externalOffset);
 		return {
 			top,
 			left,
-			height
+			height,
+			width: cellWidth,
 		};
 	});
 }

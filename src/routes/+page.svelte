@@ -25,7 +25,6 @@
 		width: 85%;
 		height: 100%;
 		overflow-y: auto; /* Enable vertical scrolling */
-		overflow-x: hidden; /* Disable horizontal scrolling */
 	}
 
 	.right-column {

@@ -6,9 +6,11 @@
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
 
-	const now = DateTime.now();
+	const cellHeight = 28;
+	const cellWidth = 100;
+	const headerHeight = cellHeight;
 
-	const cellHeight = 100;
+	const now = DateTime.now();
 
 	let daysToDisplay = [now];
 	for (let i = 1; i < 7; i++) {
@@ -50,7 +52,7 @@
 				DateTime.fromISO(task.endTime)
 			);
 			const intervals = splitIntervalByDays(interval);
-			const positions = calculatePositions(intervals, daysToDisplay);
+			const positions = calculatePositions(intervals, cellHeight, cellWidth, headerHeight, daysToDisplay);
 
 			return { task, positions };
 		});
