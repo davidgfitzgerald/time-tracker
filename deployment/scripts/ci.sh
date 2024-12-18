@@ -21,6 +21,7 @@ if [[ ! $1 = "--force" ]]; then
     # instance - abort
     terraform plan | grep "Your infrastructure matches the configuration"
     if [[ $? -ne 0 ]]; then
+        echo "Undeployed infrastructure changes."
         echo "Deployment aborted."
         echo "Check terraform plan."
 
