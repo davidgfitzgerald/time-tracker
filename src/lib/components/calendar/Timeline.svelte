@@ -11,12 +11,39 @@
 	const headerHeight = $state(50);
 	const headerWidth = $derived(cellWidth);
 
-	const now = DateTime.now();
+	const initialDay = DateTime.now();
 
-	let daysToDisplay = [now];
+	let daysToDisplay = $state([initialDay])
+
+	function addDayToEnd() {
+		const latestDay = daysToDisplay.at(-1)
+		if (latestDay == undefined) {
+			daysToDisplay.push(initialDay)
+		} else {
+			daysToDisplay.push(latestDay.plus({days: 1}))
+		}
+	}
+
+	function addDayToStart() {
+		const earliestDay = daysToDisplay.at(0)
+		if (earliestDay == undefined) {
+			daysToDisplay.unshift(initialDay)
+		} else {
+			daysToDisplay.unshift(earliestDay.minus({days: 1}))
+		}
+	}
+
+	function removeDayFromEnd() {
+		daysToDisplay.pop()
+	}
+
+	function removeDayFromStart() {
+		daysToDisplay.shift()
+	}
+
 	for (let i = 1; i < 7; i++) {
-		daysToDisplay.push(now.plus({ days: i }));
-		daysToDisplay.unshift(now.minus({ days: i }));
+		addDayToEnd()
+		addDayToStart()
 	}
 
 	/**
@@ -90,6 +117,12 @@
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
 	{/each}
+	<div>
+		<button onclick={addDayToStart}>Add Day Start</button>
+		<button onclick={addDayToEnd}>Add Day End</button>
+		<button onclick={removeDayFromStart}>Remove First Day</button>
+		<button onclick={removeDayFromEnd}>Remove Last Day</button>
+	</div>
 </div>
 
 <style>
