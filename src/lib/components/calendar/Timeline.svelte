@@ -41,6 +41,17 @@
 	}
 
 	/**
+	 * Constructs reactive data of this format:
+	 * 
+	 * 	[
+	 * 		{
+	 * 			"task": {...},
+	 * 			"positions": [
+	 * 				{...},
+	 * 				{...}
+	 * 			]
+	 * 		}
+	 * 	]
 	 * @type {import("./overlay").TaskAndPositions[]}
 	 */
 	const tasksAndPositions = $derived(
