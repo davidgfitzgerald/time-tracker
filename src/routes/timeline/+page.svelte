@@ -1,5 +1,5 @@
 <script>
-	import Timeline from '$lib/components/timeline/Timeline.svelte';
+	import Timeline from '$lib/components/calendar/Timeline.svelte';
 </script>
 
 <div class="page">

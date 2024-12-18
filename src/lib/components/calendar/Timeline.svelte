@@ -4,16 +4,11 @@
 	import { times } from '$lib/stores';
 	import { splitIntervalByDays } from '$lib/utils/time';
 	import { calculatePositions, findDayIndex } from './overlay';
+	import Calendar from './Calendar.svelte';
 	
 	const now = DateTime.now();
 
-	const hoursInDay = 24;
 	const cellHeight = 100;
-
-	let hours = [];
-	for (let i = 0; i < hoursInDay; i++) {
-		hours.push(`${i.toString().padStart(2, '0')}:00`);
-	}
 
 	let daysToDisplay = [now];
 	for (let i = 1; i < 7; i++) {
@@ -62,22 +57,7 @@
 </script>
 
 <div class="calendar" style="--cell-height: {cellHeight}">
-	<div class="column">
-		<div class="cell"></div>
-		{#each hours as hour}
-			<div class="cell">{hour}</div>
-		{/each}
-	</div>
-	{#each daysToDisplay as day, i}
-		<div class="column">
-			<div class="cell header">
-				{day.toFormat('ccc dd')}
-			</div>
-			{#each hours}
-				<div class="cell"></div>
-			{/each}
-		</div>
-		{/each}
+	<Calendar {daysToDisplay}></Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		{#each positions as position}
 			<Overlay {position} {task}></Overlay>
@@ -90,24 +70,5 @@
 		display: flex;
 		flex-direction: row;
 		position: relative;
-	}
-
-	.header {
-		text-align: center;
-		justify-content: center;
-	}
-
-	.column {
-		position: relative;
-	}
-
-	.header {
-		text-align: center;
-	}
-
-	.cell {
-		border-bottom: 1px solid hsl(0, 0%, 80%);
-		height: calc(var(--cell-height) * 1px);
-		width: calc(var(--cell-height) * 1px);
 	}
 </style>

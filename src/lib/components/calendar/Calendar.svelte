@@ -1,0 +1,48 @@
+<script>
+    const { daysToDisplay } = $props()
+	const hoursInDay = 24;
+
+	let hours = [];
+	for (let i = 0; i < hoursInDay; i++) {
+		hours.push(`${i.toString().padStart(2, '0')}:00`);
+	}
+</script>
+
+<div class="column">
+    <div class="cell"></div>
+    {#each hours as hour}
+        <div class="cell">{hour}</div>
+    {/each}
+</div>
+{#each daysToDisplay as day, i}
+    <div class="column">
+        <div class="cell header">
+            {day.toFormat('ccc dd')}
+        </div>
+        {#each hours}
+            <div class="cell"></div>
+        {/each}
+    </div>
+{/each}
+
+<style>
+	.header {
+		text-align: center;
+		justify-content: center;
+	}
+
+	.column {
+		position: relative;
+	}
+
+	.header {
+		text-align: center;
+	}
+
+	.cell {
+		border-bottom: 1px solid hsl(0, 0%, 80%);
+		height: calc(var(--cell-height) * 1px);
+		width: calc(var(--cell-height) * 1px);
+	}
+    /* TODO - Try to uncouple the --cell-height var from the parent */
+</style>

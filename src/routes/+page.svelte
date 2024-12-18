@@ -1,7 +1,7 @@
 <script>
 	import Controls from '$lib/components/Controls.svelte';
 	import Clock from '$lib/components/Clock.svelte';
-	import Timeline from '$lib/components/timeline/Timeline.svelte';
+	import Timeline from '$lib/components/calendar/Timeline.svelte';
 </script>
 
 <div class="body">
