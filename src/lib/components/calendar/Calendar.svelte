@@ -9,14 +9,14 @@
 </script>
 
 <div class="column">
-	<div class="cell"></div>
+	<div class="header"></div>
 	{#each hours as hour}
 		<div class="cell">{hour}</div>
 	{/each}
 </div>
-{#each daysToDisplay as day, i}
+{#each daysToDisplay as day}
 	<div class="column">
-		<div class="cell header">
+		<div class="header">
 			{day.toFormat('ccc dd')}
 		</div>
 		{#each hours}
@@ -29,14 +29,13 @@
 	.header {
 		text-align: center;
 		justify-content: center;
+		border-bottom: 1px solid hsl(0, 0%, 80%);
+		height: calc(var(--header-height) * 1px);
+		width: calc(var(--header-width) * 1px);
 	}
 
 	.column {
 		position: relative;
-	}
-
-	.header {
-		text-align: center;
 	}
 
 	.cell {

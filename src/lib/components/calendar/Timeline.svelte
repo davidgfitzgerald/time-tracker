@@ -6,9 +6,10 @@
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
 
-	const cellHeight = 28;
-	const cellWidth = 100;
-	const headerHeight = cellHeight;
+	const cellHeight = $state(28);
+	const cellWidth = $state(100);
+	const headerHeight = $state(50);
+	const headerWidth = $derived(cellWidth);
 
 	const now = DateTime.now();
 
@@ -42,7 +43,7 @@
 
 	/**
 	 * Constructs reactive data of this format:
-	 * 
+	 *
 	 * 	[
 	 * 		{
 	 * 			"task": {...},
@@ -77,8 +78,15 @@
 	);
 </script>
 
-<div class="calendar" style="--cell-height: {cellHeight}">
-	<Calendar {daysToDisplay}></Calendar>
+<div class="calendar">
+	<Calendar 
+		{daysToDisplay}
+		--cell-height={cellHeight}
+		--cell-width={cellWidth}
+		--header-height={headerHeight}
+		--header-width={headerWidth}
+	>
+	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
 	{/each}
