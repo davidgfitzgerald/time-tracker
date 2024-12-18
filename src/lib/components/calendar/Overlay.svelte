@@ -45,7 +45,8 @@
 	.interval {
 		position: absolute;
 		background-color: var(--colour);
-		border: none;
+		border: 2px solid rgba(0,0,0, 0.03);
+		box-sizing: border-box;
 		border-radius: 10px;
 		top: calc(var(--top) * 1px);
 		height: calc(var(--height) * 1px);
@@ -56,7 +57,7 @@
 	.overlay-group:hover .interval {
 		z-index: 1;
 		filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
-		transform: rotateZ(3deg);
+		transform: rotateZ(2deg);
 		transition: all 0.3s ease;
 		cursor: pointer;
 	}
