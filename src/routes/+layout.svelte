@@ -11,27 +11,15 @@
 	 */
 	export let data;
 	console.debug('Initial backend data loaded.');
-	// console.log("Data retrieved is :", data)
 	times.set(data);
 
 	/**
-	 * @type {() => void}
+	 * Long running task to periodicially update clock.
 	 */
-	let teardownClock;
+	console.debug('+layout.svelte setting up clock');
+	const teardownClock = setupClock(times, () => updateDuration($times.tasks));
 
-	/**
-	 * Start task to periodicially update clock
-	 */
-	console.debug('+layout.svelte running to set up clock');
-	teardownClock = setupClock(times, () => {
-		updateDuration($times.tasks);
-	});
-
-	onDestroy(() => {
-		if (teardownClock) {
-			teardownClock();
-		}
-	});
+	onDestroy(() => teardownClock());
 </script>
 
 <div>
