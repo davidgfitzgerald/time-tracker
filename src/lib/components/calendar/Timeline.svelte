@@ -61,9 +61,7 @@
 <div class="calendar" style="--cell-height: {cellHeight}">
 	<Calendar {daysToDisplay}></Calendar>
 	{#each tasksAndPositions as { task, positions }}
-		{#each positions as position}
-			<Overlay {position} {task}></Overlay>
-		{/each}
+		<Overlay {task} {positions}></Overlay>
 	{/each}
 </div>
 

@@ -1,12 +1,11 @@
 <script>
 	/**
 	 * @type {{
-	 * 	position: import("./overlay").Position
+	 * 	positions: import("./overlay").Position[]
 	 * 	task: import("$lib/stores").Task
 	 * }}
 	 */
-	let { task, position } = $props();
-	const { top, left, height, width } = position;
+	let { task, positions } = $props();
 
 	/**
 	 * Choose a colour for this overlay.
@@ -27,19 +26,23 @@
 	const colour = chooseColour(task);
 </script>
 
-<div
-	class="highlight"
-	style:--top={top}
-	style:--height={height}
-	style:--width={width}
-	style:--left={left}
-	style:--colour={colour}
->
-	<span>{task.category}</span>
+<div class="overlay-group">
+	{#each positions as { top, left, height, width }}
+			<div
+			class="interval"
+			style:--top={top}
+			style:--height={height}
+			style:--width={width}
+			style:--left={left}
+			style:--colour={colour}
+		>
+			<span>{task.category}</span>
+		</div>
+	{/each}
 </div>
 
 <style>
-	.highlight {
+	.interval {
 		position: absolute;
 		background-color: var(--colour);
 		border: none;
@@ -50,7 +53,7 @@
 		width: calc(var(--width) * 1px);
 	}
 
-	.highlight:hover {
+	.overlay-group:hover .interval {
 		z-index: 1;
 		filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));
 		transform: rotateZ(3deg);
@@ -58,7 +61,7 @@
 		cursor: pointer;
 	}
 
-	.highlight:hover span {
+	.interval:hover span {
 		display: block;
 		position: fixed;
 		top: -20px;
