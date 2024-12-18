@@ -61,7 +61,7 @@ export function convertUTCToLocal(utcDateStr) {
 /**
  * @param {string} startTime
  * @returns {number} Duration in seconds
- * Calculate duration start time and now.
+ * Calculate duration between start time and now.
  */
 export function calculateDuration(startTime) {
 	const now = new Date();
@@ -86,7 +86,7 @@ export function sleep(secs) {
  *  <2000-01-30 6pm - 2000-01-31 3pm>
  *
  * then this would split that interval up into
- * two subintervals:
+ * two subintervals at midnight:
  * 	<2000-01-30 6pm - 2000-01-31 00:00am>
  * 	and
  * 	<2000-01-31 00:00am - 2000-01-31 3pm>
