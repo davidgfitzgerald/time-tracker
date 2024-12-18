@@ -38,9 +38,10 @@
 		min-width: 100%;
 		border-collapse: collapse;
 		font-size: 0.9em;
-		box-shadow: 5px 5px 5px rgb(92, 92, 92);
 		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
+		box-shadow: 5px 5px 5px rgb(92, 92, 92);
+		transform: translate3d(0,0,0); /* Hack to fix poor box-shadow rendering on iOS*/
 	}
 
 	th:first-child {

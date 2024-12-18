@@ -132,6 +132,7 @@
 		border: 1px;
 		border-radius: 1rem;
 		box-shadow: 2px 2px 5px rgb(92, 92, 92);
+		transform: translate3d(0,0,0); /* Hack to fix poor box-shadow rendering on iOS*/
 	}
 
 	/* Submit button */

@@ -55,5 +55,6 @@
 		padding: 1rem;
 		background-color: rgb(255, 255, 255);
 		box-shadow: 10px 10px 10px rgb(92, 92, 92);
+		transform: translate3d(0,0,0); /* Hack to fix poor box-shadow rendering on iOS*/
 	}
 </style>
