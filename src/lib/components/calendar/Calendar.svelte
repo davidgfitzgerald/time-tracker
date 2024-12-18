@@ -43,5 +43,4 @@
 		height: calc(var(--cell-height) * 1px);
 		width: calc(var(--cell-width) * 1px);
 	}
-	/* TODO - Try to uncouple the --cell-height var from the parent */
 </style>

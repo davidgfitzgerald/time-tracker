@@ -1,6 +1,5 @@
 import fs from 'fs';
 import pkg from 'pg'; // Import the default export from the pg package
-// import 'dotenv/config';  // TODO - check is this being used?
 
 // Destructure Pool from the default export
 const { Pool } = pkg;
