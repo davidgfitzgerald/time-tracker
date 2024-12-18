@@ -18,12 +18,12 @@
 		if (category?.includes('sleep')) {
 			return 'rgba(50, 166, 0, 0.808)'; // Green with opacity *
 		} else if (category?.includes('work')) {
-			return 'rgba(0, 50, 150, 0.808)'; // Blue with opacity *
+			return 'rgba(0, 50, 200, 0.808)'; // Blue with opacity *
 		} else {
 			return 'rgba(255, 166, 0, 0.808)'; // Yellow/orange with opacity *
 		}
 	}
-	const colour = chooseColour(task);
+	const colour = $derived(chooseColour(task));
 </script>
 
 <div class="overlay-group">
