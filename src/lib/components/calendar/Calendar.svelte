@@ -1,5 +1,5 @@
 <script>
-	const { daysToDisplay } = $props();
+	const { daysToDisplay, children } = $props();
 	const hoursInDay = 24;
 
 	let hours = [];
@@ -9,7 +9,9 @@
 </script>
 
 <div class="column">
-	<div class="header"></div>
+	<div class="header">
+		{@render children()}
+	</div>
 	{#each hours as hour}
 		<div class="cell">{hour}</div>
 	{/each}

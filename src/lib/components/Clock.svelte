@@ -4,16 +4,20 @@
 </script>
 
 <div class="stopwatch">
-	<h1>{formatDuration($duration)}</h1>
+	<p>
+		{formatDuration($duration)}
+	</p>
 </div>
 
 <style>
 	.stopwatch {
-		font-size: 2em;
-		text-align: center;
-	}
-
-	h1 {
-		padding: 0px;
+		width: 100%;
+		height: 75%;
+		display: flex;
+		justify-content: center; /* Centers content horizontally */
+		align-items: center; /* Centers content vertically */
+		border: 1px solid #000; /* Optional: for visualization */
+		box-sizing: content-box;
+		border-radius: 5px;
 	}
 </style>

@@ -5,6 +5,7 @@
 	import { splitIntervalByDays } from '$lib/utils/time';
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
+	import Clock from '../Clock.svelte';
 
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
@@ -112,7 +113,9 @@
 		--cell-width={cellWidth}
 		--header-height={headerHeight}
 		--header-width={headerWidth}
+
 	>
+		<Clock />
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
