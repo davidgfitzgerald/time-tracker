@@ -1,7 +1,7 @@
 <script>
 	import { formatDuration } from '$lib/utils/time';
 	import { times, duration } from '$lib/stores';
-
+	import ClearX from './tiny/ClearX.svelte';
 	let modalOpen = $state(false);
 	let category = $state('');
 
@@ -15,6 +15,10 @@
 	 */
 	function toggleModal() {
 		modalOpen = !modalOpen;
+	}
+
+	function clearInput() {
+		category = '';
 	}
 
 	/**
@@ -42,7 +46,7 @@
 			console.error(error);
 		}
 
-		category = ''; // Disable pre-population next tune
+		category = ''; // Disable pre-population next time
 		toggleModal(); // Close the time log modal
 	}
 
@@ -72,23 +76,31 @@
 </script>
 
 <div class="stopwatch">
-	<button onclick={toggleModal} class="submit">{formatDuration($duration)}</button>
+	<button class="submit button" onclick={toggleModal}>{formatDuration($duration)}</button>
 </div>
 
+<!-- TODO add aria a11y stuff -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 {#if modalOpen}
 	<div class="modal-background" onclick={toggleModal}>
-		<div class="modal-content" onclick={e => e.stopPropagation()}>
-			<h2>Track Time</h2>
+		<div class="modal-content" onclick={(e) => e.stopPropagation()}>
 			<p>You are about to track {formatDuration($duration)}.</p>
-
-			<form onsubmit={e => {e.preventDefault(); updateTask()}}>
+			<form
+				onsubmit={(e) => {
+					e.preventDefault();
+					updateTask();
+				}}
+			>
 				<div class="category">
-					<label>
-						Task Category:
-						<input type="text" bind:value={category} required />
-					</label>
+					<div>
+						<input type="text" placeholder="Category" bind:value={category} required />
+						{#if category}
+							<ClearX func={clearInput}></ClearX>
+						{/if}
+					</div>
 				</div>
-				<button class="add-task" type="submit">Add Task</button>
+				<button class="add-task button" type="submit">Add Task</button>
 			</form>
 		</div>
 	</div>
@@ -98,31 +110,20 @@
 	.stopwatch {
 		width: 100%;
 		height: 75%;
-		display: flex;
-		justify-content: center; /* Centers content horizontally */
-		align-items: center; /* Centers content vertically */
-		box-sizing: content-box;
-		border-radius: 5px;
-
-		font-size: 2em;
-		padding-bottom: 10px;
-		text-align: center;
 	}
 
-	/* Buttons */
-	button {
-		/* padding: 10px 20px; */
-		/* font-size: 1em; */
+	/* Button applies both in and out of the modal. */
+	.button {
+		font-size: 1rem;
 		cursor: pointer;
 		width: 100%;
 		height: 100%;
 		border: 1px solid rgb(42, 185, 66);
-		border-radius: 1rem;
+		border-radius: 5px;
 		box-shadow: 1px 1px 1px rgb(70, 194, 91);
-		transform: translate3d(0,0,0); /* Hack to fix poor box-shadow rendering on iOS*/
+		transform: translate3d(0, 0, 0); /* Hack to fix poor box-shadow rendering on iOS*/
 	}
 
-	/* Submit button */
 	.submit {
 		background-color: rgb(53, 226, 79);
 		color: white;
@@ -130,7 +131,6 @@
 		height: 100%;
 	}
 
-	/* Modal background */
 	.modal-background {
 		z-index: 999;
 		position: fixed;
@@ -142,17 +142,18 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		padding: 20px; /* Make modal at least 20px away from edge of screen */
+		box-sizing: border-box;
 	}
 
-	/* Modal content */
 	.modal-content {
 		background-color: white;
-		padding: 20px;
+		padding: 50px;
 		border-radius: 5px;
 		max-width: 500px;
 		width: 100%;
 	}
-	/* Close button */
+
 	.add-task {
 		cursor: pointer;
 		background-color: #0ccf61;
@@ -167,9 +168,14 @@
 
 	.category {
 		padding-bottom: 20px;
+		position: relative;
 	}
 
 	.category input {
 		min-height: 50px;
+		width: 100%;
+		box-sizing: border-box;
+		padding-left: 10px; /* Adds 10px space between text and left boundary */
+
 	}
 </style>
