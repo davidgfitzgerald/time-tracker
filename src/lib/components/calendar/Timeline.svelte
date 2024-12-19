@@ -115,7 +115,7 @@
 		--header-width={headerWidth}
 
 	>
-		<Clock />
+		<Clock/>
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
