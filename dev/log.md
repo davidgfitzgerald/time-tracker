@@ -8,6 +8,10 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Thu 19th
+
+Going to carry on working on making the app more mobile friendly.
+
 ## Wed 18th
 
 Focusing on making the app more mobile friendly.

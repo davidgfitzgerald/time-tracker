@@ -4,7 +4,7 @@
 </script>
 
 <div class="stopwatch">
-	<h1>{formatDuration($duration)}</h1>
+	<h4>{formatDuration($duration)}</h4>
 </div>
 
 <style>
@@ -13,7 +13,7 @@
 		text-align: center;
 	}
 
-	h1 {
-		padding: 0px;
+	h4 {
+		padding: 1rem;
 	}
 </style>

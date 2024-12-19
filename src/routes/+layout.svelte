@@ -22,27 +22,20 @@
 	onDestroy(() => teardownClock());
 </script>
 
-<div>
+<div class="root">
 	<NavBar />
-	<div class="background">
-		<div class="content">
-			<slot></slot>
-		</div>
+	<div class="content">
+		<slot></slot>
 	</div>
 </div>
 
 <style>
 	@import '../app.css';
 
-	.background {
-		padding: 1rem;
-		background-color: grey;
-	}
-
 	.content {
+		overflow-x: auto;
+		background-color: white;
 		padding: 1rem;
 		background-color: rgb(255, 255, 255);
-		box-shadow: 10px 10px 10px rgb(92, 92, 92);
-		transform: translate3d(0,0,0); /* Hack to fix poor box-shadow rendering on iOS*/
 	}
 </style>

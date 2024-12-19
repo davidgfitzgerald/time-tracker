@@ -17,19 +17,12 @@
 <style>
 	.body {
 		height: 80vh;
-		display: flex;
-		overflow: hidden;
+		display: grid;
+		overflow: auto;
+		grid-template-columns: 4fr 1fr;
 	}
 
 	.left-column {
-		width: 85%;
-		height: 100%;
-		overflow-y: auto; /* Enable vertical scrolling */
-	}
-
-	.right-column {
-		width: 15%;
-		height: 100%;
-		overflow: hidden; /* Prevent scrolling */
+		overflow: auto;
 	}
 </style>
