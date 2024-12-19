@@ -33,6 +33,7 @@ Added a clear "x" button in the category input element.
 - Display amount of days dynamically based on screen width
 - Allow day pagination
 - In the modal change `Enter` behaviour to submit instead of clear
+- Implement some loading spinner/icon to indicate SSR is happening
 
 ## Wed 18th
 
