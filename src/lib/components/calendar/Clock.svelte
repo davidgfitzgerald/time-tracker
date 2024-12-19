@@ -1,7 +1,7 @@
 <script>
 	import { formatDuration } from '$lib/utils/time';
 	import { times, duration } from '$lib/stores';
-	import ClearX from './tiny/ClearX.svelte';
+	import ClearX from '../tiny/ClearX.svelte';
 	let modalOpen = $state(false);
 	let category = $state('');
 

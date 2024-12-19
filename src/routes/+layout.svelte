@@ -1,5 +1,5 @@
 <script>
-	import NavBar from '$lib/components/NavBar.svelte';
+	import NavBar from '$lib/components/nav/NavBar.svelte';
 	import { onDestroy } from 'svelte';
 	import { times } from '$lib/stores';
 	import { setupClock, updateDuration } from '$lib/utils/clock.js';

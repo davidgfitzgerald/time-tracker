@@ -5,7 +5,7 @@
 	import { splitIntervalByDays } from '$lib/utils/time';
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
-	import Clock from '../Clock.svelte';
+	import Clock from './Clock.svelte';
 
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);

@@ -32,6 +32,7 @@ Added a clear "x" button in the category input element.
 - Thinner header column
 - Display amount of days dynamically based on screen width
 - Allow day pagination
+- In the modal change `Enter` behaviour to submit instead of clear
 
 ## Wed 18th
 
