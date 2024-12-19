@@ -6,6 +6,7 @@
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
 	import Clock from './Clock.svelte';
+	import { onMount } from 'svelte';
 
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
@@ -42,10 +43,22 @@
 		daysToDisplay.shift()
 	}
 
-	for (let i = 1; i < 7; i++) {
-		addDayToEnd()
-		addDayToStart()
+	function calculateNoVisibleDays() {
+		return Math.floor((window.innerWidth - cellWidth) / cellWidth)
 	}
+
+	onMount(() => {
+		const maxNoVisibleDays = calculateNoVisibleDays()
+		const noDaysToDisplay = Math.min(maxNoVisibleDays, 15)
+	
+		for (let i = 1; i < noDaysToDisplay; i++) {
+			if (i % 2 == 0) {
+				addDayToEnd()
+			} else {
+				addDayToStart()
+			}
+		}
+	})
 
 	/**
 	 * @param {import('$lib/stores').Task} task
@@ -121,10 +134,8 @@
 		<Overlay {task} {positions}></Overlay>
 	{/each}
 	<div>
-		<button onclick={addDayToStart}>Add Day Start</button>
-		<button onclick={addDayToEnd}>Add Day End</button>
-		<button onclick={removeDayFromStart}>Remove First Day</button>
-		<button onclick={removeDayFromEnd}>Remove Last Day</button>
+		<button onclick={() => {addDayToStart(); removeDayFromEnd()}}>Left</button>
+		<button onclick={() => {addDayToEnd(); removeDayFromStart()}}>Right</button>
 	</div>
 </div>
 
