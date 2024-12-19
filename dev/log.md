@@ -18,6 +18,20 @@ Moved the timer inside the first cell on the left.
 
 Just had the idea to set the timer as the track button!
 
+Cool, made some good front end changes!
+
+Refactor some components, added some styling, made the app way more mobile friendly.
+Moving the clock timer into the corner of the grid was a cool idea, think it works quite well.
+Doubling up the purpose of the timer with the button makes sense too, saves real estate.
+
+### Ideas For Next Time
+
+- Sticky table header row
+- Sticky table header column
+- Thinner header column
+- Display amount of days dynamically based on screen width
+- Allow day pagination
+
 ## Wed 18th
 
 Focusing on making the app more mobile friendly.
