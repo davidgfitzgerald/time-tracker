@@ -23,6 +23,7 @@ Cool, made some good front end changes!
 Refactor some components, added some styling, made the app way more mobile friendly.
 Moving the clock timer into the corner of the grid was a cool idea, think it works quite well.
 Doubling up the purpose of the timer with the button makes sense too, saves real estate.
+Added a clear "x" button in the category input element.
 
 ### Ideas For Next Time
 
