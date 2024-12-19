@@ -12,6 +12,12 @@ information.
 
 Going to carry on working on making the app more mobile friendly.
 
+Added some styling to make the web view nicer.
+
+Moved the timer inside the first cell on the left.
+
+Just had the idea to set the timer as the track button!
+
 ## Wed 18th
 
 Focusing on making the app more mobile friendly.
