@@ -8,6 +8,12 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Sat 21st
+
+Sat in edge eatery going to look into what improvements I can make.
+
+Just knocked up a quick little script to pull prod DB data locally.
+
 ## Thu 19th
 
 Going to carry on working on making the app more mobile friendly.
