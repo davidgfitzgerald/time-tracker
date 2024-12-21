@@ -153,3 +153,7 @@ app.db
 .terraform.lock.hcl
 *terraform.tfstate*
 terraform.tfvars
+
+# Project specific
+timetracker-prod.sql
+timetracker-dev.sql
