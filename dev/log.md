@@ -8,6 +8,239 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Sat 21st
+
+Sat in edge eatery going to look into what improvements I can make.
+
+Just knocked up a quick little script to pull prod DB data locally.
+
+## Thu 19th
+
+Going to carry on working on making the app more mobile friendly.
+
+Added some styling to make the web view nicer.
+
+Moved the timer inside the first cell on the left.
+
+Just had the idea to set the timer as the track button!
+
+Cool, made some good front end changes!
+
+Refactor some components, added some styling, made the app way more mobile friendly.
+Moving the clock timer into the corner of the grid was a cool idea, think it works quite well.
+Doubling up the purpose of the timer with the button makes sense too, saves real estate.
+Added a clear "x" button in the category input element.
+
+### Ideas For Next Time
+
+- Sticky table header row
+- Sticky table header column
+- Thinner header column
+- Display amount of days dynamically based on screen width
+- Allow day pagination
+- In the modal change `Enter` behaviour to submit instead of clear
+- Implement some loading spinner/icon to indicate SSR is happening
+
+## Wed 18th
+
+Focusing on making the app more mobile friendly.
+
+Watching this video on tips on responsive design concepts:
+
+https://www.youtube.com/watch?v=TUD1AWZVgQ8
+
+Main takeaways:
+
+1. Set width to device width and initial zoom level to 1.0.
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+```
+
+2. Media queries
+
+The below style is only enabled when the width of the viewport is above 200px.
+
+```css
+@media (min-width: 200px) {
+	.box {
+		background: red; 
+	}
+}
+```
+
+The below style is only enabled when the width of the viewport is greater than 
+the height (it's as though it's in landscape mode).
+
+```css
+@media (orientation: landscape) {
+	.box {
+		background: blue
+	}
+}
+```
+
+The query could also use:
+
+```css
+@media (min-aspect-ratio: 16/9) {
+	...
+}
+```
+
+More experimental:
+
+```css
+@media (width >= 300px) {
+	...
+}
+```
+
+3. Container Queries
+
+The media queries are OK but can fall down at points when it is not taking into account
+an elements container. There may not actually be much space for it to contain more content.
+
+In the below example, the main content could be over 400px and take on the styling whereas the
+sidebar is smaller and doesn't take the styling on.
+
+```css
+.main {
+	flex-grow: 1;
+}
+
+.sidebar {
+	width: 30%;
+	border-left: 1px solid black;
+}
+
+.main,
+.sidebar {
+	container-type: inline-size;
+}
+
+@container (width >= 400px) {
+	.box {
+		background: red;
+	}
+}
+```
+
+Container queries may be more useful and applicable in component based libraries.
+
+4. Custom Media Queries
+
+A custom media query allows you define a query as a css variable for reuse.
+
+For example:
+
+```css
+@custom-media --large (width >= 400px);
+
+@media (--large) {
+	...
+}
+```
+
+5. Different HTML for Desktop & Mobile
+
+Warranted if the HTML required would be drastically different in each scenario.
+
+In that case you might set a class `mobile-only` on a parent html element and then
+use a media query to set `.desktop-only` display to none and vice versa.
+
+6. CSS Grid
+
+Give a parent element a `.grid` class.
+
+```css
+.grid {
+	width: 100%;
+	display: grid;
+	gap: 1rem;
+
+	grid-template-columns: repeat(auto-fill, 1fr);
+	grid-template-columns: repeat(auto-fit, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+	grid-auto-rows: 100px /* Sets height of each row */
+}
+```
+
+- `auto-fit` will stretch few items to take up the full width
+- `auto-fill` will imagine there are invisible items taking up the waste space
+
+7. Min/max Width/Height and Clamp
+
+In the below example, the box will always take up at least `300px`, then take up `75%` of the width until a maximum of `500px`.
+
+```css
+.box {
+	height: 200px;
+
+	min-width: 300px;
+	width: 75%;
+	max-width: 500px;
+}
+```
+
+the same can be achieved with `clamp`:
+
+```css
+.box {
+	height: 200px;
+	width: clamp(300px, 75%, 500px);
+}
+```
+
+You could also use `clamp` with font-size
+
+8. Viewport Units
+
+They take into account the height of the URL bar.
+
+```css
+
+```
+
+### Aside
+
+Nice little emmet tip:
+
+```
+.box-$*5
+```
+
+would result in
+
+```html
+<div class="box-1"></div>
+<div class="box-2"></div>
+<div class="box-3"></div>
+<div class="box-4"></div>
+<div class="box-5"></div>
+```
+
+the `$` represents the count of each repetition, starting at 1.
+
+### Mobile Only Query
+
+The following will display only on mobile.
+
+```css
+    /* if device has a touch screen */
+    @media (any-pointer: coarse) {
+        .mobile-only {
+            display: block;
+        }
+    }
+    /* if device has no touch screen */
+    @media (any-pointer: fine) {
+        .mobile-only {
+            display: none;
+        }
+    }
+```
+
 ## Tue 17th
 
 Confirmed that prod doesn't break if we remove `PLATFORM` env var.

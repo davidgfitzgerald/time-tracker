@@ -5,45 +5,43 @@
 	import { splitIntervalByDays } from '$lib/utils/time';
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
+	import Clock from './Clock.svelte';
 
+	// Height and width state
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
 	const headerHeight = $state(50);
 	const headerWidth = $derived(cellWidth);
+	let innerWidth = $state(0)  // Maps to window.innerWidth
+	
+	// Day state
+	let initialDay = $state(DateTime.now())
+	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - cellWidth) / cellWidth))
+	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
 
-	const initialDay = DateTime.now();
+	/**
+	 * @type {DateTime[]}
+	 */
+	let daysToDisplay = $derived.by(() => {
+		/**
+		 * @type {DateTime[]}
+		 */
+		const days = [];
+		Array.from({ length: visibleDaysCount }, () => addDayToStart(days));
+		return days;
+	});
 
-	let daysToDisplay = $state([initialDay])
 
-	function addDayToEnd() {
-		const latestDay = daysToDisplay.at(-1)
+	/**
+	 * @param {DateTime[]} days
+	 */
+	function addDayToStart(days) {
+		const latestDay = days.at(-1)
 		if (latestDay == undefined) {
-			daysToDisplay.push(initialDay)
+			days.push(initialDay)
 		} else {
-			daysToDisplay.push(latestDay.plus({days: 1}))
+			days.push(latestDay.plus({days: 1}))
 		}
-	}
-
-	function addDayToStart() {
-		const earliestDay = daysToDisplay.at(0)
-		if (earliestDay == undefined) {
-			daysToDisplay.unshift(initialDay)
-		} else {
-			daysToDisplay.unshift(earliestDay.minus({days: 1}))
-		}
-	}
-
-	function removeDayFromEnd() {
-		daysToDisplay.pop()
-	}
-
-	function removeDayFromStart() {
-		daysToDisplay.shift()
-	}
-
-	for (let i = 1; i < 7; i++) {
-		addDayToEnd()
-		addDayToStart()
 	}
 
 	/**
@@ -105,6 +103,9 @@
 	);
 </script>
 
+<svelte:window bind:innerWidth={innerWidth} />
+
+
 <div class="calendar">
 	<Calendar 
 		{daysToDisplay}
@@ -112,16 +113,16 @@
 		--cell-width={cellWidth}
 		--header-height={headerHeight}
 		--header-width={headerWidth}
+
 	>
+		<Clock/>
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
 	{/each}
 	<div>
-		<button onclick={addDayToStart}>Add Day Start</button>
-		<button onclick={addDayToEnd}>Add Day End</button>
-		<button onclick={removeDayFromStart}>Remove First Day</button>
-		<button onclick={removeDayFromEnd}>Remove Last Day</button>
+		<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
+		<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
 	</div>
 </div>
 

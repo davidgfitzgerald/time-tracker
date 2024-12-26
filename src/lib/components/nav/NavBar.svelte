@@ -1,7 +1,7 @@
 <script>
 	/**
 	 * @typedef {Object} Link
-	 * @property {string} name - Name of the link
+	* @property {string} name - Name of the link
 	 * @property {string} href - The URL the link points to
 	 */
 	/**
@@ -9,8 +9,7 @@
 	 */
 	let links = [
 		{ name: 'Home', href: '/' },
-		{ name: 'Timeline', href: '/timeline' },
-		{ name: 'Testing', href: '/testing' }
+		{ name: 'Experiments', href: '/experiments' }
 	];
 </script>
 

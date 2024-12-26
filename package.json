@@ -5,6 +5,7 @@
 	"scripts": {
 		"local": "caffeinate -i vite dev --host --open",
 		"dev": "vite dev --host",
+		"docker": "docker compose up --force-recreate --build",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
@@ -12,9 +13,8 @@
 		"test": "vitest",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
-		"docker-db": "docker compose up db --force-recreate -V",
-		"db-reset": "./scripts/wipe.sh; ./scripts/migrate.sh",
-		"dbcli": "pgcli --host localhost time_tracker"
+		"pull-prod": "./scripts/pull_prod_data.sh",
+		"pgcli": "pgcli --host localhost time_tracker"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",
