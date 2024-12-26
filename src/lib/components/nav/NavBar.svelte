@@ -9,7 +9,7 @@
 	 */
 	let links = [
 		{ name: 'Home', href: '/' },
-		{ name: 'Testing', href: '/testing' }
+		{ name: 'Experiments', href: '/experiments' }
 	];
 </script>
 

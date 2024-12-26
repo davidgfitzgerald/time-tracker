@@ -4,7 +4,8 @@
 	"private": true,
 	"scripts": {
 		"local": "caffeinate -i vite dev --host --open",
-		"dev": "docker compose up --force-recreate --build",
+		"dev": "vite dev --host",
+		"docker": "docker compose up --force-recreate --build",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",

@@ -1,6 +1,6 @@
 <script>
-	import HoverConnect from "./experiments/HoverConnect.svelte";
-import Viewport from "./experiments/Viewport.svelte";
+	import HoverConnect from "./components/HoverConnect.svelte";
+	import Viewport from "./components/Viewport.svelte";
 
 </script>
 

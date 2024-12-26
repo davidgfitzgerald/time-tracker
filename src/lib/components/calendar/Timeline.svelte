@@ -6,59 +6,43 @@
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
 	import Clock from './Clock.svelte';
-	import { onMount } from 'svelte';
 
+	// Height and width state
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
 	const headerHeight = $state(50);
 	const headerWidth = $derived(cellWidth);
-
-	const initialDay = DateTime.now();
-
-	let daysToDisplay = $state([initialDay])
-
-	function addDayToEnd() {
-		const latestDay = daysToDisplay.at(-1)
-		if (latestDay == undefined) {
-			daysToDisplay.push(initialDay)
-		} else {
-			daysToDisplay.push(latestDay.plus({days: 1}))
-		}
-	}
-
-	function addDayToStart() {
-		const earliestDay = daysToDisplay.at(0)
-		if (earliestDay == undefined) {
-			daysToDisplay.unshift(initialDay)
-		} else {
-			daysToDisplay.unshift(earliestDay.minus({days: 1}))
-		}
-	}
-
-	function removeDayFromEnd() {
-		daysToDisplay.pop()
-	}
-
-	function removeDayFromStart() {
-		daysToDisplay.shift()
-	}
-
-	function calculateNoVisibleDays() {
-		return Math.floor((window.innerWidth - cellWidth) / cellWidth)
-	}
-
-	onMount(() => {
-		const maxNoVisibleDays = calculateNoVisibleDays()
-		const noDaysToDisplay = Math.min(maxNoVisibleDays, 15)
+	let innerWidth = $state(0)  // Maps to window.innerWidth
 	
-		for (let i = 1; i < noDaysToDisplay; i++) {
-			if (i % 2 == 0) {
-				addDayToEnd()
-			} else {
-				addDayToStart()
-			}
+	// Day state
+	let initialDay = $state(DateTime.now())
+	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - cellWidth) / cellWidth))
+	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
+
+	/**
+	 * @type {DateTime[]}
+	 */
+	let daysToDisplay = $derived.by(() => {
+		/**
+		 * @type {DateTime[]}
+		 */
+		const days = [];
+		Array.from({ length: visibleDaysCount }, () => addDayToStart(days));
+		return days;
+	});
+
+
+	/**
+	 * @param {DateTime[]} days
+	 */
+	function addDayToStart(days) {
+		const latestDay = days.at(-1)
+		if (latestDay == undefined) {
+			days.push(initialDay)
+		} else {
+			days.push(latestDay.plus({days: 1}))
 		}
-	})
+	}
 
 	/**
 	 * @param {import('$lib/stores').Task} task
@@ -119,6 +103,9 @@
 	);
 </script>
 
+<svelte:window bind:innerWidth={innerWidth} />
+
+
 <div class="calendar">
 	<Calendar 
 		{daysToDisplay}
@@ -134,8 +121,8 @@
 		<Overlay {task} {positions}></Overlay>
 	{/each}
 	<div>
-		<button onclick={() => {addDayToStart(); removeDayFromEnd()}}>Left</button>
-		<button onclick={() => {addDayToEnd(); removeDayFromStart()}}>Right</button>
+		<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
+		<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
 	</div>
 </div>
 
