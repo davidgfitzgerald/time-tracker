@@ -8,6 +8,14 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Thu 26th
+
+Happy Boxing Day!
+
+Squeezed in a little update to make the app reponsive to whether the app is landscape or portrait.
+
+It will display the right number of days depending how much real estate there is on screen.
+
 ## Sat 21st
 
 Sat in edge eatery going to look into what improvements I can make.

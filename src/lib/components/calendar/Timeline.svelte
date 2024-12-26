@@ -15,7 +15,7 @@
 	let innerWidth = $state(0)  // Maps to window.innerWidth
 	
 	// Day state
-	let initialDay = $state(DateTime.now())
+	let initialDay = $state(DateTime.now().minus({days: 5}))
 	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - cellWidth) / cellWidth))
 	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
 
@@ -103,8 +103,8 @@
 	);
 </script>
 
+<!-- Bind window.innderWidth to the innerWidth state var -->
 <svelte:window bind:innerWidth={innerWidth} />
-
 
 <div class="calendar">
 	<Calendar 
