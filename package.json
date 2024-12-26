@@ -6,6 +6,7 @@
 		"local": "caffeinate -i vite dev --host --open",
 		"dev": "vite dev --host",
 		"docker": "docker compose up --force-recreate --build",
+		"deploy": "./deployment/scripts/ci.sh",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
