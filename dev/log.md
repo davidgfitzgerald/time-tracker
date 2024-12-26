@@ -39,6 +39,16 @@ The `1.035` scaling factor I had calculated approximates `1 + 1/31` which is `1.
 
 Well, at least I understood it in the end!
 
+#### Tips
+
+- Found this great little reddit post for svelte tips:
+
+	https://www.reddit.com/r/sveltejs/comments/xltgyp/quality_of_life_tips_when_using_sveltekit_in_vs/
+
+- Another cool tip: right click on explorer structure and choose the `SvelteKit Files` option to autogenerate files.
+
+- Improved the left margin of my `.svelte` files in VSCode but encountered a strange property that is not recognised but affects the IDE rendering. I posted a comment on the issue here: https://github.com/microsoft/vscode/issues/93887#issuecomment-2563202498
+
 ## Sat 21st
 
 Sat in edge eatery going to look into what improvements I can make.

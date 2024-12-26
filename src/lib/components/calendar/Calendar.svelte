@@ -8,17 +8,18 @@
 	}
 </script>
 
-<div class="column">
-	<div class="header">
-		{@render children()}
+<div>
+	<div class="cell header-column header-row">
+		<!-- children is the Clock -->
+		{@render children()} 
 	</div>
 	{#each hours as hour}
-		<div class="cell">{hour}</div>
+		<div class="cell header-column">{hour}</div>
 	{/each}
 </div>
 {#each daysToDisplay as day}
-	<div class="column">
-		<div class="header">
+	<div>
+		<div class="cell header-row">
 			{day.toFormat('ccc dd')}
 		</div>
 		{#each hours}
@@ -28,23 +29,37 @@
 {/each}
 
 <style>
-	.header {
-		text-align: center;
-		justify-content: center;
-		border-bottom: 1px solid hsl(0, 0%, 80%);
-		height: calc(var(--header-height) * 1px);
-		width: calc(var(--header-width) * 1px);
-		box-sizing: border-box;
-	}
-	
-	.column {
-		position: relative;
-	}
-	
 	.cell {
+		/*
+		All cells have: 
+	
+		- a bottom border
+		- a default height and width
+		*/
 		border-bottom: 1px solid hsl(0, 0%, 80%);
-		height: calc(var(--cell-height) * 1px);
-		width: calc(var(--cell-width) * 1px);
 		box-sizing: border-box;
+		width: calc(var(--cell-width) * 1px);
+		height: calc(var(--cell-height) * 1px);
 	}
+
+	.header-row {
+		/* 
+		Header row cells have:
+		
+		- the header row height
+		- the text aligned to the center
+		*/
+		height: calc(var(--header-row-height) * 1px) !important;
+		text-align: center
+	}
+	.header-column {
+		
+		/* 
+		Header column cells have:
+		
+		- the header col width
+		*/
+		width: calc(var(--header-col-width) * 1px) !important;
+	}
+
 </style>

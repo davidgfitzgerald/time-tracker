@@ -73,9 +73,9 @@ function secondsToPx(seconds, cellHeight) {
  * TODO remove need for headerRowHeight
  */
 export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
-	const screenHeightPx = secondsToPx(SECS_IN_DAY, cellHeight);
-
 	const proposedPx = secondsToPx(interval.length('seconds'), cellHeight);
+	
+	const screenHeightPx = secondsToPx(SECS_IN_DAY, cellHeight);
 	const remainingPx = screenHeightPx - top + headerRowHeight;
 
 	/**
@@ -94,7 +94,7 @@ export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} cellWidth - Width of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
- * TODO remove need for headerRowHeight
+ * @param {number} headerColWidth
  * @param {DateTime[]} daysToDisplay
  * @return {Position[]}
  */
@@ -103,11 +103,12 @@ export function calculatePositions(
 	cellHeight,
 	cellWidth,
 	headerRowHeight,
+	headerColWidth,
 	daysToDisplay
 ) {
 	return intervals.map((interval) => {
 		const dayIndex = findDayIndex(daysToDisplay, interval.start);
-		const left = cellWidth * (dayIndex + 1);
+		const left = headerColWidth + (cellWidth * dayIndex);
 		const top = calculateTop(interval, cellHeight, headerRowHeight);
 		const height = calculateHeight(interval, top, cellHeight, headerRowHeight);
 		return {

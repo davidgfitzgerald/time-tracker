@@ -7,16 +7,16 @@
 	import Calendar from './Calendar.svelte';
 	import Clock from './Clock.svelte';
 
-	// Height and width state
+	// Height and width
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
-	const headerRowHeight = $state(50);
-	const headerWidth = $derived(cellWidth);
-	let innerWidth = $state(0)  // Maps to window.innerWidth
+	const headerRowHeight = $state(50); // Minimum 30
+	const headerColWidth = $derived(cellWidth);
+	let innerWidth = $state(0)  // window.innerWidth
 	
 	// Day state
 	let initialDay = $state(DateTime.now().minus({days: 5}))
-	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - cellWidth) / cellWidth))
+	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - headerColWidth) / cellWidth))
 	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
 
 	/**
@@ -27,15 +27,17 @@
 		 * @type {DateTime[]}
 		 */
 		const days = [];
-		Array.from({ length: visibleDaysCount }, () => addDayToStart(days));
+		Array.from({ length: visibleDaysCount }, () => appendDay(days));
 		return days;
 	});
 
 
 	/**
+	 * Append the next day
+	 * to a list of days.
 	 * @param {DateTime[]} days
 	 */
-	function addDayToStart(days) {
+	function appendDay(days) {
 		const latestDay = days.at(-1)
 		if (latestDay == undefined) {
 			days.push(initialDay)
@@ -114,6 +116,7 @@
 					cellHeight,
 					cellWidth,
 					headerRowHeight,
+					headerColWidth,
 					daysToDisplay
 				);
 				return { task, positions}
@@ -129,19 +132,19 @@
 		{daysToDisplay}
 		--cell-height={cellHeight}
 		--cell-width={cellWidth}
-		--header-height={headerRowHeight}
-		--header-width={headerWidth}
+		--header-row-height={headerRowHeight}
+		--header-col-width={headerColWidth}
 
 	>
-		<Clock/>
+		<Clock --width={headerColWidth}/>
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
 	{/each}
-	<div>
-		<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
-		<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
-	</div>
+</div>
+<div>
+	<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
+	<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
 </div>
 
 <style>
