@@ -57,7 +57,7 @@ Worked out how to get some quite tricky type hinting into the project with JSDoc
 /**
  * @typedef {import('luxon').Interval<IsValid>} Interval
  * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
- * @typedef {import("luxon/src/_util").Valid} Valid - Valid === true
+ * @typedef {import("luxon/src/_util").Valid} Valid === true
  * @typedef {Interval<Valid>} ValidInterval
  * @typedef {import('luxon').DateTime} DateTime
  */

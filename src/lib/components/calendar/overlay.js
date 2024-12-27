@@ -3,7 +3,7 @@ import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 /**
  * @typedef {import('luxon').Interval<IsValid>} Interval
  * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
- * @typedef {import("luxon/src/_util").Valid} Valid - Valid === true
+ * @typedef {import("luxon/src/_util").Valid} Valid === true
  * @typedef {import('luxon').DateTime} DateTime
  */
 
