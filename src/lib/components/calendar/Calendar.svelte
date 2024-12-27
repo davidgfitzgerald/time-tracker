@@ -34,15 +34,17 @@
 		border-bottom: 1px solid hsl(0, 0%, 80%);
 		height: calc(var(--header-height) * 1px);
 		width: calc(var(--header-width) * 1px);
+		box-sizing: border-box;
 	}
-
+	
 	.column {
 		position: relative;
 	}
-
+	
 	.cell {
 		border-bottom: 1px solid hsl(0, 0%, 80%);
 		height: calc(var(--cell-height) * 1px);
 		width: calc(var(--cell-width) * 1px);
+		box-sizing: border-box;
 	}
 </style>

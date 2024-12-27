@@ -10,11 +10,34 @@ information.
 
 ## Thu 26th
 
+### Afternoon
+
 Happy Boxing Day!
 
 Squeezed in a little update to make the app reponsive to whether the app is landscape or portrait.
 
 It will display the right number of days depending how much real estate there is on screen.
+
+### Evening
+
+Back! Doing some more. Have made some issues on the repo and will chip away at those now. In a bit of a rhythm.
+
+Aha, that was super annoying! Went down a misleading path trying to fix the problem with times being
+offset by almost exactly an hour. Because of that, I assumed it was a time zone thing like maybe I was
+not displaying in the right timezone but come to think of it, everything is UTC. By coincidence,
+local GMT time matches UTC right now but down the line it will not so should do work to display GMT.
+
+Anyway. I went down a rabbit hole trying to adjust the `top` and `height` of the overlays displayed to discover
+that, when calculating pixels from seconds, if I scale up the cell height by a factor of `1.035` that the overlay 
+seemed to display correctly.
+
+Only when finally using the `VisBug` extension did I realise that each of my cells were **not** displaying the `30px` 
+I had configured but `31px`. I was confused... `31px`? ... Ohhhhhh... the **border is 1px** and that was being added on 
+top of that `30px`. It was as simple as adding the `box-sizing: border-box;` property to the cells!
+
+The `1.035` scaling factor I had calculated approximates `1 + 1/31` which is `1.03225806451612903`.
+
+Well, at least I understood it in the end!
 
 ## Sat 21st
 
