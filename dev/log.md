@@ -82,6 +82,12 @@ to use for inspiration:
 
 - https://www.reddit.com/r/sveltejs/comments/1fhmxob/opinion_vscode_is_the_best_way_to_write_svelte/
 
+#### SST
+
+Came across this SST (Severless Stack) thing which seems really interesting: https://sst.dev/docs/start/aws/svelte
+
+Might be worth seeing if I can glean anything useful from the advice there on deploying a sveltekit app in a serverless fashion.
+
 ## Sat 21st
 
 Sat in edge eatery going to look into what improvements I can make.
