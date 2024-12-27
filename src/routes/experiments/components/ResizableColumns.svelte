@@ -10,17 +10,34 @@
 	const stopDragging = () => isDragging = false
 
 	/**
-	 * @param {MouseEvent} e
+	 * @param {UIEvent} e
 	 */
-	const handleMouseMove = (e) => {
+	 const handleMove = (e) => {
+		// Prevent default touch actions for better touch behavior
+		let clientX;
+		if (e instanceof TouchEvent) {
+			e.preventDefault();
+			clientX = e.touches[0].clientX
+		} else if (e instanceof MouseEvent) {
+			e.preventDefault();
+			clientX = e.clientX
+		} else {
+			throw new Error(`Unexpected event: ${e.type}`)
+		}
+
 		if (isDragging) {
-			const newWidth = Math.min(Math.max(e.clientX, minWidth), maxWidth);
+			const newWidth = Math.min(Math.max(clientX, minWidth), maxWidth);
 			column1Width = newWidth;
 		}
 	};
 </script>
 
-<svelte:window onmousemove={handleMouseMove} onmouseup={stopDragging} />
+<svelte:window 
+  onmousemove={handleMove} 
+  onmouseup={stopDragging}
+  ontouchmove={handleMove} 
+  ontouchend={stopDragging}
+/>
 
 <div class="resizable-container">
 	<div class="column" style="width: {column1Width}px">
@@ -32,6 +49,8 @@
 		tabindex="0"
 		onmousedown={startDragging}
 		onmouseup={stopDragging}
+		ontouchstart={startDragging}
+		ontouchend={stopDragging}
 	></div>
 	<div class="column" style="flex: 1">
 		{@render column2()}
@@ -51,10 +70,21 @@
 	}
 
 	.divider {
-		width: 5px;
 		cursor: ew-resize;
 		background-color: #ccc;
 		user-select: none;
+	}
+
+	@media (max-width: 500px) {
+		.divider {
+			width: 20px;
+		}
+	}
+
+	@media (min-width: 500px) {
+		.divider {
+			width: 5px;
+		}
 	}
 
 	.divider:hover {

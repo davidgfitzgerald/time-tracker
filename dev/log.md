@@ -75,6 +75,13 @@ Then, in usage, these are both valid:
  */ 
 ```
 
+#### NeoVim
+
+As an aside, would be cool to finally set up and try neovim one day. A person on this thread sends a huge set up
+to use for inspiration:
+
+- https://www.reddit.com/r/sveltejs/comments/1fhmxob/opinion_vscode_is_the_best_way_to_write_svelte/
+
 ## Sat 21st
 
 Sat in edge eatery going to look into what improvements I can make.
