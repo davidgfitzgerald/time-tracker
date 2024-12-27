@@ -10,7 +10,7 @@
 	// Height and width state
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
-	const headerHeight = $state(50);
+	const headerRowHeight = $state(50);
 	const headerWidth = $derived(cellWidth);
 	let innerWidth = $state(0)  // Maps to window.innerWidth
 	
@@ -94,7 +94,7 @@
 					intervals,
 					cellHeight,
 					cellWidth,
-					headerHeight,
+					headerRowHeight,
 					daysToDisplay
 				);
 
@@ -111,7 +111,7 @@
 		{daysToDisplay}
 		--cell-height={cellHeight}
 		--cell-width={cellWidth}
-		--header-height={headerHeight}
+		--header-height={headerRowHeight}
 		--header-width={headerWidth}
 
 	>

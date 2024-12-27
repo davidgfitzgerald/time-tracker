@@ -33,14 +33,14 @@ export function findDayIndex(days, day) {
 /**
  * @param {Interval<import("luxon/src/_util").Valid>} interval
  * @param {number} cellHeight - Height of a cell in pixels
- * @param {number} externalOffset - Additional height to offset (to take into account header row)
- * TODO remove need for externalOffset
- */
-export function calculateTop(interval, cellHeight, externalOffset) {
+ * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
+ * TODO remove need for headerRowHeight
+*/
+export function calculateTop(interval, cellHeight, headerRowHeight) {
 	const start = interval.start;
-	const secondsSinceStartOfDay = start.toSeconds() - start.startOf('day').toSeconds();
-	const pxOffset = secondsToPx(secondsSinceStartOfDay, cellHeight);
-	const top = pxOffset + externalOffset;
+	const secondsSinceMidnight = start.toSeconds() - start.startOf('day').toSeconds();
+	const pxSinceMidnight = secondsToPx(secondsSinceMidnight, cellHeight);
+	const top = pxSinceMidnight + headerRowHeight;
 	return top;
 }
 
@@ -59,14 +59,14 @@ function secondsToPx(seconds, cellHeight) {
  * @param {Interval} interval - The interval of time to display
  * @param {number} top - Pixel distance between top of view and start of this overlay
  * @param {number} cellHeight - Height of a cell in pixels
- * @param {number} externalOffset - Additional height to offset (to take into account header row)
- * TODO remove need for externalOffset
+ * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
+ * TODO remove need for headerRowHeight
  */
-export function calculateHeight(interval, top, cellHeight, externalOffset) {
+export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
 	const screenHeightPx = secondsToPx(SECS_IN_DAY, cellHeight);
 
 	const proposedPx = secondsToPx(interval.length('seconds'), cellHeight);
-	const remainingPx = screenHeightPx - top + externalOffset;
+	const remainingPx = screenHeightPx - top + headerRowHeight;
 
 	/**
 	 * Aim to use the proposed px but resort to
@@ -83,8 +83,8 @@ export function calculateHeight(interval, top, cellHeight, externalOffset) {
  * @param {Interval<import("luxon/src/_util").Valid>[]} intervals
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} cellWidth - Width of a cell in pixels
- * @param {number} externalOffset - Additional height to offset (to take into account header row)
- * TODO remove need for externalOffset
+ * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
+ * TODO remove need for headerRowHeight
  * @param {DateTime[]} daysToDisplay
  * @return {Position[]}
  */
@@ -92,14 +92,14 @@ export function calculatePositions(
 	intervals,
 	cellHeight,
 	cellWidth,
-	externalOffset,
+	headerRowHeight,
 	daysToDisplay
 ) {
 	return intervals.map((interval) => {
 		const dayIndex = findDayIndex(daysToDisplay, interval.start);
 		const left = cellWidth * (dayIndex + 1);
-		const top = calculateTop(interval, cellHeight, externalOffset);
-		const height = calculateHeight(interval, top, cellHeight, externalOffset);
+		const top = calculateTop(interval, cellHeight, headerRowHeight);
+		const height = calculateHeight(interval, top, cellHeight, headerRowHeight);
 		return {
 			top,
 			left,
