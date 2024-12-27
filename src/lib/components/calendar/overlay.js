@@ -1,9 +1,12 @@
 import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 
 /**
- * @typedef {import('luxon').Interval<import('luxon/src/_util').Valid>} ValidInterval
+ * @typedef {import('luxon').Interval<IsValid>} Interval
+ * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
+ * @typedef {import("luxon/src/_util").Valid} Valid - Valid === true
  * @typedef {import('luxon').DateTime} DateTime
  */
+
 
 /**
  * Position of an overlay on the calendar.
@@ -17,7 +20,7 @@ import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 /**
  * @typedef {Object} TaskAndIntervals
  * @property {import('$lib/stores').Task} task - Array of tasks
- * @property {ValidInterval[]} intervals - Overlay positions
+ * @property {Interval<Valid>[]} intervals - Overlay positions
  */
 
 /**
@@ -41,7 +44,7 @@ export function findDayIndex(days, day) {
 }
 
 /**
- * @param {ValidInterval} interval
+ * @param {Interval<Valid>} interval
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
  * TODO remove need for headerRowHeight
@@ -66,7 +69,7 @@ function secondsToPx(seconds, cellHeight) {
 }
 
 /**
- * @param {ValidInterval} interval - The interval of time to display
+ * @param {Interval<Valid>} interval - The interval of time to display
  * @param {number} top - Pixel distance between top of view and start of this overlay
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
@@ -90,7 +93,7 @@ export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
 }
 
 /**
- * @param {ValidInterval[]} intervals
+ * @param {Interval<Valid>[]} intervals
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} cellWidth - Width of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)

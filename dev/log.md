@@ -49,6 +49,32 @@ Well, at least I understood it in the end!
 
 - Improved the left margin of my `.svelte` files in VSCode but encountered a strange property that is not recognised but affects the IDE rendering. I posted a comment on the issue here: https://github.com/microsoft/vscode/issues/93887#issuecomment-2563202498
 
+#### JsDoc Generic Type Hinting
+
+Worked out how to get some quite tricky type hinting into the project with JSDoc syntax:
+
+```javascript
+/**
+ * @typedef {import('luxon').Interval<IsValid>} Interval
+ * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
+ * @typedef {import("luxon/src/_util").Valid} Valid - Valid === true
+ * @typedef {Interval<Valid>} ValidInterval
+ * @typedef {import('luxon').DateTime} DateTime
+ */
+```
+
+Then, in usage, these are both valid:
+
+```javascript
+/**
+ * @param {ValidInterval} interval
+ */ 
+
+/**
+ * @param {Interval<Valid>} interval
+ */ 
+```
+
 ## Sat 21st
 
 Sat in edge eatery going to look into what improvements I can make.
