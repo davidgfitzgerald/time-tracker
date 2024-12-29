@@ -144,7 +144,9 @@
 		--header-col-width={headerColWidth}
 
 	>
+	{#snippet clock()}
 		<Clock --width={headerColWidth}/>
+	{/snippet}
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>

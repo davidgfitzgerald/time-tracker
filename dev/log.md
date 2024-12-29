@@ -8,6 +8,11 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Sun 29th
+
+Trying to make the table resizable but not sure if it's worth the effort. Good to learn how to 
+do though regardless of how useful it actually is to do in this instance.
+
 ## Thu 26th
 
 ### Afternoon
