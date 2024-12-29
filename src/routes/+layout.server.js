@@ -1,5 +1,5 @@
 /**
- * @type {import('./$types').PageServerLoad}
+ * @type {import('./$types').LayoutServerLoad}
  * The server always loads task data from DB on initial page hydration
  * and automatically passes it back to the client in +page.svelte.
  */
