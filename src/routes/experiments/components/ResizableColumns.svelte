@@ -26,8 +26,15 @@
 		}
 
 		if (isDragging) {
+			column1Width = clientX
 			const newWidth = Math.min(Math.max(clientX, minWidth), maxWidth);
-			column1Width = newWidth;
+
+			// Without an offset, when dragging begins, the 
+			// bar snaps to the right slightly for some unknown 
+			// reason. Adjust by this many pixels for a smoother experience.
+			const offset = - 16
+
+			column1Width = newWidth + offset;
 		}
 	};
 </script>
