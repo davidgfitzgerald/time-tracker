@@ -15,6 +15,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"pull-prod": "./scripts/pull_prod_data.sh",
+		"reset-local-db": "psql service=local -f db/wipe.sql; psql service=local -f timetracker-prod.sql",
 		"pgcli": "pgcli --host localhost time_tracker"
 	},
 	"devDependencies": {

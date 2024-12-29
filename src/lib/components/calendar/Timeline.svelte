@@ -7,16 +7,16 @@
 	import Calendar from './Calendar.svelte';
 	import Clock from './Clock.svelte';
 
-	// Height and width state
+	// Height and width
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
-	const headerRowHeight = $state(50);
-	const headerWidth = $derived(cellWidth);
-	let innerWidth = $state(0)  // Maps to window.innerWidth
+	const headerRowHeight = $state(50); // Minimum 30
+	const headerColWidth = $derived(cellWidth);
+	let innerWidth = $state(0)  // window.innerWidth
 	
 	// Day state
 	let initialDay = $state(DateTime.now().minus({days: 5}))
-	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - cellWidth) / cellWidth))
+	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - headerColWidth) / cellWidth))
 	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
 
 	/**
@@ -27,15 +27,17 @@
 		 * @type {DateTime[]}
 		 */
 		const days = [];
-		Array.from({ length: visibleDaysCount }, () => addDayToStart(days));
+		Array.from({ length: visibleDaysCount }, () => appendDay(days));
 		return days;
 	});
 
 
 	/**
+	 * Append the next day
+	 * to a list of days.
 	 * @param {DateTime[]} days
 	 */
-	function addDayToStart(days) {
+	function appendDay(days) {
 		const latestDay = days.at(-1)
 		if (latestDay == undefined) {
 			days.push(initialDay)
@@ -90,6 +92,14 @@
 	 * 			]
 	 * 		}
 	 * 	]
+	 * 
+	 * Works by:
+	 * 
+	 * 1. Get all the non-active tasks
+	 * 2. Filter out tasks that do not intersect with displayed days
+	 * 3. Split task intervals up at midnight
+	 * 4. Filter out intervals that do not occur on displayed days
+	 * 5. Calculate the positions of the overlays
 	 * @type {import("./overlay").TaskAndPositions[]}
 	 */
 	const tasksAndPositions = $derived(
@@ -114,6 +124,7 @@
 					cellHeight,
 					cellWidth,
 					headerRowHeight,
+					headerColWidth,
 					daysToDisplay
 				);
 				return { task, positions}
@@ -129,19 +140,21 @@
 		{daysToDisplay}
 		--cell-height={cellHeight}
 		--cell-width={cellWidth}
-		--header-height={headerRowHeight}
-		--header-width={headerWidth}
+		--header-row-height={headerRowHeight}
+		--header-col-width={headerColWidth}
 
 	>
-		<Clock/>
+	{#snippet clock()}
+		<Clock --width={headerColWidth}/>
+	{/snippet}
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
 	{/each}
-	<div>
-		<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
-		<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
-	</div>
+</div>
+<div>
+	<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
+	<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
 </div>
 
 <style>

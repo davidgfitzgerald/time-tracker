@@ -108,13 +108,15 @@
 
 <style>
 	.stopwatch {
-		width: 100%;
+		width: calc(var(--header-col-width) * 1px);
 		height: 75%;
 	}
 
 	/* Button applies both in and out of the modal. */
 	.button {
-		font-size: 1rem;
+		font-size: clamp(0.3rem, 2rem, 0.9rem);
+		overflow-x: hidden;
+		text-overflow: ellipsis;
 		cursor: pointer;
 		width: 100%;
 		height: 100%;

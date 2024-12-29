@@ -8,6 +8,11 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
+## Sun 29th
+
+Trying to make the table resizable but not sure if it's worth the effort. Good to learn how to 
+do though regardless of how useful it actually is to do in this instance.
+
 ## Thu 26th
 
 ### Afternoon
@@ -38,6 +43,55 @@ top of that `30px`. It was as simple as adding the `box-sizing: border-box;` pro
 The `1.035` scaling factor I had calculated approximates `1 + 1/31` which is `1.03225806451612903`.
 
 Well, at least I understood it in the end!
+
+#### Tips
+
+- Found this great little reddit post for svelte tips:
+
+	https://www.reddit.com/r/sveltejs/comments/xltgyp/quality_of_life_tips_when_using_sveltekit_in_vs/
+
+- Another cool tip: right click on explorer structure and choose the `SvelteKit Files` option to autogenerate files.
+
+- Improved the left margin of my `.svelte` files in VSCode but encountered a strange property that is not recognised but affects the IDE rendering. I posted a comment on the issue here: https://github.com/microsoft/vscode/issues/93887#issuecomment-2563202498
+
+#### JsDoc Generic Type Hinting
+
+Worked out how to get some quite tricky type hinting into the project with JSDoc syntax:
+
+```javascript
+/**
+ * @typedef {import('luxon').Interval<IsValid>} Interval
+ * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
+ * @typedef {import("luxon/src/_util").Valid} Valid === true
+ * @typedef {Interval<Valid>} ValidInterval
+ * @typedef {import('luxon').DateTime} DateTime
+ */
+```
+
+Then, in usage, these are both valid:
+
+```javascript
+/**
+ * @param {ValidInterval} interval
+ */ 
+
+/**
+ * @param {Interval<Valid>} interval
+ */ 
+```
+
+#### NeoVim
+
+As an aside, would be cool to finally set up and try neovim one day. A person on this thread sends a huge set up
+to use for inspiration:
+
+- https://www.reddit.com/r/sveltejs/comments/1fhmxob/opinion_vscode_is_the_best_way_to_write_svelte/
+
+#### SST
+
+Came across this SST (Severless Stack) thing which seems really interesting: https://sst.dev/docs/start/aws/svelte
+
+Might be worth seeing if I can glean anything useful from the advice there on deploying a sveltekit app in a serverless fashion.
 
 ## Sat 21st
 
