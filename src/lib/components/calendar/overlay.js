@@ -19,13 +19,13 @@ import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 
 /**
  * @typedef {Object} TaskAndIntervals
- * @property {import('$lib/stores').Task} task - Array of tasks
- * @property {Interval<Valid>[]} intervals - Overlay positions
+ * @property {import('$lib/stores').Task} task - Single task
+ * @property {Interval<Valid>[]} intervals - Intervals of the task, split by day
  */
 
 /**
  * @typedef {Object} TaskAndPositions
- * @property {import('$lib/stores').Task} task - Array of tasks
+ * @property {import('$lib/stores').Task} task - Single task
  * @property {Position[]} positions - Overlay positions
  */
 

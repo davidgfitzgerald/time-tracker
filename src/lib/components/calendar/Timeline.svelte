@@ -92,6 +92,14 @@
 	 * 			]
 	 * 		}
 	 * 	]
+	 * 
+	 * Works by:
+	 * 
+	 * 1. Get all the non-active tasks
+	 * 2. Filter out tasks that do not intersect with displayed days
+	 * 3. Split task intervals up at midnight
+	 * 4. Filter out intervals that do not occur on displayed days
+	 * 5. Calculate the positions of the overlays
 	 * @type {import("./overlay").TaskAndPositions[]}
 	 */
 	const tasksAndPositions = $derived(
