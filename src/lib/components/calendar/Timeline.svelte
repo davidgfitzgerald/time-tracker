@@ -56,11 +56,23 @@
 	 * @param {import('$lib/stores').Task} task
 	 * @returns {task is import('$lib/stores').Task & { endTime: string }}
 	 */
-	function inBounds(task) {
+	function taskInBounds(task) {
 		if (task.endTime === null) return false;
 
 		const start = DateTime.fromISO(task.startTime);
 		const end = DateTime.fromISO(task.endTime);
+		const startInBounds = findDayIndex(daysToDisplay, start) != -1;
+		const endInBounds = findDayIndex(daysToDisplay, end) != -1;
+		return startInBounds || endInBounds;
+	}
+
+	/**
+	 * @param {Interval} interval
+	 * @returns {boolean}
+	 */
+	function intervalInBounds(interval) {
+		const start = interval.start
+		const end = interval.end
 		const startInBounds = findDayIndex(daysToDisplay, start) != -1;
 		const endInBounds = findDayIndex(daysToDisplay, end) != -1;
 		return startInBounds && endInBounds;
@@ -83,13 +95,20 @@
 	const tasksAndPositions = $derived(
 		$times.tasks
 			.filter(nonActive)
-			.filter(inBounds)
+			.filter(taskInBounds)
 			.map((task) => {
 				const interval = Interval.fromDateTimes(
 					DateTime.fromISO(task.startTime),
 					DateTime.fromISO(task.endTime)
 				);
 				const intervals = splitIntervalByDays(interval);
+				return { task, intervals };
+			})
+			.map(({task, intervals}) => {
+				intervals = intervals.filter(intervalInBounds);
+				return {task, intervals}
+			})
+			.map(({task, intervals}) => {
 				const positions = calculatePositions(
 					intervals,
 					cellHeight,
@@ -97,8 +116,7 @@
 					headerRowHeight,
 					daysToDisplay
 				);
-
-				return { task, positions };
+				return { task, positions}
 			})
 	);
 </script>
