@@ -8,7 +8,41 @@ The log will go in reverse chronological order (latest first).
 practice/production I would not publically publish this potentially sensitive
 information.
 
-## Thu 26th
+## Mon 6th Dec
+
+So I'm back to somewhat wrap things up for now.
+
+I've learnt a decent amount of svelte, css, js, html, aws, terraform throughout this which
+has been a valuable experience.
+
+My initial inspiration for the project has waned. The idea of the app is interesting, to get
+a breakdown of how you spend your time vs your goal but using the app is just to intrusive
+into your life. You would have to press the timer all the time and it relies on you perfectly
+executing this, so it's just not quite turned out how I imagined it but that's ok.
+
+I'm going to get the projet to a spot where I'd consider it wrapped up and then move onto a 
+new project. The AWS costs will get too intense so I'll be destroying the infrastructure. The
+cool thing with that is that I can easily recreate it because I managed the infrastructure through
+terraform.
+
+## Sun 29th Dec
+
+Trying to make the table resizable but not sure if it's worth the effort. Good to learn how to 
+do though regardless of how useful it actually is to do in this instance.
+
+I think I know how I can do it and I'm probably gonna play it out.
+
+I feel my codebase has become a bit of a mess, or at least at this point now I'm incurring some technical debt and it would be good to re-design it.
+
+In the interest of completing this project, I'll just get things working and not worry too much about any technical debt. I'll get it 
+to a point where it's usable and then probably wrap up. 
+
+With what I've learnt I'm excited to move onto another project soon.
+
+I'm considering implementing some kind of a `Resizing` svelte component
+to make it such that I can dynamically resize the header column of the table. I'm actually going to go through the svelte tutorial again quickly. Now that I understand svelte more, some of the more complicated features might make a bit more sense now that I have the context. I want to understand how binding state will work. Also, Svelte 5 has been released since I first completed the tutorial so it's likely that some things have changed.
+
+## Thu 26th Dec
 
 ### Afternoon
 
@@ -39,13 +73,62 @@ The `1.035` scaling factor I had calculated approximates `1 + 1/31` which is `1.
 
 Well, at least I understood it in the end!
 
-## Sat 21st
+#### Tips
+
+- Found this great little reddit post for svelte tips:
+
+	https://www.reddit.com/r/sveltejs/comments/xltgyp/quality_of_life_tips_when_using_sveltekit_in_vs/
+
+- Another cool tip: right click on explorer structure and choose the `SvelteKit Files` option to autogenerate files.
+
+- Improved the left margin of my `.svelte` files in VSCode but encountered a strange property that is not recognised but affects the IDE rendering. I posted a comment on the issue here: https://github.com/microsoft/vscode/issues/93887#issuecomment-2563202498
+
+#### JsDoc Generic Type Hinting
+
+Worked out how to get some quite tricky type hinting into the project with JSDoc syntax:
+
+```javascript
+/**
+ * @typedef {import('luxon').Interval<IsValid>} Interval
+ * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
+ * @typedef {import("luxon/src/_util").Valid} Valid === true
+ * @typedef {Interval<Valid>} ValidInterval
+ * @typedef {import('luxon').DateTime} DateTime
+ */
+```
+
+Then, in usage, these are both valid:
+
+```javascript
+/**
+ * @param {ValidInterval} interval
+ */ 
+
+/**
+ * @param {Interval<Valid>} interval
+ */ 
+```
+
+#### NeoVim
+
+As an aside, would be cool to finally set up and try neovim one day. A person on this thread sends a huge set up
+to use for inspiration:
+
+- https://www.reddit.com/r/sveltejs/comments/1fhmxob/opinion_vscode_is_the_best_way_to_write_svelte/
+
+#### SST
+
+Came across this SST (Severless Stack) thing which seems really interesting: https://sst.dev/docs/start/aws/svelte
+
+Might be worth seeing if I can glean anything useful from the advice there on deploying a sveltekit app in a serverless fashion.
+
+## Sat 21st Dec
 
 Sat in edge eatery going to look into what improvements I can make.
 
 Just knocked up a quick little script to pull prod DB data locally.
 
-## Thu 19th
+## Thu 19th Dec
 
 Going to carry on working on making the app more mobile friendly.
 
@@ -72,7 +155,7 @@ Added a clear "x" button in the category input element.
 - In the modal change `Enter` behaviour to submit instead of clear
 - Implement some loading spinner/icon to indicate SSR is happening
 
-## Wed 18th
+## Wed 18th Dec
 
 Focusing on making the app more mobile friendly.
 
@@ -272,7 +355,7 @@ The following will display only on mobile.
     }
 ```
 
-## Tue 17th
+## Tue 17th Dec
 
 Confirmed that prod doesn't break if we remove `PLATFORM` env var.
 
@@ -297,7 +380,7 @@ psql service=local -f db/wipe.sql
 psql service=local -f timetracker-live.sql
 ```
 
-## Mon 16th
+## Mon 16th Dec
 
 ### Daytime
 

@@ -1,9 +1,12 @@
 import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 
 /**
- * @typedef {import('luxon').Interval<import('luxon/src/_util').Valid>} ValidInterval
+ * @typedef {import('luxon').Interval<IsValid>} Interval
+ * @template {boolean} [IsValid=import("luxon/src/_util").Valid]
+ * @typedef {import("luxon/src/_util").Valid} Valid === true
  * @typedef {import('luxon').DateTime} DateTime
  */
+
 
 /**
  * Position of an overlay on the calendar.
@@ -16,13 +19,13 @@ import { HRS_IN_DAY, SECS_IN_DAY } from '$lib/utils/time';
 
 /**
  * @typedef {Object} TaskAndIntervals
- * @property {import('$lib/stores').Task} task - Array of tasks
- * @property {ValidInterval[]} intervals - Overlay positions
+ * @property {import('$lib/stores').Task} task - Single task
+ * @property {Interval<Valid>[]} intervals - Intervals of the task, split by day
  */
 
 /**
  * @typedef {Object} TaskAndPositions
- * @property {import('$lib/stores').Task} task - Array of tasks
+ * @property {import('$lib/stores').Task} task - Single task
  * @property {Position[]} positions - Overlay positions
  */
 
@@ -41,7 +44,7 @@ export function findDayIndex(days, day) {
 }
 
 /**
- * @param {ValidInterval} interval
+ * @param {Interval<Valid>} interval
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
  * TODO remove need for headerRowHeight
@@ -66,16 +69,16 @@ function secondsToPx(seconds, cellHeight) {
 }
 
 /**
- * @param {ValidInterval} interval - The interval of time to display
+ * @param {Interval<Valid>} interval - The interval of time to display
  * @param {number} top - Pixel distance between top of view and start of this overlay
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
  * TODO remove need for headerRowHeight
  */
 export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
-	const screenHeightPx = secondsToPx(SECS_IN_DAY, cellHeight);
-
 	const proposedPx = secondsToPx(interval.length('seconds'), cellHeight);
+	
+	const screenHeightPx = secondsToPx(SECS_IN_DAY, cellHeight);
 	const remainingPx = screenHeightPx - top + headerRowHeight;
 
 	/**
@@ -90,11 +93,11 @@ export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
 }
 
 /**
- * @param {ValidInterval[]} intervals
+ * @param {Interval<Valid>[]} intervals
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} cellWidth - Width of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
- * TODO remove need for headerRowHeight
+ * @param {number} headerColWidth
  * @param {DateTime[]} daysToDisplay
  * @return {Position[]}
  */
@@ -103,11 +106,12 @@ export function calculatePositions(
 	cellHeight,
 	cellWidth,
 	headerRowHeight,
+	headerColWidth,
 	daysToDisplay
 ) {
 	return intervals.map((interval) => {
 		const dayIndex = findDayIndex(daysToDisplay, interval.start);
-		const left = cellWidth * (dayIndex + 1);
+		const left = headerColWidth + (cellWidth * dayIndex);
 		const top = calculateTop(interval, cellHeight, headerRowHeight);
 		const height = calculateHeight(interval, top, cellHeight, headerRowHeight);
 		return {

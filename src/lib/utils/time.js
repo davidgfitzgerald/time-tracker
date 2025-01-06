@@ -5,9 +5,9 @@ export const SECS_IN_HR = 60 * 60;
 export const SECS_IN_DAY = HRS_IN_DAY * SECS_IN_HR;
 
 /**
- * Convert duration to HH:MM:SS format
+ * Convert duration (s) to HH:MM:SS format
  *
- * @param {number} duration (seconds)
+ * @param {number} duration (secs)
  * @returns {string} duration in HH:MM:SS format
  */
 export function formatDuration(duration) {
@@ -20,7 +20,7 @@ export function formatDuration(duration) {
 /**
  * Get the current time in YYYY-MM-DD HH:MM:SS format.
  *
- * @returns {string} - The current time in the specified format
+ * @returns {string} - The current time in YYYY-MM-DD HH:MM:SS format
  */
 export function getCurrentTime() {
 	const date = new Date();
@@ -82,14 +82,20 @@ export function sleep(secs) {
 /**
  * Split an interval up by days.
  *
- * For example, if you provided the interval:
- *  <2000-01-30 6pm - 2000-01-31 3pm>
+ * If you provided an interval spanning 
+ * multiple days such as:
+ * 
+ *  [2000-01-30 6pm - 2000-01-31 3pm]
  *
- * then this would split that interval up into
- * two subintervals at midnight:
- * 	<2000-01-30 6pm - 2000-01-31 00:00am>
- * 	and
- * 	<2000-01-31 00:00am - 2000-01-31 3pm>
+ * this would split that interval up at midnight
+ * into two sub-intervals:
+ * 
+ * 	[2000-01-30 6pm - 2000-01-31 00:00am] and
+ * 	[2000-01-31 00:00am - 2000-01-31 3pm]
+ * 
+ * If an does not span multiple days, then the 
+ * original interval is returned as the only 
+ * element in an array.
  * @param {Interval<import('luxon/src/_util').Valid>} interval
  * @returns {Interval[]}
  */
