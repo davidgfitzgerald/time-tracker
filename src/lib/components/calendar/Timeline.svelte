@@ -6,6 +6,7 @@
 	import { calculatePositions, findDayIndex } from './overlay';
 	import Calendar from './Calendar.svelte';
 	import Clock from './Clock.svelte';
+	import { onMount } from 'svelte';
 
 	// Height and width
 	const cellHeight = $state(28);
@@ -15,9 +16,13 @@
 	let innerWidth = $state(0)  // window.innerWidth
 	
 	// Day state
-	let initialDay = $state(DateTime.now().minus({days: 5}))
 	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - headerColWidth) / cellWidth))
 	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
+	let initialDay = $state(DateTime.now())
+
+	onMount(() => {
+		initialDay = DateTime.now().minus({days: visibleDaysCount - 1})
+	})
 
 	/**
 	 * @type {DateTime[]}
