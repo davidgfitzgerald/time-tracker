@@ -10,7 +10,7 @@
 
 <div>
 	<div class="cell header-column header-row">
-		{@render clock()} 
+		{@render clock()}
 	</div>
 	{#each hours as hour}
 		<div class="cell header-column">{hour}</div>
