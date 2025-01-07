@@ -9,10 +9,10 @@ PostgreSQL DB instance for development purposes.
 
 ## Requirements
 
-- an AWS account
-- Terraform installed (`>=1.9.8`)
+- an [AWS](https://aws.amazon.com/) account
+- [Terraform](https://www.terraform.io/) installed (`>=1.9.8`)
 - a default VPC in AWS
-- a Tailscale account (and a tailnet)
+- a [Tailscale](https://tailscale.com/) account (and a tailnet)
 
 ## Setup
 
@@ -93,32 +93,32 @@ To set up the project for deployment, follow these steps:
       pgcli -h terraform-20241109232645798400000002.cpzvybhopwhq.us-west-2.rds.amazonaws.com -U admin -d time_tracker
       ```
 
-## `app.tf`
+## [app.tf](/deployment/app.tf)
 
 Defines an EC2 instance in the cloud with a static IP that runs the app in a docker container.
 
-## `config.tf`
+## [config.tf](/deployment/config.tf)
 
 Currently only `us-west-2` is supported but other AWS regions could be supported in future.
 
-## `key.tf`
+## [key.tf](/deployment/key.tf)
 
 Adds an SSH key-pair to AWS such that you can SSH into the tailnet subnet router to manually
 setup tailscale.
 
-## `network.tf`
+## [network.tf](/deployment/network.tf)
 
 Defines the networking resources required in AWS to wire up the VPC in a way that enables
 the RDS to communicate to other nodes in the VPC. For instance, this enables the tailscale
 subnet router to communicate with the AWS RDS PostgreSQL database.
 
-## `rds.tf`
+## [rds.tf](/deployment/rds.tf)
 
 Defines the AWS RDS PostgreSQL DB instance. This is your database. The database will not be
 accessible by the outside world directly. It will only be accessible via other nodes on the
 VPC such as the tailscale subnet router which is the point of access for public internet traffic.
 
-## `ssh.tf`
+## [ssh.tf](/deployment/ssh.tf)
 
 Defines a rule which can be attached to nodes in the VPC (such as the tailscale subnet router) to
 allow you (and only you) to SSH into the node. This is provided for purposes of setting up tailscale
@@ -127,7 +127,7 @@ on the subnet router manually.
 You should notice that the rule is commented out in `tailnet.tf`. This is where the rule would be temporarily
 enabled for setup purposes.
 
-## `tailnet.tf`
+## [tailnet.tf](/deployment/tailnet.tf)
 
 This is where a lot of the networking magic happens.
 
@@ -137,15 +137,17 @@ This file defines an EC2 instance in the VPC which acts as a tailscale subnet ro
 
 Essentially, this node acts as a router such that traffic on your tailnet can be routed into the VPC to access nodes such as the RDS DB.
 
-## `terraform.tfvars.example`
+## [terraform.tfvars.example](/deployment/terraform.tfvars.example)
 
 The environment variable template file for the deployment.
 
-## `vars.tf`
+## [vars.tf](/deployment/vars.tf)
 
 The definition of environment variables mapped to terraform variables for use through the deployment.
 
 # CI
+
+Check out the [/deployment/scripts/ci.sh](/deployment/scripts/ci.sh) script.
 
 For the time being, a quick and dirty CI can be used to build, push and run a docker container in EC2 with:
 
