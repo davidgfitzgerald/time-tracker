@@ -9,7 +9,7 @@ SCRIPT_DIR=$(dirname "$(realpath "$0")")
 # Build and push docker app image to ECR
 ${SCRIPT_DIR}/build_and_push.sh
 
-# cd to deployment/
+# cd to deployment/ to run terraform commands
 pushd "${SCRIPT_DIR}/../" 1>/dev/null
 
 # If --force is passed, deploy regardless of any 

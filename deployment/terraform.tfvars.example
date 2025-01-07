@@ -2,10 +2,10 @@
 db_name = "time_tracker"
 
 # Name of PostgreSQL RDS DB user to provision
-db_user = ""
+db_user = "admin"
 
 # Name of PostgreSQL RDS DB user password to provision
-db_password = ""
+db_password = "password"
 
 # Name of PostgreSQL RDS DB port to provision
 db_port = 5432
