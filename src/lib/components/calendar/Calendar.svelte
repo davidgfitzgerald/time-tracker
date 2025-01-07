@@ -1,5 +1,26 @@
 <script>
-	const { daysToDisplay, clock } = $props();
+	import { DateTime } from 'luxon';
+
+	/** 
+	 * @type {{ 
+	 * 	daysToDisplay: DateTime[],
+	 * 	clock: any,
+	 * 	leftArrow: any,
+	 * 	rightArrow: any,
+	 * }} */
+	let { daysToDisplay, clock, leftArrow, rightArrow } = $props();
+
+	const daysWithSnippets = $derived(
+		daysToDisplay.map((day, index) => {
+			let snippet = null;
+			if (index == 0) {
+				snippet = 'left'
+			} else if (index == daysToDisplay.length - 1) {
+				snippet = 'right'
+			}
+			return {day, snippet}
+		})
+	)
 	const hoursInDay = 24;
 
 	let hours = [];
@@ -16,10 +37,17 @@
 		<div class="cell header-column">{hour}</div>
 	{/each}
 </div>
-{#each daysToDisplay as day}
+{#each daysWithSnippets as {day, snippet}}
 	<div>
 		<div class="cell header-row">
-			{day.toFormat('ccc dd')}
+			<div>
+				{day.toFormat('ccc dd')}
+			</div>
+				{#if snippet == "left"}
+					{@render leftArrow()}
+				{:else if snippet == "right"}
+					{@render rightArrow()}
+				{/if}
 		</div>
 		{#each hours}
 			<div class="cell"></div>
@@ -49,10 +77,9 @@
 		- the text aligned to the center
 		*/
 		height: calc(var(--header-row-height) * 1px) !important;
-		text-align: center
+		text-align: center;
 	}
 	.header-column {
-		
 		/* 
 		Header column cells have:
 		
@@ -60,5 +87,4 @@
 		*/
 		width: calc(var(--header-col-width) * 1px) !important;
 	}
-
 </style>
