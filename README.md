@@ -34,10 +34,10 @@ Then alter env vars as you see fit.
 npm install
 ```
 
-3. Start local docker containers:
+3. Start app & db with docker:
 
 ```bash
-npm run docker
+npm run dev
 ```
 
 **Note**: This requires port `5432` to be available to start a postgres DB docker container.

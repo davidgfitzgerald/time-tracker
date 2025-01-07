@@ -51,7 +51,7 @@ COPY vite.config.js .
 RUN npm run build
 
 # Run
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "app"]
 
 # ---#
 # db #
