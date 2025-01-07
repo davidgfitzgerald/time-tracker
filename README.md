@@ -80,3 +80,9 @@ To install `pg_dump` via `brew`:
 ```bash
 brew install postgresql
 ```
+
+**Note**: For convenience, you can add db credentials to `~/.pgpass` to prevent password prompts. Database connection entries are added in the following format:
+
+```bash
+hostname:port:database:username:password
+```
