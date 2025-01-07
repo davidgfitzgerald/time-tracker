@@ -46,8 +46,15 @@ npm run dev
 
 ## Deployment
 
-The [deployment/](deployment/) directory provides terraform code that will provision an AWS RDS instance
-in the default VPC.
+The [deployment/](deployment/) directory provides terraform code that will provision an AWS VPC 
+with three nodes:
+
+1. The dockerised `svelte` app running on an EC2 instance
+2. The RDS Postgres DB instance
+3. An EC2 [tailscale subnet router](https://tailscale.com/kb/1019/subnets) bastion node
+
+The advantage of hosting the app using tailscale means only nodes on your tailnet (vpn) will be able to access
+the application. For this reason, I have forgone implementing authentication.
 
 To deploy the app to AWS follow [deployment/README.md](deployment/README.md).
 
