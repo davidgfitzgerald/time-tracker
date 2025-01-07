@@ -49,7 +49,7 @@ npm run dev
 The [deployment/](deployment/) directory provides terraform code that will provision an AWS VPC 
 with three nodes:
 
-1. The dockerised `svelte` app running on an EC2 instance
+1. The dockerised [svelte](https://svelte.dev/) app running on an EC2 instance
 2. The RDS Postgres DB instance
 3. An EC2 [tailscale subnet router](https://tailscale.com/kb/1019/subnets) bastion node
 
