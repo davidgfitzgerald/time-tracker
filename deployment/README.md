@@ -133,7 +133,7 @@ This is where a lot of the networking magic happens.
 
 This file defines an EC2 instance in the VPC which acts as a tailscale subnet router
 
-    Read more: https://tailscale.com/kb/1021/install-aws
+Read more: https://tailscale.com/kb/1021/install-aws
 
 Essentially, this node acts as a router such that traffic on your tailnet can be routed into the VPC to access nodes such as the RDS DB.
 
