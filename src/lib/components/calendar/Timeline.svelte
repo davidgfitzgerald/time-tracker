@@ -7,22 +7,24 @@
 	import Calendar from './Calendar.svelte';
 	import Clock from './Clock.svelte';
 	import { onMount } from 'svelte';
+	import ArrowL from '$lib/icons/arrow-l.svg';
+	import ArrowR from '$lib/icons/arrow-r.svg';
 
 	// Height and width
 	const cellHeight = $state(28);
 	const cellWidth = $state(100);
 	const headerRowHeight = $state(50); // Minimum 30
 	const headerColWidth = $derived(cellWidth);
-	let innerWidth = $state(0)  // window.innerWidth
-	
+	let innerWidth = $state(0); // window.innerWidth
+
 	// Day state
-	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - headerColWidth) / cellWidth))
-	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15))
-	let initialDay = $state(DateTime.now())
+	let maxVisibleDaysCount = $derived(Math.floor((innerWidth - headerColWidth) / cellWidth));
+	let visibleDaysCount = $derived(Math.min(maxVisibleDaysCount, 15));
+	let initialDay = $state(DateTime.now());
 
 	onMount(() => {
-		initialDay = DateTime.now().minus({days: visibleDaysCount - 1})
-	})
+		initialDay = DateTime.now().minus({ days: visibleDaysCount - 1 });
+	});
 
 	/**
 	 * @type {DateTime[]}
@@ -36,18 +38,17 @@
 		return days;
 	});
 
-
 	/**
 	 * Append the next day
 	 * to a list of days.
 	 * @param {DateTime[]} days
 	 */
 	function appendDay(days) {
-		const latestDay = days.at(-1)
+		const latestDay = days.at(-1);
 		if (latestDay == undefined) {
-			days.push(initialDay)
+			days.push(initialDay);
 		} else {
-			days.push(latestDay.plus({days: 1}))
+			days.push(latestDay.plus({ days: 1 }));
 		}
 	}
 
@@ -78,8 +79,8 @@
 	 * @returns {boolean}
 	 */
 	function intervalInBounds(interval) {
-		const start = interval.start
-		const end = interval.end
+		const start = interval.start;
+		const end = interval.end;
 		const startInBounds = findDayIndex(daysToDisplay, start) != -1;
 		const endInBounds = findDayIndex(daysToDisplay, end) != -1;
 		return startInBounds && endInBounds;
@@ -97,9 +98,9 @@
 	 * 			]
 	 * 		}
 	 * 	]
-	 * 
+	 *
 	 * Works by:
-	 * 
+	 *
 	 * 1. Get all the non-active tasks
 	 * 2. Filter out tasks that do not intersect with displayed days
 	 * 3. Split task intervals up at midnight
@@ -119,11 +120,11 @@
 				const intervals = splitIntervalByDays(interval);
 				return { task, intervals };
 			})
-			.map(({task, intervals}) => {
+			.map(({ task, intervals }) => {
 				intervals = intervals.filter(intervalInBounds);
-				return {task, intervals}
+				return { task, intervals };
 			})
-			.map(({task, intervals}) => {
+			.map(({ task, intervals }) => {
 				const positions = calculatePositions(
 					intervals,
 					cellHeight,
@@ -132,34 +133,43 @@
 					headerColWidth,
 					daysToDisplay
 				);
-				return { task, positions}
+				return { task, positions };
 			})
 	);
 </script>
 
 <!-- Bind window.innderWidth to the innerWidth state var -->
-<svelte:window bind:innerWidth={innerWidth} />
+<svelte:window bind:innerWidth />
 
 <div class="calendar">
-	<Calendar 
+	<Calendar
 		{daysToDisplay}
 		--cell-height={cellHeight}
 		--cell-width={cellWidth}
 		--header-row-height={headerRowHeight}
 		--header-col-width={headerColWidth}
-
 	>
-	{#snippet clock()}
-		<Clock --width={headerColWidth}/>
-	{/snippet}
+		{#snippet clock()}
+			<Clock --width={headerColWidth} />
+		{/snippet}
+		{#snippet leftArrow()}
+			<button onclick={() => {
+				initialDay = initialDay.minus({ days: 1 });
+			}}>
+				<img src={ArrowL} alt="arrow-l" class="arrow" />
+			</button>
+		{/snippet}
+		{#snippet rightArrow()}
+			<button onclick={() => {
+				initialDay = initialDay.plus({ days: 1 });
+			}}>
+				<img src={ArrowR} alt="arrow-r" class="arrow" />
+			</button>
+		{/snippet}
 	</Calendar>
 	{#each tasksAndPositions as { task, positions }}
 		<Overlay {task} {positions}></Overlay>
 	{/each}
-</div>
-<div>
-	<button onclick={() => {initialDay = initialDay.minus({days: 1})}}>Left</button>
-	<button onclick={() => {initialDay = initialDay.plus({days: 1})}}>Right</button>
 </div>
 
 <style>
@@ -168,4 +178,21 @@
 		flex-direction: row;
 		position: relative;
 	}
+
+	.arrow {
+		width: 1.3rem;
+		height: auto;
+	}
+
+	button {
+		background-color: transparent;
+		border: none;
+		padding: 5px;
+	}
+
+	button:hover {
+		background-color: lightgrey;
+		cursor: pointer;
+	}
+
 </style>
