@@ -47,7 +47,6 @@ export function findDayIndex(days, day) {
  * @param {Interval<Valid>} interval
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
- * TODO remove need for headerRowHeight
 */
 export function calculateTop(interval, cellHeight, headerRowHeight) {
 	const start = interval.start;
@@ -73,7 +72,6 @@ function secondsToPx(seconds, cellHeight) {
  * @param {number} top - Pixel distance between top of view and start of this overlay
  * @param {number} cellHeight - Height of a cell in pixels
  * @param {number} headerRowHeight - Additional height to offset (to take into account header row)
- * TODO remove need for headerRowHeight
  */
 export function calculateHeight(interval, top, cellHeight, headerRowHeight) {
 	const proposedPx = secondsToPx(interval.length('seconds'), cellHeight);

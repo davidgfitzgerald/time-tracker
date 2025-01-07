@@ -10,7 +10,6 @@
 	/**
 	 * Choose a colour for this overlay.
 	 *
-	 * TODO - Improve colour choice logic.
 	 * @param {import('$lib/stores').Task} task
 	 */
 	function chooseColour(task) {

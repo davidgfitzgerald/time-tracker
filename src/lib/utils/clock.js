@@ -19,7 +19,6 @@ export function updateDuration(tasks) {
 		duration.set(calculateDuration(activeTask.startTime));
 	} else {
 		console.debug("Couldn't find an active task. Not updating duration.");
-		// TODO investigate why this is gettng called
 	}
 }
 

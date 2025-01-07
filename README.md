@@ -1,6 +1,17 @@
 # Time Tracker
 
-App to track time spent on tasks.
+There are 168 hours in a week.
+
+How would you like to spend them?
+
+![App](/dev/app.png)
+
+The whole idea with this app is to first breakdown how you would like to spend your time in an ideal week.
+Everybody needs to spend time on things like sleep, work, commute, personal care, hobbies. In this modern
+age it is easy to fall into time sinks like doom scrolling, lazing around, or just generally meandering
+and not feeling fulfilled by not spending time wisely.
+
+Everyone needs time to relax but time is a scarce resource so why not make the most of it.
 
 ## Requirements
 
@@ -23,13 +34,15 @@ Then alter env vars as you see fit.
 npm install
 ```
 
-3. Start a development server:
+3. Start local docker containers:
 
 ```bash
-npm run dev
+npm run docker
 ```
 
 **Note**: This requires port `5432` to be available to start a postgres DB docker container.
+
+4. Access the application at `http://localhost:5173`
 
 ## Deployment
 

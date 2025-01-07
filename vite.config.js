@@ -7,11 +7,4 @@ export default defineConfig({
 	test: {
 		include: ['src/**/*.{test,spec}.{js,ts}']
 	},
-
-	// TODO - determine if necessary? Recommended on svelte site
-	resolve: process.env.VITEST
-		? {
-				conditions: ['browser']
-			}
-		: undefined
 });
