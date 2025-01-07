@@ -4,17 +4,23 @@ import pkg from 'pg'; // Import the default export from the pg package
 // Destructure Pool from the default export
 const { Pool } = pkg;
 
-for (const name of ['POSTGRES_PORT', 'POSTGRES_USER', 'POSTGRES_HOST', 'POSTGRES_PASSWORD', 'POSTGRES_DB']) {
+for (const name of [
+	'POSTGRES_PORT',
+	'POSTGRES_USER',
+	'POSTGRES_HOST',
+	'POSTGRES_PASSWORD',
+	'POSTGRES_DB'
+]) {
 	if (process.env[name] === undefined) {
-		throw new Error(`${name} is undefined/empty. Check .env file?`)
+		throw new Error(`${name} is undefined/empty. Check .env file?`);
 	}
 }
 
 const port = process.env.POSTGRES_PORT ? parseInt(process.env.POSTGRES_PORT) : NaN;
-const user = process.env.POSTGRES_USER
-const host = process.env.POSTGRES_HOST
-const database = process.env.POSTGRES_DB
-const password = process.env.POSTGRES_PASSWORD
+const user = process.env.POSTGRES_USER;
+const host = process.env.POSTGRES_HOST;
+const database = process.env.POSTGRES_DB;
+const password = process.env.POSTGRES_PASSWORD;
 
 console.log('\nDatabase Connection:');
 console.log('    port', port);

@@ -16,7 +16,8 @@
 		"format": "prettier --write .",
 		"pull-prod": "./scripts/pull_prod_data.sh",
 		"reset-local-db": "psql service=local -f db/wipe.sql; psql service=local -f timetracker-prod.sql",
-		"pgcli": "pgcli --host localhost time_tracker"
+		"pgcli": "pgcli --host localhost time_tracker --user admin",
+		"pgconf": "./scripts/pgconf.sh"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^3.3.1",

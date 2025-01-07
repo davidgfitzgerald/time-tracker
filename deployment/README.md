@@ -9,7 +9,7 @@ PostgreSQL DB instance for development purposes.
 
 ## Requirements
 
-- an [AWS](https://aws.amazon.com/) account
+- an [AWS](https://aws.amazon.com/) account in `us-west-2`
 - [Terraform](https://www.terraform.io/) installed (`>=1.9.8`)
 - a default VPC in AWS
 - a [Tailscale](https://tailscale.com/) account (and a tailnet)
