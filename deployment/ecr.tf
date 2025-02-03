@@ -1,5 +1,9 @@
 resource "aws_ecr_repository" "time-tracker" {
   name = "time-tracker-ecr-repo"
+
+  lifecycle {
+    prevent_destroy = false
+  }
 }
 
 output "aws_ecr_repository_url" {
